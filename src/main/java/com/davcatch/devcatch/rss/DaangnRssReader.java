@@ -5,6 +5,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.domain.Article;
@@ -24,7 +25,8 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class DaangnRssReader {
 
-	private static final String FEED_URL = "https://medium.com/feed/daangn";
+	@Value("${daangn.rss}")
+	private String feedUrl;
 
 	private final SourceRepository sourceRepository;
 	private final ArticleRepository articleRepository;
@@ -32,7 +34,7 @@ public class DaangnRssReader {
 
 	public void reader() {
 		try {
-			URL url = new URL(FEED_URL);
+			URL url = new URL(feedUrl);
 			SyndFeedInput input = new SyndFeedInput();
 			SyndFeed feed = input.build(new XmlReader(url));
 
