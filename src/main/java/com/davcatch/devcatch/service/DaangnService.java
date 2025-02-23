@@ -10,10 +10,11 @@ import com.davcatch.devcatch.domain.Article;
 import com.davcatch.devcatch.domain.Source;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
-import com.davcatch.devcatch.gpt.GptSummary;
+import com.davcatch.devcatch.gpt.GptSummaryService;
+import com.davcatch.devcatch.gpt.response.GptResponse;
 import com.davcatch.devcatch.repository.ArticleRepository;
 import com.davcatch.devcatch.repository.SourceRepository;
-import com.davcatch.devcatch.rss.DaangnRssReader;
+import com.davcatch.devcatch.rss.RssReader;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 
@@ -25,10 +26,10 @@ import lombok.RequiredArgsConstructor;
 @Transactional
 public class DaangnService {
 
-	private final DaangnRssReader daangnRssReader;
+	private final RssReader rssReader;
 	private final SourceRepository sourceRepository;
 	private final ArticleRepository articleRepository;
-	private final GptSummary gptSummary;
+	private final GptSummaryService gptSummaryService;
 
 	/**
 	 * 당근 Article 생성
@@ -38,12 +39,13 @@ public class DaangnService {
 			.orElseThrow(() -> new CustomException(ErrorCode.SOURCE_NOT_FOUND));
 
 		// rss feed 내용 가져오기
-		SyndFeed feed = daangnRssReader.reader(source.getFeedUrl());
+		SyndFeed feed = rssReader.reader(source.getFeedUrl());
 
 		// published_at이 마지막 Article 불러오기
 		Optional<Article> lastPublishedArticle = articleRepository.findLastPublishedArticle(source.getId());
 
 		List<Article> articles = new ArrayList<>();
+
 		// 이전 데이터 없을 경우 전체 저장
 		if (lastPublishedArticle.isEmpty()) {
 			for (SyndEntry entry : feed.getEntries())
@@ -73,8 +75,8 @@ public class DaangnService {
 	 * @return Article
 	 */
 	private Article getSummaryAndAddList(SyndEntry entry, Source source) throws CustomException {
-		String summary = gptSummary.getSummary(entry.getContents().get(0).getValue());
+		GptResponse response = gptSummaryService.getSummary(entry.getContents().get(0).getValue());
 
-		return Article.from(source, entry, summary);
+		return Article.from(source, entry, response);
 	}
 }

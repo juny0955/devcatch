@@ -13,18 +13,15 @@ public class Messages {
 	private String role;
 	private String content;
 
-	@Value("${gpt.sys.prompt")
-	private static String sysPrompt;
-
-	public static List<Messages> createRequest(String content) {
-		return List.of(Messages.systemRequest(), Messages.userRequest(content));
+	public static List<Messages> createRequest(String content, String sysPrompt) {
+		return List.of(Messages.systemRequest(sysPrompt), Messages.userRequest(content));
 	}
 
 	/**
 	 * GPT System Request 생성
 	 * @return System Request
 	 */
-	public static Messages systemRequest() {
+	public static Messages systemRequest(String sysPrompt) {
 		return Messages.builder()
 			.role("system")
 			.content(sysPrompt)

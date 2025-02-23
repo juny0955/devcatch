@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
+import com.davcatch.devcatch.gpt.response.GptResponse;
 import com.rometools.rome.feed.synd.SyndEntry;
 
 /**
@@ -34,7 +35,6 @@ public class Article {
     private String title;
 
     @Column(name = "link", nullable = false)
-    @Lob
     private String link;
 
     @Column(name = "summary", nullable = false)
@@ -43,12 +43,12 @@ public class Article {
     @Column(name = "published_at", nullable = false)
     private Date publishedAt;
 
-    public static Article from(Source source, SyndEntry entry, String summary) {
+    public static Article from(Source source, SyndEntry entry, GptResponse response) {
         return Article.builder()
             .source(source)
             .title(entry.getTitle())
-            .link(entry.getLink().substring(0, 50))
-            .summary(summary)
+            .link(entry.getUri())
+            .summary(response.getChoices().get(0).getMessage().getContent())
             .publishedAt(entry.getPublishedDate())
             .build();
     }

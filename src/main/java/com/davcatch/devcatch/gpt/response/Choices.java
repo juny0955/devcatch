@@ -10,5 +10,5 @@ import lombok.Data;
 public class Choices {
 
 	private int index;
-	private List<Messages> message;
+	private Messages message;
 }

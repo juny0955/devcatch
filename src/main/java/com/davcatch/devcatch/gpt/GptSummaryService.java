@@ -1,5 +1,6 @@
 package com.davcatch.devcatch.gpt;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -17,34 +18,39 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class GptSummary {
+public class GptSummaryService {
 
 	private static final String URL = "https://api.openai.com/v1/chat/completions";
 
 	private final RestTemplate restTemplate;
+
+	@Value("${gpt.model}")
+	private String model;
+
+	@Value("${gpt.sys.prompt}")
+	private String sysPrompt;
 
 	/**
 	 * 본문 내용을 사용해 GPT 요약 요청
 	 * @param content 본문 내용
 	 * @return GPT 요약 내용
 	 */
-	public String getSummary(String content) throws CustomException {
+	public GptResponse getSummary(String content) throws CustomException {
 		log.info("GPT API 요청 시작");
 
-		ResponseEntity<GptResponse> response;
+		GptResponse response;
 
 		try {
-			HttpEntity<GptRequest> entity = new HttpEntity<>(GptRequest.create(content));
-			response = restTemplate.exchange(URL, HttpMethod.POST, entity, GptResponse.class);
+			GptRequest request = GptRequest.create(model, content, sysPrompt);
+			response = restTemplate.postForObject(URL, request, GptResponse.class);
 		} catch (Exception e) {
 			log.info("GPT API 요청중 에러 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.GPT_REQUEST_ERROR);
 		}
 
-		if (response.getStatusCode().is2xxSuccessful() && response.getBody() != null) {
+		if (response != null) {
 			log.info("GPT API 요청 정상 종료");
-			log.info(response.toString());
-			return null;
+			return response;
 		}
 
 		log.info("GPT API 응답 BODY 없음");

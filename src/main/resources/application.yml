@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: api
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/devcatch?useSSL=false&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
@@ -8,7 +11,7 @@ spring:
   jpa:
     open-in-view: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate.format_sql: true
