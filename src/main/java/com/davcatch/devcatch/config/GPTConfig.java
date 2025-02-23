@@ -9,13 +9,17 @@ import org.springframework.web.client.RestTemplate;
 public class GPTConfig {
 
 	@Value("${gpt.key}")
-	private String apiKey;
+	private static String apiKey;
 
+	/**
+	 * GPT API 요청용 RestTemplate 설정
+	 * @return restTemplate
+	 */
 	@Bean
 	public RestTemplate restTemplate() {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getInterceptors().add(((request, body, execution) -> {
-			request.getHeaders().add("Authorization", "bearer " + apiKey);
+			request.getHeaders().add("Authorization", "Bearer " + apiKey);
 			return execution.execute(request, body);
 		}));
 

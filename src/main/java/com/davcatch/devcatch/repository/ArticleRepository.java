@@ -10,9 +10,9 @@ import com.davcatch.devcatch.domain.Article;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
-	@Query(value = "select * from Article "
-		+ "where source = :sourceId "
-		+ "order by published_at desc "
-		+ "limit 1", nativeQuery = true)
-	Optional<Article> findLastPublishedArticle(@Param("sourceId") Long sourceId);
+	@Query(value = "select a from Article a "
+		+ "where a.source = :sourceId "
+		+ "order by a.publishedAt desc "
+		+ "limit 1 ", nativeQuery = true)
+	Optional<Article> findLastPublishedArticle(Long sourceId);
 }
