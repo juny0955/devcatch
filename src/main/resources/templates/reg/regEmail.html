@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>DevCatch 인증 페이지</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 2rem; }
+        form { max-width: 400px; margin: auto; }
+        div { margin-bottom: 1rem; }
+        label { display: block; margin-bottom: 0.5rem; }
+        input { width: 100%; padding: 0.5rem; box-sizing: border-box; }
+        button { padding: 0.5rem 1rem; }
+    </style>
+</head>
+<body>
+<h1>이메일 인증</h1>
+<form th:action="@{/devcatch/reg}" method="post">
+    <div>
+        <label for="name">이름</label>
+        <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required />
+    </div>
+    <div>
+        <label for="email">이메일</label>
+        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required />
+    </div>
+    <div>
+        <button type="submit">인증하기</button>
+    </div>
+</form>
+</body>
+</html>

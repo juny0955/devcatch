@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>데브캐치 이메일 인증</title>
+</head>
+<body>
+<form th:action="@{/devcatch/reg}" method="post">
+    <div>
+        <label for="code">인증코드 입력</label>
+        <input type="text" id="code" name="code" placeholder="인증코드를 입력해주세요" required />
+    </div>
+</form>
+</body>
+</html>
