@@ -1,12 +1,63 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8" http-equiv="Content-Type" content="text/html">
-    <title th:text="${subject}"></title>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Type" content="text/html">
+    <title th:text="${subject}">이메일 인증</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 600px;
+            margin: 30px auto;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background-color: #007BFF;
+            color: #ffffff;
+            padding: 20px;
+            text-align: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .content {
+            padding: 30px;
+            color: #333333;
+        }
+        .content h3 {
+            margin-top: 0;
+            color: #007BFF;
+        }
+        .code-box {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 22px;
+            letter-spacing: 2px;
+            margin-top: 20px;
+        }
+    </style>
 </head>
 <body>
-    <h1>이메일 인증코드</h1>
-    <h3>5분 이내로 인증을 완료해주세요.</h3>
-    <p th:text="${verifyCode}"></p>
+<div class="container">
+    <div class="header">
+        <h1 th:text="${subject}">이메일 인증</h1>
+    </div>
+    <div class="content">
+        <h3>이메일 인증코드 안내</h3>
+        <p>아래 인증코드를 입력하여 5분 이내에 인증을 완료해주세요.</p>
+        <div class="code-box" th:text="${verifyCode}">123456</div>
+    </div>
+</div>
 </body>
 </html>

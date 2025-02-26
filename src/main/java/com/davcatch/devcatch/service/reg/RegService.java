@@ -47,7 +47,7 @@ public class RegService {
 		verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
 
 		Context context = new Context();
-		context.setVariable("subject", MailTemplate.VERIFY_TITLE);
+		context.setVariable("subject", MailTemplate.VERIFY_TITLE.getTitle());
 		context.setVariable("verifyCode", verifyCode);
 		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_TITLE, context);
 	}

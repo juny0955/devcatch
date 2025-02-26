@@ -52,6 +52,6 @@ public class MemberService {
 			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}
 
-		log.info("회원 등록 : {} | {}", member.getName(), member.getEmail());
+		log.info("회원 등록 : (이름 : {} | 이메일 : {})", member.getName(), member.getEmail());
 	}
 }

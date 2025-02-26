@@ -1,31 +1,32 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>DevCatch 인증 페이지</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 2rem; }
-        form { max-width: 400px; margin: auto; }
-        div { margin-bottom: 1rem; }
-        label { display: block; margin-bottom: 0.5rem; }
-        input { width: 100%; padding: 0.5rem; box-sizing: border-box; }
-        button { padding: 0.5rem 1rem; }
-    </style>
+    <!-- Bootstrap CDN (v4) -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<h1>이메일 인증</h1>
-<form th:action="@{/devcatch/reg}" method="post">
-    <div>
-        <label for="name">이름</label>
-        <input type="text" id="name" name="name" placeholder="이름을 입력하세요" required />
+<div class="container vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-md-6">
+            <h1 class="text-center mb-4">이메일 인증</h1>
+            <form th:action="@{/devcatch/reg}" method="post">
+                <div class="form-group">
+                    <label for="name">이름</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">이메일</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">인증하기</button>
+            </form>
+        </div>
     </div>
-    <div>
-        <label for="email">이메일</label>
-        <input type="email" id="email" name="email" placeholder="이메일을 입력하세요" required />
-    </div>
-    <div>
-        <button type="submit">인증하기</button>
-    </div>
-</form>
+</div>
+<!-- Bootstrap JS (옵션) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

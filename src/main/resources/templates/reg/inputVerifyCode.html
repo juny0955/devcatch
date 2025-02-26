@@ -3,14 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>데브캐치 이메일 인증</title>
+    <!-- Bootstrap CDN 추가 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
 </head>
 <body>
-<form th:action="@{/devcatch/reg/verify}" method="post">
-    <div>
-        <label for="verifyCode">인증코드 입력</label>
-        <input type="text" id="verifyCode" name="verifyCode" placeholder="인증코드를 입력해주세요" required />
-        <input type="submit">
+<div class="container vh-100">
+    <div class="row h-100 justify-content-center align-items-center">
+        <div class="col-md-6">
+            <h1 class="mb-4 text-center">이메일 인증</h1>
+            <form th:action="@{/devcatch/reg/verify}" method="post">
+                <div class="form-group">
+                    <label for="verifyCode">인증코드 입력</label>
+                    <input type="text" id="verifyCode" name="verifyCode" class="form-control" placeholder="인증코드를 입력해주세요" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">인증 확인</button>
+            </form>
+        </div>
     </div>
-</form>
+</div>
 </body>
 </html>
