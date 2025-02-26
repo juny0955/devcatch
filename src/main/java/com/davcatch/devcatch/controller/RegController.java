@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.davcatch.devcatch.exception.CustomException;
@@ -19,12 +20,12 @@ public class RegController {
 
 	private final RegService regService;
 
-	@GetMapping("/")
+	@GetMapping(value = {"/", ""})
 	public String reg() {
 		return "reg/regEmail";
 	}
 
-	@PostMapping("/")
+	@PostMapping(value = {"/", ""})
 	public String doReg(RegRequest request, RedirectAttributes redirectAttributes) {
 		try {
 			regService.verify(request);
@@ -42,13 +43,15 @@ public class RegController {
 
 	@GetMapping("/verifyCode")
 	public String verify() {
-		return "reg/verifyCode";
+		return "reg/inputVerifyCode";
 	}
 
 	@PostMapping("/verify")
-	public String doVerify(String email, String verifyCode, RedirectAttributes redirectAttributes) throws CustomException {
+	public String doVerify(@RequestParam String verifyCode,
+		RedirectAttributes redirectAttributes) {
+
 		try {
-			regService.register(email, verifyCode);
+			regService.register(verifyCode);
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_EXPIRED)) {
 				redirectAttributes.addAttribute("error", "시간이 만료되었습니다 다시 시도해주세요");

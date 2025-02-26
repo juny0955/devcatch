@@ -3,6 +3,8 @@ package com.davcatch.devcatch.service.mail;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.davcatch.devcatch.controller.RegRequest;
+
 import lombok.Builder;
 import lombok.Data;
 
@@ -10,16 +12,14 @@ import lombok.Data;
 @Builder
 public class VerificationInfo {
 
-	private String verifyCode;
+	private String email;
 	private String name;
 	private LocalDateTime createdAt;
 
-	public static VerificationInfo create(String name) {
-		String code = UUID.randomUUID().toString().substring(0, 7);
-
+	public static VerificationInfo create(RegRequest request) {
 		return VerificationInfo.builder()
-			.verifyCode(code)
-			.name(name)
+			.email(request.getEmail())
+			.name(request.getName())
 			.createdAt(LocalDateTime.now())
 			.build();
 	}

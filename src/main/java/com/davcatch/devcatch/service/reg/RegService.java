@@ -1,7 +1,10 @@
 package com.davcatch.devcatch.service.reg;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.thymeleaf.context.Context;
 
 import com.davcatch.devcatch.controller.RegRequest;
 import com.davcatch.devcatch.domain.Member;
@@ -10,7 +13,7 @@ import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.service.mail.MailService;
 import com.davcatch.devcatch.service.mail.MailTemplate;
 import com.davcatch.devcatch.service.mail.VerificationInfo;
-import com.davcatch.devcatch.service.mail.VerifyCodeCacheService;
+import com.davcatch.devcatch.service.cache.VerifyCodeCacheService;
 import com.davcatch.devcatch.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -39,10 +42,14 @@ public class RegService {
 		if (!memberService.existsEmailCheck(request.getEmail()))
 			throw new CustomException(ErrorCode.EXISTS_EMAIL);
 
-		VerificationInfo verificationInfo = VerificationInfo.create(request.getName());
-		verifyCodeCacheService.putVerificationCode(request.getEmail(), verificationInfo);
+		VerificationInfo verificationInfo = VerificationInfo.create(request);
+		String verifyCode = UUID.randomUUID().toString().substring(0, 7);
+		verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
 
-		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_TITLE);
+		Context context = new Context();
+		context.setVariable("subject", MailTemplate.VERIFY_TITLE);
+		context.setVariable("verifyCode", verifyCode);
+		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_TITLE, context);
 	}
 
 	/** 신규 가입 진행
@@ -54,19 +61,15 @@ public class RegService {
 	 * @throws CustomException 잘못된 인증코드 예외
 	 */
 	@Transactional
-	public void register(String email, String verifyCode) throws CustomException {
-		VerificationInfo verificationInfo = verifyCodeCacheService.getVerificationCode(email);
+	public void register(String verifyCode) throws CustomException {
+		VerificationInfo verificationInfo = verifyCodeCacheService.getVerificationCode(verifyCode);
 
-		if (verifyCode.equals(verificationInfo.getVerifyCode())) {
-			if (verificationInfo.isExpired()) {
-				log.info("이메일 인증 중 시간 만료 : {}", email);
-				verifyCodeCacheService.evictVerificationCode(email);
-				throw new CustomException(ErrorCode.VERIFY_CODE_EXPIRED);
-			}
-			log.debug("잘못된 인증코드 전달: {}", email);
-			throw new CustomException(ErrorCode.VERIFY_CODE_WRONG);
+		if (verificationInfo.isExpired()) {
+			log.info("이메일 인증 중 시간 만료 : {}", verificationInfo.getEmail());
+			verifyCodeCacheService.evictVerificationCode(verifyCode);
+			throw new CustomException(ErrorCode.VERIFY_CODE_EXPIRED);
 		}
 
-		memberService.save(Member.of(verificationInfo.getName(), email));
+		memberService.save(Member.of(verificationInfo));
 	}
 }

@@ -4,8 +4,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.RegRequest;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 
@@ -21,14 +21,17 @@ public class MailService {
 	private final JavaMailSender javaMailSender;
 	private final TemplateEngine templateEngine;
 
-	public void sendMail(String email, MailTemplate subject) throws CustomException {
+	public void sendMail(String email, MailTemplate template, Context context) throws CustomException {
 		try {
 			log.info("메일 발송 시작");
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 
-			messageHelper.setSubject(subject.getDisplayName());
+			messageHelper.setSubject(template.getTitle());
 			messageHelper.setTo(email);
+
+			String htmlContent = templateEngine.process(template.getTemplatePath(), context);
+			messageHelper.setText(htmlContent, true);
 
 			javaMailSender.send(message);
 			log.info("메일 발송 정상 종료 : {}", email);
