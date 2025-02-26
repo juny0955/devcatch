@@ -21,6 +21,13 @@ public class MailService {
 	private final JavaMailSender javaMailSender;
 	private final TemplateEngine templateEngine;
 
+	/**
+	 * 메일 보내기
+	 * @param email 보낼 이메일
+	 * @param template 메일 정보
+	 * @param context thymeleaf attribute
+	 * @throws CustomException
+	 */
 	public void sendMail(String email, MailTemplate template, Context context) throws CustomException {
 		try {
 			log.info("메일 발송 시작");

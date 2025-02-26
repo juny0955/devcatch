@@ -54,9 +54,8 @@ public class RegService {
 
 	/** 신규 가입 진행
 	 *
-	 * email 파라미터 값으로 캐시에서 정보를 가져온뒤 가입 진행
-	 * 인증번호 체크 -> 만료시간 체크 후 통과시 DB 저장 진행
-	 * @param email 가입할 이메일
+	 * verifyCode 파라미터 값으로 캐시에서 정보를 가져온뒤 가입 진행
+	 * @param verifyCode 인증코드
 	 * @throws CustomException 이메일 인증시간 초과 예외
 	 * @throws CustomException 잘못된 인증코드 예외
 	 */
