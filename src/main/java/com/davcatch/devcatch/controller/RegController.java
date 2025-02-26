@@ -31,9 +31,9 @@ public class RegController {
 			regService.verify(request);
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.EXISTS_EMAIL))
-				redirectAttributes.addAttribute("error", "중복된 이메일입니다.");
+				redirectAttributes.addFlashAttribute("error", "이미 가입된 이메일입니다.");
 			else if (e.getErrorCode().equals(ErrorCode.SERVER_ERROR))
-				redirectAttributes.addAttribute("error", "서버오류로인해 잠시후 다시 시도해주세요.");
+				redirectAttributes.addFlashAttribute("error", "서버 오류로인해 잠시후 다시 시도해주세요.");
 
 			return "redirect:/devcatch/reg";
 		}
@@ -47,17 +47,16 @@ public class RegController {
 	}
 
 	@PostMapping("/verify")
-	public String doVerify(@RequestParam String verifyCode,
-		RedirectAttributes redirectAttributes) {
+	public String doVerify(@RequestParam String verifyCode, RedirectAttributes redirectAttributes) {
 
 		try {
 			regService.register(verifyCode);
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_EXPIRED)) {
-				redirectAttributes.addAttribute("error", "시간이 만료되었습니다 다시 시도해주세요");
+				redirectAttributes.addFlashAttribute("error", "인증 시간이 만료되었습니다. 처음부터 다시 시도해주세요");
 				return "redirect:/";
 			} else if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_WRONG))
-				redirectAttributes.addAttribute("error", "잘못된 인증코드입니다");
+				redirectAttributes.addFlashAttribute("error", "잘못된 인증코드입니다");
 
 			return "redirect:/devcatch/reg/verifyCode";
 		}

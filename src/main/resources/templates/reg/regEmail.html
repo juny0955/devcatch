@@ -20,6 +20,7 @@
                     <label for="email">이메일</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required>
                 </div>
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
                 <button type="submit" class="btn btn-primary btn-block">인증하기</button>
             </form>
         </div>
