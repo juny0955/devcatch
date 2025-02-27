@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>DevCatch 인증 페이지</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* 배경 그라데이션 및 기본 스타일 */
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            height: 100vh;
+            margin: 0;
+        }
+        /* 중앙 정렬 및 카드 컨테이너 */
+        .container {
+            height: 100%;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background-color: #fff;
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .card-body {
+            background: #fff;
+            padding: 2rem;
+        }
+        /* 버튼 커스터마이징 */
+        .btn-primary {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+        .btn-primary:hover {
+            background-color: #5a67d8;
+            border-color: #5a67d8;
+        }
+        /* 에러 Alert 여백 조정 */
+        .alert ul {
+            margin-bottom: 0;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                이메일 인증
+            </div>
+            <div class="card-body">
+                <!-- 검증 오류 메시지 처리 -->
+                <div th:if="${errors}" class="alert alert-danger" role="alert">
+                        <div th:each="err : ${errors}" th:text="${err.defaultMessage}"></div>
+                </div>
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <!-- 폼 시작 -->
+                <form th:action="@{/devcatch/reg}" method="post">
+                    <div class="form-group">
+                        <label for="name">이름</label>
+                        <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">이메일</label>
+                        <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">인증하기</button>
+                </form>
+                <!-- 폼 끝 -->
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS (옵션) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

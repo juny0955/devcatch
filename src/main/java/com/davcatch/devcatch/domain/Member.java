@@ -1,8 +1,12 @@
 package com.davcatch.devcatch.domain;
 
+import com.davcatch.devcatch.controller.RegRequest;
+import com.davcatch.devcatch.service.mail.VerificationInfo;
+
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +17,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
+@Builder
 public class Member extends BaseTime{
 
     @Id
@@ -25,4 +30,11 @@ public class Member extends BaseTime{
 
     @Column(name = "email", nullable = false, unique = true)
     private String email;
+
+    public static Member of(VerificationInfo verificationInfo) {
+        return Member.builder()
+            .name(verificationInfo.getName())
+            .email(verificationInfo.getEmail())
+            .build();
+    }
 }

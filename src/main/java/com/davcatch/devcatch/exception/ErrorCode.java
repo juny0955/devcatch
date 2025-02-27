@@ -2,11 +2,18 @@ package com.davcatch.devcatch.exception;
 
 public enum ErrorCode {
 
+	EXISTS_EMAIL,
+
+	SERVER_ERROR,
+
 	SOURCE_NOT_FOUND,
 
 	RSS_PARSE_ERROR,
 
 	GPT_REQUEST_ERROR,
-	GPT_REQUEST_BODY_NULL
+	GPT_REQUEST_BODY_NULL,
+
+	VERIFY_CODE_EXPIRED,
+	VERIFY_CODE_WRONG
 	;
 }

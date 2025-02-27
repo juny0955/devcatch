@@ -26,16 +26,16 @@ public class RssReader {
 	 * @return Feed
 	 */
 	public SyndFeed reader(String feedUrl) throws CustomException {
-		log.info("RSS FEED 수집 시작 : {}", feedUrl);
+		log.debug("RSS FEED 수집 시작 : {}", feedUrl);
 		try {
 			URL url = new URL(feedUrl);
 			SyndFeedInput syndFeedInput = new SyndFeedInput();
 			SyndFeed feed = syndFeedInput.build(new XmlReader(url));
 
-			log.info("RSS FEED 정상 수집 URL : {}", feedUrl);
+			log.debug("RSS FEED 정상 수집 URL : {}", feedUrl);
 			return feed;
 		} catch (FeedException | IOException e) {
-			log.info("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
+			log.debug("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.RSS_PARSE_ERROR);
 		}
 	}

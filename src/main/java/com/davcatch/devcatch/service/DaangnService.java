@@ -20,10 +20,12 @@ import com.rometools.rome.feed.synd.SyndFeed;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class DaangnService {
 
 	private final RssReader rssReader;
@@ -35,6 +37,7 @@ public class DaangnService {
 	 * 당근 Article 생성
 	 */
 	public void createNewArticle() throws CustomException {
+		log.info("당근 ");
 		Source source = sourceRepository.findByName("daangn")
 			.orElseThrow(() -> new CustomException(ErrorCode.SOURCE_NOT_FOUND));
 
