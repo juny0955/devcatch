@@ -7,16 +7,48 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f8f9fa;
+            margin: 0;
+            padding: 0;
+            /* 그라데이션 배경 설정 */
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
         }
         .welcome-container {
             min-height: 100vh;
         }
+        .welcome-content {
+            text-align: center;
+            padding: 20px;
+            position: relative;
+            z-index: 2;
+        }
+        h1 {
+            font-weight: 700;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        p.lead {
+            font-size: 1.5rem;
+        }
+        /* 캔버스 confetti 이펙트용 스타일 */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
+<canvas id="confetti-canvas"></canvas>
 <div class="container welcome-container d-flex flex-column justify-content-center align-items-center">
-    <div class="text-center">
+    <div class="welcome-content">
         <h1 class="display-4">데브캐치 가입을 환영합니다!</h1>
         <p class="lead">새로운 아티클이 올라올 때마다 메일로 알려드릴게요.</p>
     </div>
@@ -24,5 +56,38 @@
 <!-- Bootstrap JS (옵션) -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<!-- canvas-confetti 라이브러리 추가 -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script>
+    // 페이지 로드 시 confetti 이펙트 실행
+    window.onload = function() {
+        var duration = 5 * 1000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+
+            if (timeLeft <= 0) {
+                return clearInterval(interval);
+            }
+
+            var particleCount = 50 * (timeLeft / duration);
+            // 좌측과 우측에서 동시에 발사
+            confetti(Object.assign({}, defaults, {
+                particleCount: particleCount,
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+            }));
+            confetti(Object.assign({}, defaults, {
+                particleCount: particleCount,
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+            }));
+        }, 250);
+    };
+</script>
 </body>
 </html>

@@ -1,26 +1,82 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>데브캐치 이메일 인증</title>
-    <!-- Bootstrap CDN 추가 -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            height: 100%;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background-color: #fff;
+            color: #333;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 1rem;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .card-body {
+            background: #fff;
+            padding: 2rem;
+        }
+        .btn-primary {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+        .btn-primary:hover {
+            background-color: #5a67d8;
+            border-color: #5a67d8;
+        }
+        .resend-link {
+            margin-top: 1rem;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-<div class="container vh-100">
-    <div class="row h-100 justify-content-center align-items-center">
-        <div class="col-md-6">
-            <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
-            <h1 class="mb-4 text-center">이메일 인증</h1>
-            <form th:action="@{/devcatch/reg/verify}" method="post">
-                <div class="form-group">
-                    <label for="verifyCode">인증코드 입력</label>
-                    <input type="text" id="verifyCode" name="verifyCode" class="form-control" placeholder="인증코드를 입력해주세요" required>
+<div class="container d-flex justify-content-center align-items-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                이메일 인증
+            </div>
+            <div class="card-body">
+                <!-- 에러 메시지가 있을 경우 Alert로 표시 -->
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <form th:action="@{/devcatch/reg/verify}" method="post">
+                    <div class="form-group">
+                        <label for="verifyCode">인증코드 입력</label>
+                        <input type="text" id="verifyCode" name="verifyCode" class="form-control" placeholder="인증코드를 입력해주세요" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">인증 확인</button>
+                </form>
+                <div class="resend-link">
+                    <p>
+                        이메일이 오지 않았습니까?
+                        <a th:href="@{/devcatch/reg}" class="text-primary">처음부터 다시 시도</a>
+                    </p>
                 </div>
-                <button type="submit" class="btn btn-primary btn-block">인증 확인</button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+<!-- Bootstrap JS (옵션) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

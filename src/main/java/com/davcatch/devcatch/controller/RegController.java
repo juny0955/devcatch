@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +12,7 @@ import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.service.reg.RegService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -26,7 +28,12 @@ public class RegController {
 	}
 
 	@PostMapping(value = {"/", ""})
-	public String doReg(RegRequest request, RedirectAttributes redirectAttributes) {
+	public String doReg(@Valid RegRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		if (bindingResult.hasErrors()) {
+			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+			return "redirect:/devcatch/reg";
+		}
+
 		try {
 			regService.verify(request);
 		} catch (CustomException e) {
@@ -54,7 +61,7 @@ public class RegController {
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_EXPIRED)) {
 				redirectAttributes.addFlashAttribute("error", "인증 시간이 만료되었습니다. 처음부터 다시 시도해주세요");
-				return "redirect:/";
+				return "redirect:/devcatch/reg/";
 			} else if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_WRONG))
 				redirectAttributes.addFlashAttribute("error", "잘못된 인증코드입니다");
 

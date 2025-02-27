@@ -2,6 +2,7 @@ package com.davcatch.devcatch.service.mail;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
@@ -28,6 +29,7 @@ public class MailService {
 	 * @param context thymeleaf attribute
 	 * @throws CustomException
 	 */
+	@Async
 	public void sendMail(String email, MailTemplate template, Context context) throws CustomException {
 		try {
 			log.info("메일 발송 시작");

@@ -18,16 +18,16 @@ public class VerifyCodeCacheService {
 
 	private final CacheManager cacheManager;
 
-	public void putVerificationCode(String verifyCode, VerificationInfo verificationInfo) {
+	public void putVerificationCode(String email, VerificationInfo verificationInfo) {
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		if (cache != null)
-			cache.put(verifyCode, verificationInfo);
+			cache.put(email, verificationInfo);
 	}
 
-	public VerificationInfo getVerificationCode(String verifyCode) throws CustomException {
+	public VerificationInfo getVerificationCode(String email) throws CustomException {
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		if (cache != null) {
-			VerificationInfo verificationInfo = cache.get(verifyCode, VerificationInfo.class);
+			VerificationInfo verificationInfo = cache.get(email, VerificationInfo.class);
 			if (verificationInfo == null)
 				throw new CustomException(ErrorCode.VERIFY_CODE_WRONG);
 
@@ -37,9 +37,9 @@ public class VerifyCodeCacheService {
 		return null;
 	}
 
-	public void evictVerificationCode(String verifyCode) {
+	public void evictVerificationCode(String email) {
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		if (cache != null)
-			cache.evict(verifyCode);
+			cache.evict(email);
 	}
 }
