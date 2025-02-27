@@ -10,11 +10,11 @@ import com.davcatch.devcatch.domain.Article;
 import com.davcatch.devcatch.domain.Source;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
-import com.davcatch.devcatch.gpt.GptSummaryService;
-import com.davcatch.devcatch.gpt.response.GptResponse;
+import com.davcatch.devcatch.integration.gpt.GptSummaryService;
+import com.davcatch.devcatch.integration.gpt.response.GptResponse;
 import com.davcatch.devcatch.repository.ArticleRepository;
 import com.davcatch.devcatch.repository.SourceRepository;
-import com.davcatch.devcatch.rss.RssReader;
+import com.davcatch.devcatch.integration.rss.RssReader;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 

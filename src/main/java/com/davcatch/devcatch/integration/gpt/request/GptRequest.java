@@ -1,12 +1,11 @@
-package com.davcatch.devcatch.gpt.request;
+package com.davcatch.devcatch.integration.gpt.request;
 
 import java.util.List;
 
-import com.davcatch.devcatch.gpt.Messages;
+import com.davcatch.devcatch.integration.gpt.Messages;
 
 import lombok.Builder;
 import lombok.Data;
-import lombok.Value;
 
 @Data
 @Builder

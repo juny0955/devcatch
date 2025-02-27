@@ -1,6 +1,5 @@
 package com.davcatch.devcatch.domain;
 
-import com.davcatch.devcatch.controller.RegRequest;
 import com.davcatch.devcatch.service.mail.VerificationInfo;
 
 import jakarta.persistence.*;

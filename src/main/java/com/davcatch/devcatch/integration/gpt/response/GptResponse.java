@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.gpt.response;
+package com.davcatch.devcatch.integration.gpt.response;
 
 import java.util.List;
 

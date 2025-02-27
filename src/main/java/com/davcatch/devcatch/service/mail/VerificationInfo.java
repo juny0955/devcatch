@@ -1,9 +1,8 @@
 package com.davcatch.devcatch.service.mail;
 
 import java.time.LocalDateTime;
-import java.util.UUID;
 
-import com.davcatch.devcatch.controller.RegRequest;
+import com.davcatch.devcatch.controller.registration.RegRequest;
 
 import lombok.Builder;
 import lombok.Data;

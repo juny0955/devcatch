@@ -1,16 +1,13 @@
-package com.davcatch.devcatch.gpt;
+package com.davcatch.devcatch.integration.gpt;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
-import com.davcatch.devcatch.gpt.request.GptRequest;
-import com.davcatch.devcatch.gpt.response.GptResponse;
+import com.davcatch.devcatch.integration.gpt.request.GptRequest;
+import com.davcatch.devcatch.integration.gpt.response.GptResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

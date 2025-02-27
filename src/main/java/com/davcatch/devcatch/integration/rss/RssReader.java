@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.rss;
+package com.davcatch.devcatch.integration.rss;
 
 import java.io.IOException;
 import java.net.URL;

@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller;
+package com.davcatch.devcatch.controller.registration;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;

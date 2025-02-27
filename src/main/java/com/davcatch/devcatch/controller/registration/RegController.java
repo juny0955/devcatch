@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller;
+package com.davcatch.devcatch.controller.registration;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -10,7 +10,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
-import com.davcatch.devcatch.service.reg.RegService;
+import com.davcatch.devcatch.service.registration.RegService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

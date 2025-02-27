@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
-import com.davcatch.devcatch.gpt.response.GptResponse;
+import com.davcatch.devcatch.integration.gpt.response.GptResponse;
 import com.rometools.rome.feed.synd.SyndEntry;
 
 /**
