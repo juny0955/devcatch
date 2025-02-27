@@ -18,16 +18,27 @@ public class VerifyCodeCacheService {
 
 	private final CacheManager cacheManager;
 
-	public void putVerificationCode(String email, VerificationInfo verificationInfo) {
+	/**
+	 * 캐시 저장
+	 * @param verifyCode Key
+	 * @param verificationInfo Value
+	 */
+	public void putVerificationCode(String verifyCode, VerificationInfo verificationInfo) {
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		if (cache != null)
-			cache.put(email, verificationInfo);
+			cache.put(verifyCode, verificationInfo);
 	}
 
-	public VerificationInfo getVerificationCode(String email) throws CustomException {
+	/**
+	 * 캐시 조회
+	 * @param verifyCode key
+	 * @return VerificationInfo.class
+	 * @throws CustomException 인증코드가 맞지 않음 (캐시에 key 없음)
+	 */
+	public VerificationInfo getVerificationCode(String verifyCode) throws CustomException {
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		if (cache != null) {
-			VerificationInfo verificationInfo = cache.get(email, VerificationInfo.class);
+			VerificationInfo verificationInfo = cache.get(verifyCode, VerificationInfo.class);
 			if (verificationInfo == null)
 				throw new CustomException(ErrorCode.VERIFY_CODE_WRONG);
 
@@ -37,9 +48,13 @@ public class VerifyCodeCacheService {
 		return null;
 	}
 
-	public void evictVerificationCode(String email) {
+	/**
+	 * Key에 해당하는 캐시 제거
+	 * @param verifyCode Key
+	 */
+	public void evictVerificationCode(String verifyCode) {
 		Cache cache = cacheManager.getCache(CACHE_NAME);
 		if (cache != null)
-			cache.evict(email);
+			cache.evict(verifyCode);
 	}
 }

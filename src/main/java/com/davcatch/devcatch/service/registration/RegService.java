@@ -32,9 +32,9 @@ public class RegService {
 	/**
 	 * 가입전 인증 진행
 	 *
-	 * 이메일 중복 체크 ->
-	 * 인증 코드 생성 및 캐시 저장 ->
-	 * 메일 발송
+	 * 1. 이메일 중복 체크
+	 * 2. 인증 코드 생성 및 캐시 저장
+	 * 3. 메일 발송
 	 * @param request 가입 정보
 	 * @throws CustomException 메일 중복 예외
 	 */
