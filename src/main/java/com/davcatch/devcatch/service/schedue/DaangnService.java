@@ -1,9 +1,10 @@
-package com.davcatch.devcatch.service;
+package com.davcatch.devcatch.service.schedue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.domain.Article;
@@ -36,6 +37,7 @@ public class DaangnService {
 	/**
 	 * 당근 Article 생성
 	 */
+	@Scheduled(cron = "0 0 0 * * ?")
 	public void createNewArticle() throws CustomException {
 		log.info("당근 ");
 		Source source = sourceRepository.findByName("daangn")
