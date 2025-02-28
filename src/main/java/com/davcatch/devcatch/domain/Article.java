@@ -40,10 +40,13 @@ public class Article {
     @Column(name = "summary", nullable = false)
     private String summary;
 
+    @Column(name = "is_sent", nullable = false)
+    private boolean isSent = false;
+
     @Column(name = "published_at", nullable = false)
     private Date publishedAt;
 
-    public static Article from(Source source, SyndEntry entry, GptResponse response) {
+    public static Article of(Source source, SyndEntry entry, GptResponse response) {
         return Article.builder()
             .source(source)
             .title(entry.getTitle())

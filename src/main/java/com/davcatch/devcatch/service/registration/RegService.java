@@ -69,6 +69,6 @@ public class RegService {
 			throw new CustomException(ErrorCode.VERIFY_CODE_EXPIRED);
 		}
 
-		memberService.save(Member.of(verificationInfo));
+		memberService.save(Member.from(verificationInfo));
 	}
 }

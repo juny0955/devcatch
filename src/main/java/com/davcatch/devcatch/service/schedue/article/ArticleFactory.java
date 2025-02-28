@@ -27,7 +27,7 @@ public class ArticleFactory {
 		try {
 			String content = entry.getContents().get(0).getValue();
 			GptResponse response = gptSummaryService.getSummary(content);
-			return Article.from(source, entry, response);
+			return Article.of(source, entry, response);
 		} catch (Exception e) {
 			log.error("Article 생성 중 오류 발생: {}", e.getMessage());
 			return null;
