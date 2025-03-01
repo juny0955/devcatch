@@ -55,4 +55,8 @@ public class Article {
             .publishedAt(entry.getPublishedDate())
             .build();
     }
+
+    public void sendArticle() {
+        this.isSent = true;
+    }
 }

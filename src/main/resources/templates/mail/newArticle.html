@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>새로운 아티클 알림</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f7f7;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: #fff;
+            border: 1px solid #eaeaea;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        /* 헤더 영역에 그라데이션 포인트 색상 사용 */
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            margin: 0;
+            font-size: 1.75rem;
+        }
+        .content {
+            padding: 20px;
+        }
+        .article {
+            border-bottom: 1px solid #ddd;
+            padding: 15px 0;
+        }
+        .article:last-child {
+            border-bottom: none;
+        }
+        .article-title {
+            font-size: 1.25rem;
+            color: #667eea;
+            margin: 0 0 8px;
+        }
+        .article-summary {
+            color: #555;
+            margin: 8px 0;
+        }
+        .article-date {
+            font-size: 0.85rem;
+            color: #999;
+        }
+        .read-more {
+            display: inline-block;
+            margin-top: 8px;
+            color: #667eea;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .read-more:hover {
+            text-decoration: underline;
+        }
+        .footer {
+            text-align: center;
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 20px;
+            padding: 10px 0;
+            border-top: 1px solid #eaeaea;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>새로운 아티클 알림</h1>
+    </div>
+    <div class="content">
+        <p>새로운 아티클이 업로드되었습니다. 아래 내용을 확인해보세요.</p>
+        <div th:if="${articles}" th:each="article : ${articles}">
+            <div class="article">
+                <h2 class="article-title" th:text="${article.title}">아티클 제목</h2>
+                <p class="article-summary" th:text="${article.summary}">아티클 요약 내용</p>
+                <p class="article-date" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}">발행일</p>
+                <a class="read-more" th:href="${article.link}" target="_blank">자세히 보기</a>
+            </div>
+        </div>
+    </div>
+    <div class="footer">
+        <p>이 메일은 자동 발송되었습니다.</p>
+    </div>
+</div>
+</body>
+</html>

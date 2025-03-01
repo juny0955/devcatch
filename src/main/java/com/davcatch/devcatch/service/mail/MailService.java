@@ -32,7 +32,6 @@ public class MailService {
 	@Async
 	public void sendMail(String email, MailTemplate template, Context context) throws CustomException {
 		try {
-			log.info("메일 발송 시작");
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
 
@@ -43,9 +42,7 @@ public class MailService {
 			messageHelper.setText(htmlContent, true);
 
 			javaMailSender.send(message);
-			log.info("메일 발송 정상 종료 : {}", email);
 		} catch (Exception e) {
-			log.error("메일 발송 중 오류 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}
 	}
