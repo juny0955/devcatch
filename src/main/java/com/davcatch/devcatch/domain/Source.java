@@ -29,6 +29,6 @@ public class Source extends BaseTime{
     @Column(name = "feed_url")
     private String feedUrl;
 
-    @Column(name = "status", nullable = false)
-    private boolean status;
+    @Column(name = "is_active", nullable = false)
+    private boolean isActive = true;
 }
