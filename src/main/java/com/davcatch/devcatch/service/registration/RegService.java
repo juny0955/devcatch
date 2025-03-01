@@ -10,10 +10,10 @@ import com.davcatch.devcatch.controller.registration.RegRequest;
 import com.davcatch.devcatch.domain.Member;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
+import com.davcatch.devcatch.service.cache.VerifyCodeCacheService;
 import com.davcatch.devcatch.service.mail.MailService;
 import com.davcatch.devcatch.service.mail.MailTemplate;
 import com.davcatch.devcatch.service.mail.VerificationInfo;
-import com.davcatch.devcatch.service.cache.VerifyCodeCacheService;
 import com.davcatch.devcatch.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,7 +31,6 @@ public class RegService {
 
 	/**
 	 * 가입전 인증 진행
-	 *
 	 * 1. 이메일 중복 체크
 	 * 2. 인증 코드 생성 및 캐시 저장
 	 * 3. 메일 발송
@@ -53,7 +52,6 @@ public class RegService {
 	}
 
 	/** 신규 가입 진행
-	 *
 	 * verifyCode 파라미터 값으로 캐시에서 정보를 가져온뒤 가입 진행
 	 * @param verifyCode 인증코드
 	 * @throws CustomException 이메일 인증시간 초과 예외

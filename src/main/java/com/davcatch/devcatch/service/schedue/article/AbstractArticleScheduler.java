@@ -33,7 +33,7 @@ public abstract class AbstractArticleScheduler implements ArticleSchedulerServic
 	public void createNewArticles() throws CustomException {
 		log.info("{} Article 생성 스케줄러 시작", getSourceName());
 
-		Source source = sourceRepository.findByName("daangn")
+		Source source = sourceRepository.findByName(getSourceName())
 			.orElseThrow(() -> new CustomException(ErrorCode.SOURCE_NOT_FOUND));
 
 		// rss feed 내용 가져오기
@@ -55,7 +55,7 @@ public abstract class AbstractArticleScheduler implements ArticleSchedulerServic
 	/**
 	 * RSS 피드의 각 엔트리를 Article로 변환하고, 마지막 게시글 이후의 것들만 반환
 	 */
-	private List<Article> filterAndCreateArticles(SyndFeed feed, Source source, Optional<Article> lastPublishedArticle) throws CustomException {
+	private List<Article> filterAndCreateArticles(SyndFeed feed, Source source, Optional<Article> lastPublishedArticle) {
 
 		List<Article> articles = new ArrayList<>();
 		for (SyndEntry entry : feed.getEntries()) {

@@ -25,7 +25,7 @@ public class SchedulerRunner {
 	 */
 	@Scheduled(cron = "0 0 0 * * ?")
 	public void runAllArticleScheduler() {
-		log.info("전체 Article 생성 스케줄러 시작");
+		log.info("새로운 Article 생성 스케줄러 시작");
 		for (ArticleSchedulerService service : articleSchedulerServices) {
 			try {
 				service.createNewArticles();
@@ -33,7 +33,7 @@ public class SchedulerRunner {
 				log.error("스케줄러 실행 중 에러 발생: {}", e.getErrorCode());
 			}
 		}
-		log.info("전체 Article 생성 스케줄러 종료");
+		log.info("새로운 Article 생성 스케줄러 종료");
 	}
 
 	/**
