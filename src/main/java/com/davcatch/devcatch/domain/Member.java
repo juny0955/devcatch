@@ -30,7 +30,7 @@ public class Member extends BaseTime{
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    public static Member of(VerificationInfo verificationInfo) {
+    public static Member from(VerificationInfo verificationInfo) {
         return Member.builder()
             .name(verificationInfo.getName())
             .email(verificationInfo.getEmail())

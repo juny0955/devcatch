@@ -7,7 +7,8 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum MailTemplate {
 
-	VERIFY_TITLE("[데브캐치] 이메일 인증코드", "mail/verifyCode.html")
+	VERIFY_TITLE("[데브캐치] 이메일 인증코드", "mail/verifyCode.html"),
+	SEND_ARTICLE("[데브캐치] 새로운 아티클이 등록되었어요!", "mail/newArticle.html")
 	;
 
 	private final String title;

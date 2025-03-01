@@ -1,5 +1,6 @@
 package com.davcatch.devcatch.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,4 +16,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 		+ "order by published_at desc "
 		+ "limit 1 ", nativeQuery = true)
 	Optional<Article> findLastPublishedArticle(Long sourceId);
+
+	@Query("select a from Article a "
+		+ "where a.isSent = false ")
+	List<Article> findSendArticles();
 }
