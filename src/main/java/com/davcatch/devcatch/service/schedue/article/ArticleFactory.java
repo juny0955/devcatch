@@ -1,5 +1,7 @@
 package com.davcatch.devcatch.service.schedue.article;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 import com.davcatch.devcatch.domain.Article;
@@ -27,12 +29,25 @@ public class ArticleFactory {
 	 */
 	public Article createArticle(Source source, SyndEntry entry) {
 		try {
-			String content = entry.getContents().get(0).getValue();
+			String content = removeHtmlTags(entry.getContents().get(0).getValue());
 			GptResponse response = gptSummaryService.getSummary(content);
 			return Article.of(source, entry, response);
 		} catch (Exception e) {
 			log.error("Article 생성 중 오류 발생: {}", e.getMessage());
 			return null;
 		}
+	}
+
+	/**
+	 * HTML 태그 제거
+	 * Jsoup 라이브러리 사용해 HTML 태그 전체 제거
+	 * 깔끔한 본문만 반환
+	 *
+	 * @param rawContent HTML 태그가 포함된 feed 내용
+	 * @return HTML 태그 제거한 내용
+	 */
+	private String removeHtmlTags(String rawContent) {
+		Document doc = Jsoup.parse(rawContent);
+		return doc.text();
 	}
 }
