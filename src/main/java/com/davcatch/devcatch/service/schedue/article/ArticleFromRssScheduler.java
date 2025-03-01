@@ -1,9 +1,9 @@
 package com.davcatch.devcatch.service.schedue.article;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.domain.Article;
@@ -12,12 +12,11 @@ import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.integration.rss.RssReader;
 import com.davcatch.devcatch.repository.ArticleRepository;
 import com.davcatch.devcatch.repository.SourceRepository;
-import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@Service
 @Transactional
 @Slf4j
 public class ArticleFromRssScheduler extends ArticleSchedulerService{

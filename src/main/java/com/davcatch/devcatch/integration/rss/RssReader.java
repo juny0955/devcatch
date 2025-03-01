@@ -3,7 +3,6 @@ package com.davcatch.devcatch.integration.rss;
 import java.io.IOException;
 import java.net.URL;
 
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.exception.CustomException;
@@ -26,7 +25,6 @@ public class RssReader {
 	 * @param feedUrl Feed URL
 	 * @return Feed
 	 */
-	@Async
 	public SyndFeed reader(String feedUrl) throws CustomException {
 		log.debug("RSS FEED 수집 시작 : {}", feedUrl);
 		try {

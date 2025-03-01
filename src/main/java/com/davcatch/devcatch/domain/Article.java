@@ -52,10 +52,14 @@ public class Article {
             .title(entry.getTitle())
             .link(entry.getUri())
             .summary(response.getChoices().get(0).getMessage().getContent())
-            .publishedAt(entry.getPublishedDate())
+            .publishedAt(entry.getPublishedDate() != null ? entry.getPublishedDate() : entry.getUpdatedDate())
             .build();
     }
 
+    /**
+     * Article 발송
+     * isSent True로 변경
+     */
     public void sendArticle() {
         this.isSent = true;
     }
