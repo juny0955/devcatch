@@ -1,4 +1,4 @@
-FROM ubuntu:latest
+FROM openjdk:17-jdk
 
 ARG JAR_FILE_PATH=/build/libs/*.jar
 
