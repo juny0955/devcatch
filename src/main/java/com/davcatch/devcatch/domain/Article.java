@@ -56,6 +56,16 @@ public class Article {
             .build();
     }
 
+    public static Article of(Source source, SyndEntry entry) {
+        return Article.builder()
+            .source(source)
+            .title(entry.getTitle())
+            .link(entry.getLink())
+            .summary(entry.getDescription().getValue())
+            .publishedAt(entry.getPublishedDate())
+            .build();
+    }
+
     /**
      * Article 발송
      * isSent True로 변경
