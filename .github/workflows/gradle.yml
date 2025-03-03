@@ -11,6 +11,18 @@ on:
   push:
     branches: [ "main" ]
 
+env:
+  DB_URL: ${{ secrets.DB_URL }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+  GPT_KEY: ${{ secrets.GPT_KEY }}
+  GPT_PROMPT: ${{ secrets.GPT_PROMPT }}
+  MAIL_HOST: ${{ secrets.MAIL_HOST }}
+  MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+  MAIL_PORT: ${{ secrets.MAIL_PORT }}
+  MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+
+
 jobs:
   build:
     runs-on: ubuntu-latest
