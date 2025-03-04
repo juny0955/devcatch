@@ -70,4 +70,15 @@ public class RegController {
 
 		return "reg/welcome";
 	}
+
+	@PostMapping("/leave")
+	public String doLeave(String email) {
+		regService.leave(email);
+		return "redirect:/devcatch/reg/goodbye";
+	}
+
+	@GetMapping("/goodbye")
+	public String goodbye() {
+		return "reg/leave";
+	}
 }
