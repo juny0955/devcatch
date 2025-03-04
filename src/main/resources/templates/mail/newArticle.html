@@ -14,6 +14,7 @@
             max-width: 600px;
             margin: auto;
             background: #fff;
+            padding: 20px;
             border: 1px solid #eaeaea;
             border-radius: 8px;
             overflow: hidden;
@@ -70,12 +71,32 @@
             padding: 10px 0;
             border-top: 1px solid #eaeaea;
         }
+        /* 구독 취소 버튼 스타일 개선 */
+        .btn-leave {
+            display: inline-block;
+            margin-top: 10px;
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: linear-gradient(135deg, #ff4b5c, #ff1e56);
+            text-decoration: none;
+            border: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            cursor: pointer;
+        }
+        .btn-leave:hover {
+            background: linear-gradient(135deg, #ff1e56, #ff4b5c);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <div class="header">
-        <h1>새로운 아티클 알림</h1>
+        <h1 th:text="${subject}">새로운 아티클 알림</h1>
     </div>
     <div class="content">
         <p>새로운 아티클이 업로드되었습니다. 아래 내용을 확인해보세요.</p>
@@ -90,6 +111,10 @@
     </div>
     <div class="footer">
         <p>이 메일은 자동 발송되었습니다.</p>
+        <form th:action="@{/devcatch/reg/leave}" th:method="post">
+            <input type="hidden" name="email" th:value="${email}">
+            <button class="btn-leave" type="submit">구독 취소</button>
+        </form>
     </div>
 </div>
 </body>

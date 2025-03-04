@@ -54,4 +54,9 @@ public class MemberService {
 
 		log.info("회원 등록 : (이름 : {} | 이메일 : {})", member.getName(), member.getEmail());
 	}
+
+	@Transactional
+	public void remove(String email) {
+		memberRepository.deleteByEmail(email);
+	}
 }

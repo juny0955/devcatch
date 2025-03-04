@@ -43,6 +43,7 @@ public class ArticleNotificationService {
 		int failCount = 0;
 		for (Member member : members) {
 			try {
+				context.setVariable("email", member.getEmail());
 				mailService.sendMail(member.getEmail(), MailTemplate.SEND_ARTICLE, context);
 			} catch (CustomException e) {
 				log.error("회원 {}에게 메일 전송 실패", member.getEmail());

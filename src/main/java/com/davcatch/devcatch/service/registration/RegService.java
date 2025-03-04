@@ -69,4 +69,11 @@ public class RegService {
 
 		memberService.save(Member.from(verificationInfo));
 	}
+
+	@Transactional
+	public void leave(String email) {
+		log.info("회원 {} 구독 취소", email);
+
+		memberService.remove(email);
+	}
 }
