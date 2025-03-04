@@ -2,7 +2,9 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>DevCatch 인증 페이지</title>
+    <!-- 모바일 최적화를 위한 뷰포트 설정 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>데브캐치 이메일 인증</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -13,10 +15,11 @@
             height: 100vh;
             margin: 0;
         }
-        /* 중앙 정렬 및 카드 컨테이너 */
+        /* 컨테이너 높이 설정 */
         .container {
             height: 100%;
         }
+        /* 카드 스타일 */
         .card {
             border: none;
             border-radius: 15px;
@@ -49,11 +52,22 @@
         .alert ul {
             margin-bottom: 0;
         }
+        /* 모바일 환경에서의 추가 스타일 */
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 1.5rem;
+            }
+            .card-header {
+                font-size: 1.3rem;
+                padding: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container d-flex justify-content-center align-items-center">
-    <div class="col-md-6">
+    <!-- 반응형을 위해 col-md-6, col-sm-10 사용 -->
+    <div class="col-md-6 col-sm-10">
         <div class="card">
             <div class="card-header">
                 이메일 인증
@@ -61,7 +75,7 @@
             <div class="card-body">
                 <!-- 검증 오류 메시지 처리 -->
                 <div th:if="${errors}" class="alert alert-danger" role="alert">
-                        <div th:each="err : ${errors}" th:text="${err.defaultMessage}"></div>
+                    <div th:each="err : ${errors}" th:text="${err.defaultMessage}"></div>
                 </div>
                 <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
                 <!-- 폼 시작 -->

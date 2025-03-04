@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>데브캐치 - Welcome</title>
     <!-- Bootstrap CDN 추가 -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
+        /* 배경 그라데이션 및 기본 스타일 */
         body {
             margin: 0;
             padding: 0;
-            /* 그라데이션 배경 설정 */
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #fff;
             height: 100vh;
             overflow: hidden;
             position: relative;
         }
+        /* 뷰 컨테이너 중앙 정렬 */
         .welcome-container {
             min-height: 100vh;
         }
@@ -59,9 +61,9 @@
 <!-- canvas-confetti 라이브러리 추가 -->
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
 <script>
-    // 페이지 로드 시 confetti 이펙트 실행
+    // 페이지 로드 시 confetti 이펙트 실행 (5초 동안)
     window.onload = function() {
-        var duration = 5 * 1000;
+        var duration = 5000;
         var animationEnd = Date.now() + duration;
         var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
 
@@ -71,11 +73,10 @@
 
         var interval = setInterval(function() {
             var timeLeft = animationEnd - Date.now();
-
             if (timeLeft <= 0) {
-                return clearInterval(interval);
+                clearInterval(interval);
+                return;
             }
-
             var particleCount = 50 * (timeLeft / duration);
             // 좌측과 우측에서 동시에 발사
             confetti(Object.assign({}, defaults, {

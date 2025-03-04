@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>데브캐치 이메일 인증</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -46,11 +47,21 @@
             margin-top: 1rem;
             text-align: center;
         }
+        /* 추가: 모바일에서 폼 내부 여백 조절 (필요 시) */
+        @media (max-width: 576px) {
+            .card-body {
+                padding: 1rem;
+            }
+            .card-header {
+                font-size: 1.25rem;
+                padding: 0.75rem;
+            }
+        }
     </style>
 </head>
 <body>
 <div class="container d-flex justify-content-center align-items-center">
-    <div class="col-md-6">
+    <div class="col-md-6 col-sm-10">
         <div class="card">
             <div class="card-header">
                 이메일 인증
