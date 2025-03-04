@@ -32,7 +32,7 @@ public class ArticleFactory {
 			/* 카카오 페이는 GPT 요약 사용 X
 			rss feed에서 제공하는 description을 그대로 사용
 			 */
-			if (source.getName().equals("kakao-pay"))
+			if (source.getName().equals("kakao-pay") || source.getName().equals("woowahan"))
 				return Article.of(source, entry);
 
 			String content = removeHtmlTags(entry.getContents().get(0).getValue());
