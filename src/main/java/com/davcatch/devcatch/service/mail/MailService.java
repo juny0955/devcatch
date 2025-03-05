@@ -29,7 +29,6 @@ public class MailService {
 	 * @param email 보낼 이메일
 	 * @param template 메일 정보
 	 * @param context thymeleaf attribute
-	 * @throws CustomException
 	 */
 	@Async("mailTaskExecutor")
 	public CompletableFuture<Void> sendMail(String email, MailTemplate template, Context context) {
@@ -46,7 +45,7 @@ public class MailService {
 			javaMailSender.send(message);
 			return CompletableFuture.completedFuture(null);
 		} catch (Exception e) {
-			log.error("{} 메일 발송중 에러 발생", email);
+			log.error("[{}] 메일 발송중 에러 발생: {}", email, e.getMessage());
 			return CompletableFuture.failedFuture(new CustomException(ErrorCode.MAIL_SEND_FAIL));
 		}
 	}
