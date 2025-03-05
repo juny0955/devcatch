@@ -29,11 +29,11 @@ public class ArticleFactory {
 	 */
 	public Article createArticle(Source source, SyndEntry entry) {
 		try {
-			/* 카카오 페이는 GPT 요약 사용 X
+			/*
+			카카오 페이, 마켓 컬리, 라인은 Feed에 본문내용 제공 X
 			rss feed에서 제공하는 description을 그대로 사용
 			 */
-			if (source.getName().equals("kakao-pay") || source.getName().equals("woowahan") || source.getName().equals("kurly")
-			|| source.getName().equals("line"))
+			if (source.getName().equals("kakao-pay") || source.getName().equals("kurly") || source.getName().equals("line"))
 				return Article.of(source, entry);
 
 			String content = removeHtmlTags(entry.getContents().get(0).getValue());
