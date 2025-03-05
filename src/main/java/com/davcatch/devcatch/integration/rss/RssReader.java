@@ -35,7 +35,7 @@ public class RssReader {
 			log.debug("RSS FEED 정상 수집 URL : {}", feedUrl);
 			return feed;
 		} catch (FeedException | IOException e) {
-			log.debug("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
+			log.error("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.RSS_PARSE_ERROR);
 		}
 	}
