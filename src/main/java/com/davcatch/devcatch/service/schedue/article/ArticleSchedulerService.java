@@ -47,7 +47,7 @@ public abstract class ArticleSchedulerService {
 			// RSS Feed에 PublishedDate가 없는 경우 UpdateDate로 사용
 			Date entryDate = entry.getPublishedDate() != null ? entry.getPublishedDate() : entry.getUpdatedDate();
 
-			if (entryDate != null && entryDate.after(date))
+			if (entryDate != null && (entryDate.after(date) || entryDate.equals(date)))
 				articles.add(articleFactory.createArticle(source, entry));
 		}
 
