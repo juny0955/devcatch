@@ -5,8 +5,6 @@ import java.net.URL;
 
 import org.springframework.stereotype.Service;
 
-import com.davcatch.devcatch.exception.CustomException;
-import com.davcatch.devcatch.exception.ErrorCode;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
@@ -25,7 +23,7 @@ public class RssReader {
 	 * @param feedUrl Feed URL
 	 * @return Feed
 	 */
-	public SyndFeed reader(String feedUrl) throws CustomException {
+	public SyndFeed reader(String feedUrl) {
 		log.debug("RSS FEED 수집 시작 : {}", feedUrl);
 		try {
 			URL url = new URL(feedUrl);
@@ -36,7 +34,7 @@ public class RssReader {
 			return feed;
 		} catch (FeedException | IOException e) {
 			log.error("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
-			throw new CustomException(ErrorCode.RSS_PARSE_ERROR);
+			return null;
 		}
 	}
 }
