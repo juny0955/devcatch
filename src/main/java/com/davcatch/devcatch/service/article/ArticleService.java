@@ -1,5 +1,6 @@
 package com.davcatch.devcatch.service.article;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -30,5 +31,9 @@ public class ArticleService {
 
 	public Optional<Article> findByLastPublishedArticle(Long sourceId) {
 		return articleRepository.findLastPublishedArticle(sourceId);
+	}
+
+	public List<Article> findSendArticles() {
+		return articleRepository.findSendArticles();
 	}
 }

@@ -1,5 +1,7 @@
 package com.davcatch.devcatch.service.mail;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -30,7 +32,7 @@ public class MailService {
 	 * @throws CustomException
 	 */
 	@Async("mailTaskExecutor")
-	public void sendMail(String email, MailTemplate template, Context context) throws CustomException {
+	public CompletableFuture<Void> sendMail(String email, MailTemplate template, Context context) {
 		try {
 			MimeMessage message = javaMailSender.createMimeMessage();
 			MimeMessageHelper messageHelper = new MimeMessageHelper(message, true, "UTF-8");
@@ -42,8 +44,10 @@ public class MailService {
 			messageHelper.setText(htmlContent, true);
 
 			javaMailSender.send(message);
+			return CompletableFuture.completedFuture(null);
 		} catch (Exception e) {
 			log.error("{} 메일 발송중 에러 발생", email);
+			return CompletableFuture.failedFuture(new CustomException(ErrorCode.MAIL_SEND_FAIL));
 		}
 	}
 }
