@@ -38,19 +38,19 @@ public class GptSummaryService {
 		GptResponse response;
 
 		try {
-			GptRequest request = GptRequest.create(model, content, sysPrompt);
+			GptRequest request = GptRequest.create(content, model, sysPrompt);
 			response = restTemplate.postForObject(URL, request, GptResponse.class);
 		} catch (Exception e) {
 			log.info("GPT API 요청중 에러 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.GPT_REQUEST_ERROR);
 		}
 
-		if (response != null) {
-			log.info("GPT API 요청 정상 종료");
-			return response;
+		if (response == null) {
+			log.info("GPT API 응답 BODY 없음");
+			throw new CustomException(ErrorCode.GPT_REQUEST_BODY_NULL);
 		}
 
-		log.info("GPT API 응답 BODY 없음");
-		throw new CustomException(ErrorCode.GPT_REQUEST_BODY_NULL);
+		log.info("GPT API 요청 정상 종료");
+		return response;
 	}
 }

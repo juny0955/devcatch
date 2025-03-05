@@ -9,7 +9,6 @@ import java.util.Optional;
 
 import com.davcatch.devcatch.domain.Article;
 import com.davcatch.devcatch.domain.Source;
-import com.davcatch.devcatch.exception.CustomException;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 
@@ -22,9 +21,8 @@ public abstract class ArticleSchedulerService {
 
 	/** 새로운 Article 생성
 	 * RSS 파싱 -> GPT 요약 -> DB 저장
-	 * @throws CustomException
 	 */
-	abstract public void createNewArticles() throws CustomException;
+	abstract public void createNewArticles();
 
 	/** Article 필터
 	 * 해당 Source에 해당하는 데이터가 없을 시 어제 날짜 기준 이후 데이터 변환

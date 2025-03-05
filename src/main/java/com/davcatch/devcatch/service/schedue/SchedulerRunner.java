@@ -29,8 +29,8 @@ public class SchedulerRunner {
 		for (ArticleSchedulerService service : articleSchedulerServices) {
 			try {
 				service.createNewArticles();
-			} catch (CustomException e) {
-				log.error("스케줄러 실행 중 에러 발생: {}", e.getErrorCode());
+			} catch (Exception e) {
+				log.error("스케줄러 실행 중 에러 발생: {}", e.getMessage());
 			}
 		}
 		log.info("새로운 Article 생성 스케줄러 종료");
