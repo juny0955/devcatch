@@ -29,7 +29,7 @@ public class MailService {
 	 * @param context thymeleaf attribute
 	 * @throws CustomException
 	 */
-	@Async
+	@Async("mailTaskExecutor")
 	public void sendMail(String email, MailTemplate template, Context context) throws CustomException {
 		try {
 			MimeMessage message = javaMailSender.createMimeMessage();
@@ -43,7 +43,7 @@ public class MailService {
 
 			javaMailSender.send(message);
 		} catch (Exception e) {
-			throw new CustomException(ErrorCode.SERVER_ERROR);
+			log.error("{} 메일 발송중 에러 발생", email);
 		}
 	}
 }
