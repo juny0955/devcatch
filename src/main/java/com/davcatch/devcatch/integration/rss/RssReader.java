@@ -2,6 +2,7 @@ package com.davcatch.devcatch.integration.rss;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
@@ -23,7 +24,7 @@ public class RssReader {
 	 * @param feedUrl Feed URL
 	 * @return Feed
 	 */
-	public SyndFeed reader(String feedUrl) {
+	public Optional<SyndFeed> reader(String feedUrl) {
 		log.debug("RSS FEED 수집 시작 : {}", feedUrl);
 		try {
 			URL url = new URL(feedUrl);
@@ -31,7 +32,7 @@ public class RssReader {
 			SyndFeed feed = syndFeedInput.build(new XmlReader(url));
 
 			log.debug("RSS FEED 정상 수집 URL : {}", feedUrl);
-			return feed;
+			return Optional.of(feed);
 		} catch (FeedException | IOException e) {
 			log.error("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
 			return null;

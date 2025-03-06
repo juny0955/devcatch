@@ -37,7 +37,11 @@ public class ArticleFromRssScheduler extends ArticleSchedulerService{
 			log.info("[{}] Article 생성 스케줄러 시작", source.getName());
 
 			// rss feed 내용 가져오기
-			SyndFeed feed = rssReader.reader(source.getFeedUrl());
+			Optional<SyndFeed> optionalFeed = rssReader.reader(source.getFeedUrl());
+			if (optionalFeed.isEmpty())
+				continue;
+
+			SyndFeed feed = optionalFeed.get();
 
 			// published_at이 마지막 Article 불러오기
 			Optional<Article> lastPublishedArticle = articleService.findByLastPublishedArticle(source.getId());
