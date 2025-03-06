@@ -37,6 +37,7 @@ public class ArticleNotificationService {
 		List<Member> members = memberRepository.findAll();
 
 		Context context = new Context();
+		context.setVariable("subject", MailTemplate.SEND_ARTICLE.getTitle());
 		context.setVariable("articles", articles);
 
 		List<CompletableFuture<Void>> futures = new ArrayList<>();

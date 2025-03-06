@@ -3,117 +3,28 @@
 <head>
     <meta charset="UTF-8">
     <title>새로운 아티클 알림</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f7f7;
-            margin: 0;
-            padding: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: #fff;
-            padding: 20px;
-            border: 1px solid #eaeaea;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        /* 헤더 영역에 그라데이션 포인트 색상 사용 */
-        .header {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #fff;
-            padding: 20px;
-            text-align: center;
-        }
-        h1 {
-            margin: 0;
-            font-size: 1.75rem;
-        }
-        .content {
-            padding: 20px;
-        }
-        .article {
-            border-bottom: 1px solid #ddd;
-            padding: 15px 0;
-        }
-        .article:last-child {
-            border-bottom: none;
-        }
-        .article-title {
-            font-size: 1.25rem;
-            color: #667eea;
-            margin: 0 0 8px;
-        }
-        .article-summary {
-            color: #555;
-            margin: 8px 0;
-        }
-        .article-date {
-            font-size: 0.85rem;
-            color: #999;
-        }
-        .read-more {
-            display: inline-block;
-            margin-top: 8px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        .read-more:hover {
-            text-decoration: underline;
-        }
-        .footer {
-            text-align: center;
-            font-size: 0.9rem;
-            color: #777;
-            margin-top: 20px;
-            padding: 10px 0;
-            border-top: 1px solid #eaeaea;
-        }
-        /* 구독 취소 버튼 스타일 개선 */
-        .btn-leave {
-            display: inline-block;
-            margin-top: 10px;
-            padding: 10px 20px;
-            font-size: 1rem;
-            font-weight: bold;
-            color: #fff;
-            background: linear-gradient(135deg, #ff4b5c, #ff1e56);
-            text-decoration: none;
-            border: none;
-            border-radius: 30px;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            cursor: pointer;
-        }
-        .btn-leave:hover {
-            background: linear-gradient(135deg, #ff1e56, #ff4b5c);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.25);
-        }
-    </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <h1 th:text="${subject}">새로운 아티클 알림</h1>
+<body style="font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px;">
+<div class="container" style="max-width: 600px; margin: auto; background: #fff; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden;">
+    <div class="header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 20px; text-align: center;">
+        <h1 th:text="${subject}" style="margin: 0; font-size: 1.75rem;">새로운 아티클 알림</h1>
     </div>
-    <div class="content">
+    <div class="content" style="padding: 20px;">
         <p>새로운 아티클이 업로드되었습니다. 아래 내용을 확인해보세요.</p>
         <div th:if="${articles}" th:each="article : ${articles}">
-            <div class="article">
-                <h2 class="article-title" th:text="${article.title}">아티클 제목</h2>
-                <p class="article-summary" th:text="${article.summary}">아티클 요약 내용</p>
-                <p class="article-date" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}">발행일</p>
-                <a class="read-more" th:href="${article.link}" target="_blank">자세히 보기</a>
+            <div class="article" style="border-bottom: 1px solid #ddd; padding: 15px 0;">
+                <h2 class="article-title" th:text="${article.title}" style="font-size: 1.25rem; color: #667eea; margin: 0 0 8px;">아티클 제목</h2>
+                <p class="article-summary" th:text="${article.summary}" style="color: #555; margin: 8px 0;">아티클 요약 내용</p>
+                <p class="article-date" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}" style="font-size: 0.85rem; color: #999;">발행일</p>
+                <a class="read-more" th:href="${article.link}" target="_blank" style="display: inline-block; margin-top: 8px; color: #667eea; text-decoration: none; font-weight: bold;">자세히 보기</a>
             </div>
         </div>
     </div>
-    <div class="footer">
+    <div class="footer" style="text-align: center; font-size: 0.9rem; color: #777; margin-top: 20px; padding: 10px 0; border-top: 1px solid #eaeaea;">
         <p>이 메일은 자동 발송되었습니다.</p>
         <form th:action="@{https://devcatch.site/devcatch/reg/leave}" th:method="post">
             <input type="hidden" name="email" th:value="${email}">
-            <button class="btn-leave" type="submit">구독 취소</button>
+            <button class="btn-leave" type="submit" style="display: inline-block; margin-top: 10px; padding: 10px 20px; font-size: 1rem; font-weight: bold; color: #fff; background: linear-gradient(135deg, #ff4b5c, #ff1e56); text-decoration: none; border: none; border-radius: 30px; transition: all 0.3s ease; box-shadow: 0 4px 10px rgba(0,0,0,0.15); cursor: pointer;">구독 취소</button>
         </form>
     </div>
 </div>
