@@ -35,7 +35,7 @@ public class RssReader {
 			return Optional.of(feed);
 		} catch (FeedException | IOException e) {
 			log.error("RSS FEED 수집중 오류 발생 : {}", e.getMessage());
-			return null;
+			return Optional.empty();
 		}
 	}
 }
