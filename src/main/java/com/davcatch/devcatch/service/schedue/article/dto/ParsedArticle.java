@@ -18,8 +18,11 @@ public class ParsedArticle {
 	private Date publishedAt;
 
 	public static ParsedArticle of(String content, SyndEntry entry) {
-		// 당근의 경우 Link가 너무 길어 Uri로 대체
-		String link = entry.getLink().contains("daangn") ? entry.getUri() : entry.getLink();
+		String link = entry.getLink();
+
+		// 당근, 티빙의 경우 Link가 너무 길어 Uri로 대체
+		if (entry.getLink().contains("daangn") || entry.getLink().contains("tving-team"))
+			link = entry.getUri();
 
 		return ParsedArticle.builder()
 			.title(entry.getTitle())
