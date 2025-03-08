@@ -20,15 +20,19 @@ public class Source extends BaseTime{
     @Column(name = "source_id")
     private Long id;
 
-    @Column(name = "name", nullable = false)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
-    @Column(name = "main_url", nullable = false)
+    @Column(name = "main_url", nullable = false, unique = true)
     private String mainUrl;
 
-    @Column(name = "feed_url")
+    @Column(name = "feed_url", unique = true)
     private String feedUrl;
 
     @Column(name = "is_active", nullable = false)
     private boolean isActive = true;
+
+    @Column(name = "parse_method", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private ParseMethod parseMethod;
 }

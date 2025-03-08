@@ -36,4 +36,8 @@ public class ArticleService {
 	public List<Article> findSendArticles() {
 		return articleRepository.findSendArticles();
 	}
+
+	public boolean existsLink(String link) {
+		return articleRepository.existsByLink(link);
+	}
 }

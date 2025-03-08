@@ -20,4 +20,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	@Query("select a from Article a "
 		+ "where a.isSent = false ")
 	List<Article> findSendArticles();
+
+	boolean existsByLink(String link);
 }

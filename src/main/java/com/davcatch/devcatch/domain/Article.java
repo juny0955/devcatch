@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 
 import com.davcatch.devcatch.integration.gpt.response.GptResponse;
-import com.rometools.rome.feed.synd.SyndEntry;
+import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
 /**
  * 아티클 정보 테이블
@@ -46,23 +46,13 @@ public class Article {
     @Column(name = "published_at", nullable = false)
     private Date publishedAt;
 
-    public static Article of(Source source, SyndEntry entry, GptResponse response) {
+    public static Article of(Source source, ParsedArticle parsedArticle, GptResponse response) {
         return Article.builder()
             .source(source)
-            .title(entry.getTitle())
-            .link(entry.getUri())
+            .title(parsedArticle.getTitle())
+            .link(parsedArticle.getLink())
             .summary(response.getChoices().get(0).getMessage().getContent())
-            .publishedAt(entry.getPublishedDate() != null ? entry.getPublishedDate() : entry.getUpdatedDate())
-            .build();
-    }
-
-    public static Article of(Source source, SyndEntry entry) {
-        return Article.builder()
-            .source(source)
-            .title(entry.getTitle())
-            .link(entry.getLink())
-            .summary(entry.getDescription().getValue())
-            .publishedAt(entry.getPublishedDate())
+            .publishedAt(parsedArticle.getPublishedAt())
             .build();
     }
 

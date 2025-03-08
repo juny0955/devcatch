@@ -8,7 +8,7 @@ import com.davcatch.devcatch.domain.Article;
 import com.davcatch.devcatch.domain.Source;
 import com.davcatch.devcatch.integration.gpt.GptSummaryService;
 import com.davcatch.devcatch.integration.gpt.response.GptResponse;
-import com.rometools.rome.feed.synd.SyndEntry;
+import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,20 +25,13 @@ public class ArticleFactory {
 	 * GPT 요약 서비스를 활용하여 요약 정보를 포함시킨다.
 	 *
 	 * @param source 해당 Source
-	 * @param entry 필터링된 feed
 	 */
-	public Article createArticle(Source source, SyndEntry entry) {
+	public Article createArticle(Source source, ParsedArticle parsedArticle) {
 		try {
-			/*
-			카카오 페이, 마켓 컬리, 라인은 Feed에 본문내용 제공 X
-			rss feed에서 제공하는 description을 그대로 사용
-			 */
-			if (source.getName().equals("kakao-pay") || source.getName().equals("kurly") || source.getName().equals("line"))
-				return Article.of(source, entry);
+			String clearContent = removeHtmlTags(parsedArticle.getContent());
+			GptResponse response = gptSummaryService.getSummary(clearContent);
 
-			String content = removeHtmlTags(entry.getContents().get(0).getValue());
-			GptResponse response = gptSummaryService.getSummary(content);
-			return Article.of(source, entry, response);
+			return Article.of(source, parsedArticle, response);
 		} catch (Exception e) {
 			log.error("Article 생성 중 오류 발생: {}", e.getMessage());
 			return null;

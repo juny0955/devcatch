@@ -1,11 +1,8 @@
 package com.davcatch.devcatch.service.schedue;
 
-import java.util.List;
-
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.service.schedue.article.ArticleSchedulerService;
 import com.davcatch.devcatch.service.schedue.notification.ArticleNotificationService;
 
@@ -17,23 +14,23 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SchedulerRunner {
 
-	private final List<ArticleSchedulerService> articleSchedulerServices;
+	private final ArticleSchedulerService articleSchedulerServices;
 	private final ArticleNotificationService articleNotificationService;
 
 	/**
 	 * 매일 자정 Article 생성 스케줄러 시작
 	 */
 	@Scheduled(cron = "0 0 0 * * ?")
-	public void runAllArticleScheduler() {
-		log.info("새로운 Article 생성 스케줄러 시작");
-		for (ArticleSchedulerService service : articleSchedulerServices) {
-			try {
-				service.createNewArticles();
-			} catch (Exception e) {
-				log.error("스케줄러 실행 중 에러 발생: {}", e.getMessage());
-			}
+	public void runCreateNewArticlesScheduler() {
+		log.info("==========새로운 Article 생성 스케줄러 시작==========");
+
+		try {
+			articleSchedulerServices.createNewArticle();
+		} catch (Exception e) {
+			log.error("스케줄러 실행 중 에러 발생: {}", e.getMessage());
 		}
-		log.info("새로운 Article 생성 스케줄러 종료");
+
+		log.info("==========새로운 Article 생성 스케줄러 종료==========");
 	}
 
 	/**
