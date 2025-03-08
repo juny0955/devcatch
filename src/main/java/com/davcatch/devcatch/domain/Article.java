@@ -34,7 +34,7 @@ public class Article {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "link", nullable = false)
+    @Column(name = "link", nullable = false, unique = true)
     private String link;
 
     @Column(name = "summary", nullable = false)

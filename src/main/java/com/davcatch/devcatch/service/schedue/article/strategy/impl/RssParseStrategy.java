@@ -14,28 +14,31 @@ import com.davcatch.devcatch.integration.rss.RssReader;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractor;
 import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractorFactory;
-import com.davcatch.devcatch.service.schedue.article.strategy.ArticleParseStrategy;
+import com.davcatch.devcatch.service.schedue.article.strategy.AbstractArticleStrategy;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 
-import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
-@RequiredArgsConstructor
-public class RssParseStrategy implements ArticleParseStrategy {
+@Slf4j
+public class RssParseStrategy extends AbstractArticleStrategy {
 
-	private final RssReader rssReader;
-	private final ContentExtractorFactory contentExtractorFactory;
+	public RssParseStrategy(RssReader rssReader, ContentExtractorFactory contentExtractorFactory) {
+		super(rssReader, contentExtractorFactory);
+	}
 
 	@Override
 	public List<ParsedArticle> process(Source source) throws CustomException {
-		Optional<SyndFeed> optionalFeed = rssReader.reader(source.getFeedUrl());
-		if (optionalFeed.isEmpty())
+		Optional<SyndFeed> optionalFeed = getRssFeed(source);
+		if (optionalFeed.isEmpty()) {
+			log.warn("[{}] RSS 피드가 존재하지 않습니다.", source.getName());
 			return Collections.emptyList();
+		}
 
 		List<ParsedArticle> parsedArticles = new ArrayList<>();
 		for (SyndEntry entry : optionalFeed.get().getEntries()) {
-			ContentExtractor extractor = contentExtractorFactory.getExtractor(source.getParseMethod());
+			ContentExtractor extractor = getContentExtractor(source.getParseMethod());
 			String content = extractor.extractContent(entry, null);
 
 			parsedArticles.add(ParsedArticle.of(content, entry));

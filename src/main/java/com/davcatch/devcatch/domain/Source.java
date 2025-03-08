@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Source extends BaseTime{
+public class Source extends BaseTime {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
