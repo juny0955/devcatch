@@ -21,7 +21,7 @@ public class ParsedArticle {
 		String link = entry.getLink();
 
 		// 당근, 티빙의 경우 Link가 너무 길어 Uri로 대체
-		if (entry.getLink().contains("daangn") || entry.getLink().contains("tving-team"))
+		if (link.contains("daangn") || link.contains("tving-team") || link.contains("pet-friends"))
 			link = entry.getUri();
 
 		return ParsedArticle.builder()
