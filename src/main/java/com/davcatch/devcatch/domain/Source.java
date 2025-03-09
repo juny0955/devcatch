@@ -30,7 +30,10 @@ public class Source extends BaseTime {
     private String feedUrl;
 
     @Column(name = "is_active", nullable = false)
-    private boolean isActive = true;
+    private boolean isActive;
+
+    @Column(name = "use_link", nullable = false)
+    private boolean useLink;
 
     @Column(name = "parse_method", nullable = false)
     @Enumerated(EnumType.STRING)

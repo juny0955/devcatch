@@ -41,7 +41,7 @@ public class RssParseStrategy extends AbstractArticleStrategy {
 			ContentExtractor extractor = getContentExtractor(source.getParseMethod());
 			String content = extractor.extractContent(entry, null);
 
-			parsedArticles.add(ParsedArticle.of(content, entry));
+			parsedArticles.add(ParsedArticle.of(content, entry, source.isUseLink()));
 		}
 
 		return parsedArticles;
