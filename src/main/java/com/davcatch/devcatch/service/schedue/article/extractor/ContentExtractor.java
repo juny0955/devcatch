@@ -7,6 +7,12 @@ import com.rometools.rome.feed.synd.SyndEntry;
 
 public interface ContentExtractor {
 
+	/**
+	 * 본문 내용 파싱
+	 * @param entry RSS 파싱 시
+	 * @param document 크롤링 시
+	 * @return 본문 내용 (HTML 태그 제거)
+	 */
 	String extractContent(SyndEntry entry, Document document);
 
 	boolean supports(ParseMethod parseMethod);
