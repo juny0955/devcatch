@@ -56,7 +56,7 @@ public class CrawlingParseStrategy extends AbstractArticleStrategy {
 			ContentExtractor extractor = getContentExtractor(source.getParseMethod());
 			String content = extractor.extractContent(null, document);
 
-			parsedArticles.add(ParsedArticle.of(content, entry));
+			parsedArticles.add(ParsedArticle.of(content, entry, source.isUseLink()));
 		}
 
 		if (parsedArticles.isEmpty())
