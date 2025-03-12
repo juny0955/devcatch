@@ -1,5 +1,7 @@
 package com.davcatch.devcatch.service.schedue.article.extractor.impl;
 
+import java.util.Set;
+
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,7 @@ public class CawlingBodyExtractor implements ContentExtractor {
 	}
 
 	@Override
-	public boolean supports(ParseMethod parseMethod) {
-		return parseMethod == ParseMethod.CRAWLING;
+	public Set<ParseMethod> getSupportedParseMethod() {
+		return Set.of(ParseMethod.CRAWLING);
 	}
 }

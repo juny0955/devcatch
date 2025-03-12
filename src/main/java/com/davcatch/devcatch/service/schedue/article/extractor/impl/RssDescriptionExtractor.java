@@ -1,5 +1,7 @@
 package com.davcatch.devcatch.service.schedue.article.extractor.impl;
 
+import java.util.Set;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
@@ -18,7 +20,7 @@ public class RssDescriptionExtractor implements ContentExtractor {
 	}
 
 	@Override
-	public boolean supports(ParseMethod parseMethod) {
-		return parseMethod == ParseMethod.RSS_DESCRIPTION;
+	public Set<ParseMethod> getSupportedParseMethod() {
+		return Set.of(ParseMethod.RSS_DESCRIPTION);
 	}
 }

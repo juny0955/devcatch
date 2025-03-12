@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.service.schedue.article.strategy;
 
 import java.util.List;
+import java.util.Set;
 
 import com.davcatch.devcatch.domain.ParseMethod;
 import com.davcatch.devcatch.domain.Source;
@@ -17,5 +18,5 @@ public interface ArticleParseStrategy {
 	 */
 	List<ParsedArticle> process(Source source) throws CustomException;
 
-	boolean supports(ParseMethod parseMethod);
+	Set<ParseMethod> getSupportedParseMethods();
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.stereotype.Component;
 
@@ -30,15 +31,11 @@ public class RssParseStrategy extends AbstractArticleStrategy {
 
 	@Override
 	public List<ParsedArticle> process(Source source) throws CustomException {
-		Optional<SyndFeed> optionalFeed = getRssFeed(source);
-		if (optionalFeed.isEmpty()) {
-			log.warn("[{}] RSS 피드가 존재하지 않습니다.", source.getName());
-			return Collections.emptyList();
-		}
+		ContentExtractor extractor = getContentExtractor(source.getParseMethod());
+		List<SyndEntry> entries = getEntries(source);
 
 		List<ParsedArticle> parsedArticles = new ArrayList<>();
-		for (SyndEntry entry : optionalFeed.get().getEntries()) {
-			ContentExtractor extractor = getContentExtractor(source.getParseMethod());
+		for (SyndEntry entry : entries) {
 			String content = extractor.extractContent(entry, null);
 
 			parsedArticles.add(ParsedArticle.of(content, entry, source.isUseLink()));
@@ -48,7 +45,7 @@ public class RssParseStrategy extends AbstractArticleStrategy {
 	}
 
 	@Override
-	public boolean supports(ParseMethod parseMethod) {
-		return parseMethod == ParseMethod.RSS_CONTENT || parseMethod == ParseMethod.RSS_DESCRIPTION;
+	public Set<ParseMethod> getSupportedParseMethods() {
+		return Set.of(ParseMethod.RSS_DESCRIPTION, ParseMethod.RSS_CONTENT);
 	}
 }

@@ -12,7 +12,6 @@ public class Messages {
 	private String role;
 	private String content;
 
-
 	public static List<Messages> from(String content, String sysPrompt) {
 		return List.of(systemRequestFrom(sysPrompt), userRequestFrom(content));
 	}

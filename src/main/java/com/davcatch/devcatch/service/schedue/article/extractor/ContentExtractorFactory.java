@@ -1,6 +1,8 @@
 package com.davcatch.devcatch.service.schedue.article.extractor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,7 @@ import com.davcatch.devcatch.domain.ParseMethod;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -15,11 +18,24 @@ import lombok.RequiredArgsConstructor;
 public class ContentExtractorFactory {
 
 	private final List<ContentExtractor> contentExtractors;
+	private Map<ParseMethod, ContentExtractor> extractorMap;
+
+	@PostConstruct
+	public void init() {
+		extractorMap = new HashMap<>();
+		for (ContentExtractor contentExtractor : contentExtractors) {
+			for (ParseMethod parseMethod : contentExtractor.getSupportedParseMethod())
+				extractorMap.put(parseMethod, contentExtractor);
+
+		}
+	}
 
 	public ContentExtractor getExtractor(ParseMethod parseMethod) throws CustomException {
-		return contentExtractors.stream()
-			.filter(contentExtractor -> contentExtractor.supports(parseMethod))
-			.findFirst()
-			.orElseThrow(() -> new CustomException(ErrorCode.NO_SUPPORTS_STRATEGY));
+		ContentExtractor contentExtractor = extractorMap.get(parseMethod);
+
+		if (contentExtractor == null)
+			throw new CustomException(ErrorCode.NO_SUPPORTS_STRATEGY);
+
+		return contentExtractor;
 	}
 }

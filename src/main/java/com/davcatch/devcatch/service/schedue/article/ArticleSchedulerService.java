@@ -9,10 +9,18 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.domain.Article;
+import com.davcatch.devcatch.domain.ArticleTag;
 import com.davcatch.devcatch.domain.Source;
+import com.davcatch.devcatch.domain.Tag;
+import com.davcatch.devcatch.domain.TagType;
 import com.davcatch.devcatch.exception.CustomException;
+import com.davcatch.devcatch.exception.ErrorCode;
+import com.davcatch.devcatch.integration.gpt.GptSummaryService;
+import com.davcatch.devcatch.integration.gpt.response.GptResponse;
 import com.davcatch.devcatch.repository.SourceRepository;
+import com.davcatch.devcatch.repository.TagRepository;
 import com.davcatch.devcatch.service.article.ArticleService;
+import com.davcatch.devcatch.service.schedue.article.dto.Content;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 import com.davcatch.devcatch.service.schedue.article.strategy.ArticleParseStrategy;
 import com.davcatch.devcatch.service.schedue.article.strategy.ArticleParseStrategyFactory;
@@ -25,10 +33,12 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ArticleSchedulerService {
 
-	private final ArticleFactory articleFactory;
 	private final SourceRepository sourceRepository;
 	private final ArticleService articleService;
 	private final ArticleParseStrategyFactory articleParseStrategyFactory;
+	private final GptSummaryService gptSummaryService;
+	private final TagRepository tagRepository;
+	private final ContentParser contentParser;
 
 	public void createNewArticle() {
 		List<Source> sources = sourceRepository.findAllByIsActiveTrue();
@@ -38,7 +48,6 @@ public class ArticleSchedulerService {
 
 			try {
 				ArticleParseStrategy articleParseStrategy = articleParseStrategyFactory.getStrategy(source.getParseMethod());
-
 				List<ParsedArticle> parsedArticles = articleParseStrategy.process(source);
 
 				if (parsedArticles.isEmpty()) {
@@ -51,7 +60,16 @@ public class ArticleSchedulerService {
 					if (!articleFilter(parsedArticle, source))
 						continue;
 
-					Article article = articleFactory.createArticle(source, parsedArticle);
+					GptResponse response = gptSummaryService.getSummary(parsedArticle.getContent());
+					Content content = contentParser.parseContent(response);
+
+					Article article = Article.of(source, parsedArticle, content.getSummary());
+					for (TagType tagType : content.getTag()) {
+						Tag tag = tagRepository.findByTagType(tagType).orElseThrow(() -> new CustomException(ErrorCode.TAG_NOT_FOUND));
+
+						article.addArticleTag(ArticleTag.of(article, tag));
+					}
+
 					articleService.save(article);
 					count++;
 				}
