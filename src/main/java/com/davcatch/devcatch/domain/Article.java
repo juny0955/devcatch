@@ -7,9 +7,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import com.davcatch.devcatch.integration.gpt.response.GptResponse;
+import com.davcatch.devcatch.service.schedue.article.dto.Content;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
 /**
@@ -41,18 +43,22 @@ public class Article {
     private String summary;
 
     @Column(name = "is_sent", nullable = false)
-    private boolean isSent = false;
+    private boolean isSent;
 
     @Column(name = "published_at", nullable = false)
     private Date publishedAt;
 
-    public static Article of(Source source, ParsedArticle parsedArticle, GptResponse response) {
+    @OneToMany(mappedBy = "article", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<ArticleTag> articleTags;
+
+    public static Article of(Source source, ParsedArticle parsedArticle, String summary) {
         return Article.builder()
             .source(source)
             .title(parsedArticle.getTitle())
             .link(parsedArticle.getLink())
-            .summary(response.getChoices().get(0).getMessage().getContent())
+            .summary(summary)
             .publishedAt(parsedArticle.getPublishedAt())
+            .articleTags(new ArrayList<>())
             .build();
     }
 
@@ -62,5 +68,13 @@ public class Article {
      */
     public void sendArticle() {
         this.isSent = true;
+    }
+
+    /**
+     * 아티클 태그 추가
+     * @param articleTag 아티클 태그
+     */
+    public void addArticleTag(ArticleTag articleTag) {
+        this.articleTags.add(articleTag);
     }
 }

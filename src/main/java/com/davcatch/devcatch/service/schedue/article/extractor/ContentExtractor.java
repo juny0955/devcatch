@@ -1,5 +1,7 @@
 package com.davcatch.devcatch.service.schedue.article.extractor;
 
+import java.util.Set;
+
 import org.jsoup.nodes.Document;
 
 import com.davcatch.devcatch.domain.ParseMethod;
@@ -15,5 +17,5 @@ public interface ContentExtractor {
 	 */
 	String extractContent(SyndEntry entry, Document document);
 
-	boolean supports(ParseMethod parseMethod);
+	Set<ParseMethod> getSupportedParseMethod();
 }
