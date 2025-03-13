@@ -13,12 +13,14 @@ public class VerificationInfo {
 
 	private String email;
 	private String name;
+	private String password;
 	private LocalDateTime createdAt;
 
 	public static VerificationInfo create(RegRequest request) {
 		return VerificationInfo.builder()
 			.email(request.getEmail())
 			.name(request.getName())
+			.password(request.getPassword())
 			.createdAt(LocalDateTime.now())
 			.build();
 	}

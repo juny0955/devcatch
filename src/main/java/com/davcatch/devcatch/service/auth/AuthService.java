@@ -2,6 +2,7 @@ package com.davcatch.devcatch.service.auth;
 
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
@@ -28,6 +29,7 @@ public class AuthService {
 	private final MemberService memberService;
 	private final MailService mailService;
 	private final VerifyCodeCacheService verifyCodeCacheService;
+	private final PasswordEncoder passwordEncoder;
 
 	/**
 	 * 가입전 인증 진행
@@ -67,7 +69,8 @@ public class AuthService {
 			throw new CustomException(ErrorCode.VERIFY_CODE_EXPIRED);
 		}
 
-		memberService.save(Member.from(verificationInfo));
+		String encodedPassword = passwordEncoder.encode(verificationInfo.getPassword());
+		memberService.save(Member.from(verificationInfo, encodedPassword));
 	}
 
 	@Transactional

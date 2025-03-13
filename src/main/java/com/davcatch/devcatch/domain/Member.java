@@ -1,5 +1,8 @@
 package com.davcatch.devcatch.domain;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.davcatch.devcatch.service.mail.VerificationInfo;
 
 import jakarta.persistence.*;
@@ -30,14 +33,22 @@ public class Member extends BaseTime {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "password", nullable = false)
+    private String password;
+
     @Column(name = "subscribe_all", nullable = false)
     private boolean subscribeAll;
 
-    public static Member from(VerificationInfo verificationInfo) {
+    @OneToMany(mappedBy = "member", orphanRemoval = true, cascade = CascadeType.ALL)
+    private List<MemberTag> memberTags = new ArrayList<>();
+
+    public static Member from(VerificationInfo verificationInfo, String encodedPassword) {
         return Member.builder()
             .name(verificationInfo.getName())
             .email(verificationInfo.getEmail())
+            .password(encodedPassword)
             .subscribeAll(true)
+            .memberTags(new ArrayList<>())
             .build();
     }
 }
