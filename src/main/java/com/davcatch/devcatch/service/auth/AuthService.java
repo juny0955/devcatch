@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.registration;
+package com.davcatch.devcatch.service.auth;
 
 import java.util.UUID;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.registration.RegRequest;
+import com.davcatch.devcatch.controller.auth.RegRequest;
 import com.davcatch.devcatch.domain.Member;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class RegService {
+public class AuthService {
 
 	private final MemberService memberService;
 	private final MailService mailService;

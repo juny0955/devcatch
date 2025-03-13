@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.registration;
+package com.davcatch.devcatch.controller.auth;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -10,17 +10,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
-import com.davcatch.devcatch.service.registration.RegService;
+import com.davcatch.devcatch.service.auth.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/devcatch/reg")
+@RequestMapping("/auth")
 public class RegController {
 
-	private final RegService regService;
+	private final AuthService authService;
 
 	@GetMapping(value = {"/", ""})
 	public String reg() {
@@ -35,7 +35,7 @@ public class RegController {
 		}
 
 		try {
-			regService.verify(request);
+			authService.verify(request);
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.EXISTS_EMAIL))
 				redirectAttributes.addFlashAttribute("error", "이미 가입된 이메일입니다.");
@@ -57,7 +57,7 @@ public class RegController {
 	public String doVerify(@RequestParam String verifyCode, RedirectAttributes redirectAttributes) {
 
 		try {
-			regService.register(verifyCode);
+			authService.register(verifyCode);
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_EXPIRED)) {
 				redirectAttributes.addFlashAttribute("error", "인증 시간이 만료되었습니다. 처음부터 다시 시도해주세요");
@@ -73,12 +73,17 @@ public class RegController {
 
 	@PostMapping("/leave")
 	public String doLeave(String email) {
-		regService.leave(email);
+		authService.leave(email);
 		return "redirect:/devcatch/reg/goodbye";
 	}
 
 	@GetMapping("/goodbye")
 	public String goodbye() {
 		return "reg/leave";
+	}
+
+	@GetMapping("/login")
+	public String login() {
+		return "auth/login";
 	}
 }

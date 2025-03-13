@@ -2,7 +2,7 @@ package com.davcatch.devcatch.service.mail;
 
 import java.time.LocalDateTime;
 
-import com.davcatch.devcatch.controller.registration.RegRequest;
+import com.davcatch.devcatch.controller.auth.RegRequest;
 
 import lombok.Builder;
 import lombok.Data;

@@ -22,6 +22,7 @@ public class SecurityConfig {
 			)
 			.formLogin(login -> login
 				.loginPage("/auth/login")
+				.loginProcessingUrl("/auth/login")
 			)
 			.logout(logout -> logout
 				.logoutUrl("/auh/logout")

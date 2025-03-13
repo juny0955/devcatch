@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>로그인</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        /* 공통 스타일 */
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container-custom {
+            max-width: 400px;
+            margin: auto;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+        .card-header {
+            background-color: #fff;
+            color: #333;
+            font-size: 1.75rem;
+            font-weight: bold;
+            text-align: center;
+            padding: 20px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .card-body {
+            background: #fff;
+            padding: 20px;
+        }
+        .btn-primary {
+            background-color: #667eea;
+            border-color: #667eea;
+        }
+        .btn-primary:hover {
+            background-color: #5a67d8;
+            border-color: #5a67d8;
+        }
+        @media (max-width: 767.98px) {
+            .container-custom {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container container-custom d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card w-100">
+        <div class="card-header">
+            로그인
+        </div>
+        <div class="card-body">
+            <!-- Spring Security의 기본 로그인 처리 URL은 /login 이지만, 여기서는 /auth/login으로 지정 -->
+            <form th:action="@{/auth/login}" method="post">
+                <div class="form-group">
+                    <label for="username">이메일</label>
+                    <input type="text" class="form-control" id="username" name="username" placeholder="이메일을 입력하세요" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+                </div>
+                <button type="submit" class="btn btn-primary btn-block">로그인</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (옵션) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
