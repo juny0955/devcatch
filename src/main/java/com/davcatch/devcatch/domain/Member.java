@@ -30,10 +30,14 @@ public class Member extends BaseTime {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @Column(name = "subscribe_all", nullable = false)
+    private boolean subscribeAll;
+
     public static Member from(VerificationInfo verificationInfo) {
         return Member.builder()
             .name(verificationInfo.getName())
             .email(verificationInfo.getEmail())
+            .subscribeAll(true)
             .build();
     }
 }
