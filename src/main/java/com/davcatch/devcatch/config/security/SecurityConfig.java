@@ -9,9 +9,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import lombok.RequiredArgsConstructor;
+
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+
+	private final CustomUserDetailsService customUserDetailsService;
 
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -27,6 +32,7 @@ public class SecurityConfig {
 			.logout(logout -> logout
 				.logoutUrl("/auh/logout")
 			)
+			.userDetailsService(customUserDetailsService)
 			.build();
 	}
 

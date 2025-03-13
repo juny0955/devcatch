@@ -18,20 +18,20 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth")
-public class RegController {
+public class AuthController {
 
 	private final AuthService authService;
 
 	@GetMapping(value = {"/", ""})
 	public String reg() {
-		return "reg/regEmail";
+		return "reg/signup";
 	}
 
 	@PostMapping(value = {"/", ""})
 	public String doReg(@Valid RegRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-			return "redirect:/devcatch/reg";
+			return "redirect:/auth";
 		}
 
 		try {
@@ -42,10 +42,10 @@ public class RegController {
 			else if (e.getErrorCode().equals(ErrorCode.SERVER_ERROR))
 				redirectAttributes.addFlashAttribute("error", "서버 오류로인해 잠시후 다시 시도해주세요.");
 
-			return "redirect:/devcatch/reg";
+			return "redirect:/auth";
 		}
 
-		return "redirect:/devcatch/reg/verifyCode";
+		return "redirect:/auth/verifyCode";
 	}
 
 	@GetMapping("/verifyCode")
@@ -61,11 +61,11 @@ public class RegController {
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_EXPIRED)) {
 				redirectAttributes.addFlashAttribute("error", "인증 시간이 만료되었습니다. 처음부터 다시 시도해주세요");
-				return "redirect:/devcatch/reg/";
+				return "redirect:/auth";
 			} else if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_WRONG))
 				redirectAttributes.addFlashAttribute("error", "잘못된 인증코드입니다");
 
-			return "redirect:/devcatch/reg/verifyCode";
+			return "redirect:/auth/verifyCode";
 		}
 
 		return "reg/welcome";
@@ -74,7 +74,7 @@ public class RegController {
 	@PostMapping("/leave")
 	public String doLeave(String email) {
 		authService.leave(email);
-		return "redirect:/devcatch/reg/goodbye";
+		return "redirect:/auth/goodbye";
 	}
 
 	@GetMapping("/goodbye")
