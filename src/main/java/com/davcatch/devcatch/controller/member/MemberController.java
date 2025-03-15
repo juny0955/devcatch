@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.davcatch.devcatch.domain.Member;
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.member.Member;
+import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.service.member.MemberService;

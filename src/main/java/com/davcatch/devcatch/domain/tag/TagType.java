@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.domain;
+package com.davcatch.devcatch.domain.tag;
 
 public enum TagType {
 	BACKEND,

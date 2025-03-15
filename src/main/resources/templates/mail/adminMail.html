@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${subject}">메일 제목</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body style="font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px; color: #333;">
+<div class="container" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px;">
+    <div class="header" style="text-align: center; margin-bottom: 20px;">
+        <h1 th:text="${subject}" style="margin: 0; font-size: 1.75rem; color: #667eea;">메일 제목</h1>
+    </div>
+    <div class="content" style="font-size: 1rem; line-height: 1.5;">
+        <p th:text="${content}">여기에 메일 내용이 표시됩니다.</p>
+    </div>
+    <div class="footer" style="text-align: center; font-size: 0.85rem; color: #777; margin-top: 20px;">
+        <p>이 메일은 자동 발송되었습니다.</p>
+    </div>
+</div>
+</body>
+</html>

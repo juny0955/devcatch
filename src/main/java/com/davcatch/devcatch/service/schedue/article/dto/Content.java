@@ -3,7 +3,7 @@ package com.davcatch.devcatch.service.schedue.article.dto;
 import java.util.List;
 import java.util.Set;
 
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.tag.TagType;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.davcatch.devcatch.domain.Tag;
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.tag.Tag;
+import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.repository.TagRepository;
 
 import lombok.RequiredArgsConstructor;

@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-import com.davcatch.devcatch.domain.Tag;
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.tag.Tag;
+import com.davcatch.devcatch.domain.tag.TagType;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 

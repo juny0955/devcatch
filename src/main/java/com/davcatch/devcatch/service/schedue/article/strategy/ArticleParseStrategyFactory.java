@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
-import com.davcatch.devcatch.domain.ParseMethod;
+import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 

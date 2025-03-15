@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.domain;
+package com.davcatch.devcatch.domain.tag;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

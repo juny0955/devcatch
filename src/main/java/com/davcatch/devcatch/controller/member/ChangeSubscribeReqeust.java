@@ -2,7 +2,7 @@ package com.davcatch.devcatch.controller.member;
 
 import java.util.List;
 
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.tag.TagType;
 
 import lombok.Data;
 

@@ -3,8 +3,8 @@ package com.davcatch.devcatch.service.schedue.article.strategy;
 import java.util.List;
 import java.util.Set;
 
-import com.davcatch.devcatch.domain.ParseMethod;
-import com.davcatch.devcatch.domain.Source;
+import com.davcatch.devcatch.domain.source.ParseMethod;
+import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
