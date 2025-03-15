@@ -46,6 +46,14 @@
             background-color: #5a67d8;
             border-color: #5a67d8;
         }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
         @media (max-width: 767.98px) {
             .container-custom {
                 max-width: 100%;
@@ -71,6 +79,10 @@
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">로그인</button>
             </form>
+            <!-- 회원가입 버튼 추가 -->
+            <div class="mt-3">
+                <a th:href="@{/auth/signup}" class="btn btn-secondary btn-block">회원가입</a>
+            </div>
         </div>
     </div>
 </div>

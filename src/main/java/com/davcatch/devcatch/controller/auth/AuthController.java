@@ -22,12 +22,12 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	@GetMapping(value = {"/signup"})
+	@GetMapping(value = "/signup")
 	public String reg() {
 		return "auth/signup";
 	}
 
-	@PostMapping(value = {"/signup"})
+	@PostMapping(value = "/signup")
 	public String doReg(@Valid RegRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
