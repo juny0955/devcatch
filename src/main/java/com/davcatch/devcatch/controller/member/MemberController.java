@@ -1,7 +1,6 @@
 package com.davcatch.devcatch.controller.member;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -10,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.davcatch.devcatch.domain.Member;
@@ -18,8 +16,8 @@ import com.davcatch.devcatch.domain.TagType;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.service.member.MemberService;
-import com.davcatch.devcatch.service.tag.TagService;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -28,17 +26,29 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 
 	private final MemberService memberService;
-	private final TagService tagService;
+
+	@GetMapping("/mypage")
+	public String mypage(@AuthenticationPrincipal Member member, Model model) {
+		model.addAttribute("member", member);
+		return "member/mypage";
+	}
 
 	@GetMapping("/setting/subscribe")
-	public String settingSubscribe(Model model, @AuthenticationPrincipal Member member) throws CustomException {
-		// try {
+	public String settingSubscribe(
+		@AuthenticationPrincipal Member member,
+		Model model,
+		RedirectAttributes redirectAttributes) {
+
+		try {
 			model.addAttribute("member", memberService.getMemberWithTag(member.getId()));
 			model.addAttribute("availableTags", Arrays.stream(TagType.values()).toList());
-			return "member/setting/subscribe";
-		// } catch (CustomException e) {
-		//
-		// }
+		} catch (CustomException e) {
+			if (e.getErrorCode() == ErrorCode.MEMBER_NOT_FOUND)
+				redirectAttributes.addFlashAttribute("error", "서버에서 회원정보를 찾지못하였습니다 문제가 지속된다면 관리자에게 문의하세요");
+			return "redirect:/member/mypage";
+		}
+
+		return "member/setting/subscribe";
 	}
 
 	@PostMapping("/setting/subscribe")
@@ -55,8 +65,41 @@ public class MemberController {
 				redirectAttributes.addFlashAttribute("error", "개별 구독을 선택하신경우 최소 1개 이상의 태그를 선택해주세요");
 			else if (e.getErrorCode() == ErrorCode.MEMBER_NOT_FOUND)
 				redirectAttributes.addFlashAttribute("error", "서버에서 회원정보를 찾지못하였습니다 문제가 지속된다면 관리자에게 문의하세요");
+
+			return "redirect:/member/setting/subscribe";
 		}
 
-		return "redirect:/member/setting/subscribe";
+		return "redirect:/member/mypage";
+	}
+
+	@GetMapping("/setting/password")
+	public String settingPassword() {
+		return "member/setting/password";
+	}
+
+	@PostMapping("/setting/password")
+	public String doSettingPassword(
+		@AuthenticationPrincipal Member member,
+		@Valid ChangePasswordRequest request,
+		BindingResult bindingResult,
+		RedirectAttributes redirectAttributes) {
+
+		if (bindingResult.hasErrors()) {
+			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+			return "redirect:/member/setting/password";
+		}
+
+		try {
+			memberService.changePassword(member.getId(), request);
+			redirectAttributes.addFlashAttribute("message", "비밀번호가 변경되었습니다");
+		} catch (CustomException e) {
+			if (e.getErrorCode().equals(ErrorCode.PASSWORD_IS_WRONG))
+				redirectAttributes.addFlashAttribute("error", "기존 비밀번호가 맞지 않습니다");
+			else if (e.getErrorCode().equals(ErrorCode.BAD_REQUEST))
+				redirectAttributes.addFlashAttribute("error", "새로운 비밀번호 입력값이 일치하지 않습니다");
+			return "redirect:/member/setting/password";
+		}
+
+		return "redirect:/member/mypage";
 	}
 }

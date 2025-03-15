@@ -2,9 +2,11 @@ package com.davcatch.devcatch.service.member;
 
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.davcatch.devcatch.controller.member.ChangePasswordRequest;
 import com.davcatch.devcatch.domain.Member;
 import com.davcatch.devcatch.domain.MemberTag;
 import com.davcatch.devcatch.domain.Tag;
@@ -25,6 +27,7 @@ public class MemberService {
 
 	private final MemberRepository memberRepository;
 	private final TagService tagService;
+	private final PasswordEncoder passwordEncoder;
 
 	/**
 	 * 이메일 중복 체크
@@ -118,5 +121,20 @@ public class MemberService {
 
 			member.addMemberTags(memberTags);
 		}
+	}
+
+	@Transactional
+	public void changePassword(Long memberId, ChangePasswordRequest request) throws CustomException {
+		Member member = memberRepository.findById(memberId)
+			.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+		if (!passwordEncoder.matches(request.getCurrentPassword(), member.getPassword()))
+			throw new CustomException(ErrorCode.PASSWORD_IS_WRONG);
+
+		if (!request.getNewPassword().equals(request.getConfirmNewPassword()))
+			throw new CustomException(ErrorCode.BAD_REQUEST);
+
+		String encodedPassword = passwordEncoder.encode(request.getNewPassword());
+		member.changePassword(encodedPassword);
 	}
 }

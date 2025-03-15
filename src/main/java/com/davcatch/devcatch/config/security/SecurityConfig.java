@@ -23,13 +23,13 @@ public class SecurityConfig {
 		return http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/member/setting/subscribe").authenticated()
+				.requestMatchers("/member/**").authenticated()
 				.anyRequest().permitAll()
 			)
 			.formLogin(login -> login
 				.loginPage("/auth/login")
 				.loginProcessingUrl("/auth/login")
-				.defaultSuccessUrl("/member/setting/subscribe", true) // 임시로 구독 설정 페이지 이동
+				.defaultSuccessUrl("/member/mypage", true)
 			)
 			.logout(logout -> logout
 				.logoutUrl("/auth/logout")

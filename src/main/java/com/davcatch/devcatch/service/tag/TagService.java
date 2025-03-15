@@ -18,10 +18,6 @@ public class TagService {
 
 	private final TagRepository tagRepository;
 
-	public List<Tag> getAllTags() {
-		return tagRepository.findAll();
-	}
-
 	public List<Tag> getInTags(List<TagType> tagTypes) {
 		return tagRepository.findInTagType(tagTypes);
 	}

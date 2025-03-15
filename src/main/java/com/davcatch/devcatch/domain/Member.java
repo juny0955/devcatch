@@ -64,6 +64,10 @@ public class Member extends BaseTime implements UserDetails {
         this.memberTags.clear();
     }
 
+    public void changePassword(String encodedPassword) {
+        this.password = encodedPassword;
+    }
+
     public void addMemberTags(List<MemberTag> memberTags) {
         this.memberTags.addAll(memberTags);
     }
