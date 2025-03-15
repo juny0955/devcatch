@@ -79,7 +79,7 @@
                 </div>
                 <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
                 <!-- 폼 시작 -->
-                <form th:action="@{/devcatch/reg}" method="post">
+                <form th:action="@{/auth/signup}" method="post">
                     <div class="form-group">
                         <label for="name">이름</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required>

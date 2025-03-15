@@ -60,7 +60,6 @@
             로그인
         </div>
         <div class="card-body">
-            <!-- Spring Security의 기본 로그인 처리 URL은 /login 이지만, 여기서는 /auth/login으로 지정 -->
             <form th:action="@{/auth/login}" method="post">
                 <div class="form-group">
                     <label for="username">이메일</label>

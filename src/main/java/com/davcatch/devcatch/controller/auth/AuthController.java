@@ -22,16 +22,16 @@ public class AuthController {
 
 	private final AuthService authService;
 
-	@GetMapping(value = {"/", ""})
+	@GetMapping(value = {"/signup"})
 	public String reg() {
-		return "reg/signup";
+		return "auth/signup";
 	}
 
-	@PostMapping(value = {"/", ""})
+	@PostMapping(value = {"/signup"})
 	public String doReg(@Valid RegRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-			return "redirect:/auth";
+			return "redirect:/auth/signup";
 		}
 
 		try {
@@ -42,18 +42,18 @@ public class AuthController {
 			else if (e.getErrorCode().equals(ErrorCode.SERVER_ERROR))
 				redirectAttributes.addFlashAttribute("error", "서버 오류로인해 잠시후 다시 시도해주세요.");
 
-			return "redirect:/auth";
+			return "redirect:/auth/signup";
 		}
 
-		return "redirect:/auth/verifyCode";
+		return "redirect:/auth/email/verify";
 	}
 
-	@GetMapping("/verifyCode")
+	@GetMapping("/email/verify")
 	public String verify() {
-		return "reg/inputVerifyCode";
+		return "auth/inputVerifyCode";
 	}
 
-	@PostMapping("/verify")
+	@PostMapping("/email/verify")
 	public String doVerify(@RequestParam String verifyCode, RedirectAttributes redirectAttributes) {
 
 		try {
@@ -61,14 +61,14 @@ public class AuthController {
 		} catch (CustomException e) {
 			if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_EXPIRED)) {
 				redirectAttributes.addFlashAttribute("error", "인증 시간이 만료되었습니다. 처음부터 다시 시도해주세요");
-				return "redirect:/auth";
+				return "redirect:/auth/signup";
 			} else if (e.getErrorCode().equals(ErrorCode.VERIFY_CODE_WRONG))
 				redirectAttributes.addFlashAttribute("error", "잘못된 인증코드입니다");
 
-			return "redirect:/auth/verifyCode";
+			return "redirect:/auth/email/verify";
 		}
 
-		return "reg/welcome";
+		return "auth/welcome";
 	}
 
 	@PostMapping("/leave")
@@ -79,7 +79,7 @@ public class AuthController {
 
 	@GetMapping("/goodbye")
 	public String goodbye() {
-		return "reg/leave";
+		return "auth/leave";
 	}
 
 	@GetMapping("/login")
