@@ -32,7 +32,7 @@ public class SecurityConfig {
 				.defaultSuccessUrl("/member/setting/subscribe", true) // 임시로 구독 설정 페이지 이동
 			)
 			.logout(logout -> logout
-				.logoutUrl("/auh/logout")
+				.logoutUrl("/auth/logout")
 			)
 			.userDetailsService(customUserDetailsService)
 			.build();
