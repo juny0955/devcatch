@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.domain;
+package com.davcatch.devcatch.domain.article;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.davcatch.devcatch.service.schedue.article.dto.Content;
+import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
 /**

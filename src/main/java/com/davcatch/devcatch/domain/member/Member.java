@@ -1,12 +1,14 @@
-package com.davcatch.devcatch.domain;
+package com.davcatch.devcatch.domain.member;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.davcatch.devcatch.domain.BaseTime;
 import com.davcatch.devcatch.service.mail.VerificationInfo;
 
 import jakarta.persistence.*;
@@ -43,6 +45,10 @@ public class Member extends BaseTime implements UserDetails {
     @Column(name = "subscribe_all", nullable = false)
     private boolean subscribeAll;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
+    private MemberRole role;
+
     @OneToMany(mappedBy = "member", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<MemberTag> memberTags = new ArrayList<>();
 
@@ -53,6 +59,7 @@ public class Member extends BaseTime implements UserDetails {
             .password(encodedPassword)
             .subscribeAll(true)
             .memberTags(new ArrayList<>())
+            .role(MemberRole.USER)
             .build();
     }
 
@@ -74,7 +81,9 @@ public class Member extends BaseTime implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
+        Collection<GrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + this.role.toString()));
+        return authorities;
     }
 
     @Override

@@ -6,7 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.davcatch.devcatch.domain.Article;
+import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.repository.article.ArticleRepository;
 
 import lombok.RequiredArgsConstructor;

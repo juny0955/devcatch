@@ -7,10 +7,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.controller.member.ChangePasswordRequest;
-import com.davcatch.devcatch.domain.Member;
-import com.davcatch.devcatch.domain.MemberTag;
-import com.davcatch.devcatch.domain.Tag;
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.member.Member;
+import com.davcatch.devcatch.domain.member.MemberTag;
+import com.davcatch.devcatch.domain.tag.Tag;
+import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.repository.member.MemberRepository;

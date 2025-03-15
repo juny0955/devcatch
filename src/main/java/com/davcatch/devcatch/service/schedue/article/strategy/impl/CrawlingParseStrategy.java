@@ -8,8 +8,8 @@ import java.util.Set;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
-import com.davcatch.devcatch.domain.ParseMethod;
-import com.davcatch.devcatch.domain.Source;
+import com.davcatch.devcatch.domain.source.ParseMethod;
+import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.integration.crawling.WebCrawler;
 import com.davcatch.devcatch.integration.rss.RssReader;

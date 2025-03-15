@@ -1,4 +1,6 @@
-package com.davcatch.devcatch.domain;
+package com.davcatch.devcatch.domain.source;
+
+import com.davcatch.devcatch.domain.BaseTime;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

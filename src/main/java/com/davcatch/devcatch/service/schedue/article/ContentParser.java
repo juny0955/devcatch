@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.integration.gpt.response.GptResponse;

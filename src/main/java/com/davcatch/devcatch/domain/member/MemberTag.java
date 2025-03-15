@@ -1,6 +1,6 @@
-package com.davcatch.devcatch.domain;
+package com.davcatch.devcatch.domain.member;
 
-import java.util.List;
+import com.davcatch.devcatch.domain.tag.Tag;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +10,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -18,27 +17,27 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ArticleTag {
+public class MemberTag {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "article_tag_id")
+	@Column(name = "member_tag_id")
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "article_id", nullable = false)
-	private Article article;
+	@JoinColumn(name = "member_id", nullable = false)
+	private Member member;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tag_id", nullable = false)
+	@JoinColumn(name = "tag_id")
 	private Tag tag;
 
-	public static ArticleTag of(Article article, Tag tag) {
-		return ArticleTag.builder()
-			.article(article)
+	public static MemberTag of(Tag tag, Member member) {
+		return MemberTag.builder()
+			.member(member)
 			.tag(tag)
 			.build();
 	}

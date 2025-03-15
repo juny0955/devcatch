@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.jsoup.nodes.Document;
 
-import com.davcatch.devcatch.domain.ParseMethod;
+import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.rometools.rome.feed.synd.SyndEntry;
 
 public interface ContentExtractor {

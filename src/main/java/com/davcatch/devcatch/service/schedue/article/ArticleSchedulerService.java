@@ -8,11 +8,11 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.davcatch.devcatch.domain.Article;
-import com.davcatch.devcatch.domain.ArticleTag;
-import com.davcatch.devcatch.domain.Source;
-import com.davcatch.devcatch.domain.Tag;
-import com.davcatch.devcatch.domain.TagType;
+import com.davcatch.devcatch.domain.article.Article;
+import com.davcatch.devcatch.domain.article.ArticleTag;
+import com.davcatch.devcatch.domain.source.Source;
+import com.davcatch.devcatch.domain.tag.Tag;
+import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.integration.gpt.GptSummaryService;

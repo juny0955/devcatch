@@ -6,7 +6,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
-import com.davcatch.devcatch.domain.ParseMethod;
+import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractor;
 import com.rometools.rome.feed.synd.SyndEntry;
 

@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import com.davcatch.devcatch.controller.auth.RegRequest;
-import com.davcatch.devcatch.domain.Member;
+import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.service.cache.VerifyCodeCacheService;
