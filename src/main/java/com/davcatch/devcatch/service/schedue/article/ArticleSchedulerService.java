@@ -90,10 +90,10 @@ public class ArticleSchedulerService {
 	 * @param source 해당 Source
 	 */
 	private boolean articleFilter(ParsedArticle parsedArticle, Source source) {
-		if (articleService.existsLink(parsedArticle.getLink()))
+		if (articleService.checkExistsLink(parsedArticle.getLink()))
 			return false;
 
-		Optional<Article> lastPublishedArticle = articleService.findByLastPublishedArticle(source.getId());
+		Optional<Article> lastPublishedArticle = articleService.getByLastPublishedArticle(source.getId());
 		Date date;
 
 		if (lastPublishedArticle.isEmpty()) {

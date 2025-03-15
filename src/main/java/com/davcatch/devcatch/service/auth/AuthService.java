@@ -1,12 +1,13 @@
-package com.davcatch.devcatch.service.registration;
+package com.davcatch.devcatch.service.auth;
 
 import java.util.UUID;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.registration.RegRequest;
+import com.davcatch.devcatch.controller.auth.RegRequest;
 import com.davcatch.devcatch.domain.Member;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
@@ -23,11 +24,12 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Slf4j
-public class RegService {
+public class AuthService {
 
 	private final MemberService memberService;
 	private final MailService mailService;
 	private final VerifyCodeCacheService verifyCodeCacheService;
+	private final PasswordEncoder passwordEncoder;
 
 	/**
 	 * 가입전 인증 진행
@@ -48,6 +50,7 @@ public class RegService {
 		Context context = new Context();
 		context.setVariable("subject", MailTemplate.VERIFY_TITLE.getTitle());
 		context.setVariable("verifyCode", verifyCode);
+
 		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_TITLE, context);
 	}
 
@@ -67,7 +70,8 @@ public class RegService {
 			throw new CustomException(ErrorCode.VERIFY_CODE_EXPIRED);
 		}
 
-		memberService.save(Member.from(verificationInfo));
+		String encodedPassword = passwordEncoder.encode(verificationInfo.getPassword());
+		memberService.save(Member.from(verificationInfo, encodedPassword));
 	}
 
 	@Transactional

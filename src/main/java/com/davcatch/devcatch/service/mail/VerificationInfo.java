@@ -2,7 +2,7 @@ package com.davcatch.devcatch.service.mail;
 
 import java.time.LocalDateTime;
 
-import com.davcatch.devcatch.controller.registration.RegRequest;
+import com.davcatch.devcatch.controller.auth.RegRequest;
 
 import lombok.Builder;
 import lombok.Data;
@@ -13,12 +13,14 @@ public class VerificationInfo {
 
 	private String email;
 	private String name;
+	private String password;
 	private LocalDateTime createdAt;
 
 	public static VerificationInfo create(RegRequest request) {
 		return VerificationInfo.builder()
 			.email(request.getEmail())
 			.name(request.getName())
+			.password(request.getPassword())
 			.createdAt(LocalDateTime.now())
 			.build();
 	}

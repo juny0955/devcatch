@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.domain.Article;
-import com.davcatch.devcatch.repository.ArticleRepository;
+import com.davcatch.devcatch.repository.article.ArticleRepository;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,15 +29,15 @@ public class ArticleService {
 		}
 	}
 
-	public Optional<Article> findByLastPublishedArticle(Long sourceId) {
+	public Optional<Article> getByLastPublishedArticle(Long sourceId) {
 		return articleRepository.findLastPublishedArticle(sourceId);
 	}
 
-	public List<Article> findSendArticles() {
+	public List<Article> getSendArticles() {
 		return articleRepository.findSendArticles();
 	}
 
-	public boolean existsLink(String link) {
+	public boolean checkExistsLink(String link) {
 		return articleRepository.existsByLink(link);
 	}
 }

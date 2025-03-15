@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <!-- 모바일 최적화를 위한 뷰포트 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>데브캐치 이메일 인증</title>
+    <title>데브캐치 회원가입</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
@@ -70,7 +70,7 @@
     <div class="col-md-6 col-sm-10">
         <div class="card">
             <div class="card-header">
-                이메일 인증
+                회원가입
             </div>
             <div class="card-body">
                 <!-- 검증 오류 메시지 처리 -->
@@ -79,7 +79,7 @@
                 </div>
                 <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
                 <!-- 폼 시작 -->
-                <form th:action="@{/devcatch/reg}" method="post">
+                <form th:action="@{/auth/signup}" method="post">
                     <div class="form-group">
                         <label for="name">이름</label>
                         <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required>
@@ -87,6 +87,10 @@
                     <div class="form-group">
                         <label for="email">이메일</label>
                         <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">비밀번호</label>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
                     </div>
                     <button type="submit" class="btn btn-primary btn-block">인증하기</button>
                 </form>

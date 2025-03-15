@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>구독 설정</title>
+    <!-- Bootstrap CDN -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts: Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+        .container-custom {
+            max-width: 600px;
+        }
+        .card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            background-color: #fff;
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            color: #333;
+            font-size: 1.75rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 25px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .card-body {
+            padding: 30px;
+        }
+        .form-check-label {
+            font-weight: 400;
+        }
+        .btn-primary {
+            background-color: #667eea;
+            border-color: #667eea;
+            font-size: 1.1rem;
+            padding: 12px;
+            border-radius: 30px;
+        }
+        .btn-primary:hover {
+            background-color: #5a67d8;
+            border-color: #5a67d8;
+        }
+        /* 모바일 전용 스타일 */
+        @media (max-width: 767.98px) {
+            .container-custom {
+                max-width: 100%;
+            }
+            .card-header {
+                font-size: 1.5rem;
+                padding: 20px;
+            }
+            .card-body {
+                padding: 20px;
+            }
+            .btn-primary {
+                font-size: 1rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container container-custom d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                구독 설정
+            </div>
+            <div class="card-body">
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <form th:action="@{/member/setting/subscribe}" method="post">
+                    <!-- 전체 구독 체크박스 -->
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="subscribeAll" name="subscribeAll"
+                               th:checked="${member.subscribeAll}">
+                        <label class="form-check-label" for="subscribeAll">전체 구독</label>
+                    </div>
+                    <!-- 개별 태그 구독 체크박스 -->
+                    <div class="form-group" id="tagCheckboxGroup">
+                        <label class="mb-2">구독할 태그 선택</label>
+                        <div class="form-check" th:each="tag : ${availableTags}">
+                            <input type="checkbox" class="form-check-input tag-checkbox"
+                                   th:id="${'tag_' + tag}" name="selectedTags"
+                                   th:value="${tag}"
+                                   th:checked="${#lists.contains(member.memberTags.![tag.tagType], tag)}">
+                            <label class="form-check-label" th:for="${'tag_' + tag}" th:text="${tag}"></label>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">설정 저장</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Bootstrap JS (옵션) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const subscribeAllCheckbox = document.getElementById('subscribeAll');
+        const tagCheckboxes = document.querySelectorAll('.tag-checkbox');
+
+        // 전체 구독 체크박스 상태에 따라 개별 태그 체크박스 활성화/비활성화 처리
+        function toggleTagCheckboxes() {
+            const disable = subscribeAllCheckbox.checked;
+            tagCheckboxes.forEach(cb => {
+                cb.disabled = disable;
+            });
+        }
+
+        // 모든 개별 태그가 선택되었을 경우 전체 구독 체크박스를 자동으로 체크하고,
+        // 동시에 개별 태그 체크박스들을 모두 해제합니다.
+        function checkIfAllTagsSelected() {
+            const allChecked = Array.from(tagCheckboxes).every(cb => cb.checked);
+            if (allChecked) {
+                // 전체 구독 체크박스 자동 체크
+                subscribeAllCheckbox.checked = true;
+                // 개별 태그 체크박스 해제 및 비활성화
+                tagCheckboxes.forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = true;
+                });
+            } else {
+                subscribeAllCheckbox.checked = false;
+            }
+            toggleTagCheckboxes();
+        }
+
+        // 초기 상태 적용
+        toggleTagCheckboxes();
+
+        // 전체 구독 체크박스 상태 변경 시 처리
+        subscribeAllCheckbox.addEventListener('change', function() {
+            toggleTagCheckboxes();
+        });
+
+        // 각 개별 태그 체크박스에 변경 이벤트 추가
+        tagCheckboxes.forEach(cb => {
+            cb.addEventListener('change', checkIfAllTagsSelected);
+        });
+    });
+</script>
+</body>
+</html>
