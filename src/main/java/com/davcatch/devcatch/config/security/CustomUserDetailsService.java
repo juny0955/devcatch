@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import com.davcatch.devcatch.repository.MemberRepository;
+import com.davcatch.devcatch.repository.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 

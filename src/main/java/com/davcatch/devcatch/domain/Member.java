@@ -56,6 +56,18 @@ public class Member extends BaseTime implements UserDetails {
             .build();
     }
 
+    public void changeSubscription(boolean subscribeAll) {
+        this.subscribeAll = subscribeAll;
+    }
+
+    public void clearMemberTags() {
+        this.memberTags.clear();
+    }
+
+    public void addMemberTags(List<MemberTag> memberTags) {
+        this.memberTags.addAll(memberTags);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of();

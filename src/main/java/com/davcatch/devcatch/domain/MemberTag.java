@@ -32,4 +32,11 @@ public class MemberTag {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tag_id")
 	private Tag tag;
+
+	public static MemberTag of(Tag tag, Member member) {
+		return MemberTag.builder()
+			.member(member)
+			.tag(tag)
+			.build();
+	}
 }

@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.repository;
+package com.davcatch.devcatch.repository.member;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

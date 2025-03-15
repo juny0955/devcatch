@@ -6,72 +6,64 @@
     <title>구독 설정</title>
     <!-- Bootstrap CDN -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Google Fonts: Nunito -->
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* 공통 스타일 */
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Nunito', sans-serif;
             background: linear-gradient(135deg, #667eea, #764ba2);
             color: #333;
             margin: 0;
             padding: 20px;
+            min-height: 100vh;
+        }
+        .container-custom {
+            max-width: 600px;
         }
         .card {
             border: none;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-            margin: auto;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+            background-color: #fff;
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            color: #333;
+            font-size: 1.75rem;
+            font-weight: 600;
+            text-align: center;
+            padding: 25px;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .card-body {
+            padding: 30px;
+        }
+        .form-check-label {
+            font-weight: 400;
         }
         .btn-primary {
             background-color: #667eea;
             border-color: #667eea;
+            font-size: 1.1rem;
+            padding: 12px;
+            border-radius: 30px;
         }
         .btn-primary:hover {
             background-color: #5a67d8;
             border-color: #5a67d8;
         }
-
-        /* 데스크톱 전용 스타일 */
-        @media (min-width: 768px) {
-            .container-custom {
-                max-width: 600px;
-            }
-            .card-header {
-                background-color: #fff;
-                color: #333;
-                font-size: 1.75rem;
-                font-weight: bold;
-                text-align: center;
-                padding: 20px;
-                border-bottom: 1px solid #e0e0e0;
-            }
-            .card-body {
-                background: #fff;
-                padding: 20px;
-            }
-        }
-
         /* 모바일 전용 스타일 */
         @media (max-width: 767.98px) {
             .container-custom {
                 max-width: 100%;
             }
-            .card {
-                border-radius: 10px;
-                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            }
             .card-header {
-                background-color: #fff;
-                color: #333;
                 font-size: 1.5rem;
-                font-weight: bold;
-                text-align: center;
-                padding: 15px;
-                border-bottom: 1px solid #e0e0e0;
+                padding: 20px;
             }
             .card-body {
-                background: #fff;
-                padding: 15px;
+                padding: 20px;
             }
             .btn-primary {
                 font-size: 1rem;
@@ -88,7 +80,9 @@
                 구독 설정
             </div>
             <div class="card-body">
-                <form th:action="@{/subscription}" method="post">
+                <div th:if="${message}" class="alert alert-success" role="alert" th:text="${message}"></div>
+                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
+                <form th:action="@{/member/setting/subscribe}" method="post">
                     <!-- 전체 구독 체크박스 -->
                     <div class="form-group form-check">
                         <input type="checkbox" class="form-check-input" id="subscribeAll" name="subscribeAll"
@@ -97,15 +91,16 @@
                     </div>
                     <!-- 개별 태그 구독 체크박스 -->
                     <div class="form-group" id="tagCheckboxGroup">
-                        <label>구독할 태그 선택</label>
+                        <label class="mb-2">구독할 태그 선택</label>
                         <div class="form-check" th:each="tag : ${availableTags}">
                             <input type="checkbox" class="form-check-input tag-checkbox"
                                    th:id="${'tag_' + tag}" name="selectedTags"
-                                   th:value="${tag}" th:checked="${#lists.contains(member.selectedTags, tag)}">
+                                   th:value="${tag}"
+                                   th:checked="${#lists.contains(member.memberTags.![tag.tagType], tag)}">
                             <label class="form-check-label" th:for="${'tag_' + tag}" th:text="${tag}"></label>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">설정 저장</button>
+                    <button type="submit" class="btn btn-primary btn-block mt-4">설정 저장</button>
                 </form>
             </div>
         </div>
@@ -115,11 +110,11 @@
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    // 전체 구독 체크박스 상태에 따라 개별 태그 체크박스 활성화/비활성화 처리
     document.addEventListener('DOMContentLoaded', function() {
         const subscribeAllCheckbox = document.getElementById('subscribeAll');
         const tagCheckboxes = document.querySelectorAll('.tag-checkbox');
 
+        // 전체 구독 체크박스 상태에 따라 개별 태그 체크박스 활성화/비활성화 처리
         function toggleTagCheckboxes() {
             const disable = subscribeAllCheckbox.checked;
             tagCheckboxes.forEach(cb => {
@@ -127,11 +122,36 @@
             });
         }
 
+        // 모든 개별 태그가 선택되었을 경우 전체 구독 체크박스를 자동으로 체크하고,
+        // 동시에 개별 태그 체크박스들을 모두 해제합니다.
+        function checkIfAllTagsSelected() {
+            const allChecked = Array.from(tagCheckboxes).every(cb => cb.checked);
+            if (allChecked) {
+                // 전체 구독 체크박스 자동 체크
+                subscribeAllCheckbox.checked = true;
+                // 개별 태그 체크박스 해제 및 비활성화
+                tagCheckboxes.forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = true;
+                });
+            } else {
+                subscribeAllCheckbox.checked = false;
+            }
+            toggleTagCheckboxes();
+        }
+
         // 초기 상태 적용
         toggleTagCheckboxes();
 
-        // 상태 변화 시 처리
-        subscribeAllCheckbox.addEventListener('change', toggleTagCheckboxes);
+        // 전체 구독 체크박스 상태 변경 시 처리
+        subscribeAllCheckbox.addEventListener('change', function() {
+            toggleTagCheckboxes();
+        });
+
+        // 각 개별 태그 체크박스에 변경 이벤트 추가
+        tagCheckboxes.forEach(cb => {
+            cb.addEventListener('change', checkIfAllTagsSelected);
+        });
     });
 </script>
 </body>
