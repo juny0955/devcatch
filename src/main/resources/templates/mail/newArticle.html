@@ -7,7 +7,7 @@
 <body style="font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px;">
 <div class="container" style="max-width: 600px; margin: auto; background: #fff; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden;">
     <div class="header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 20px; text-align: center;">
-        <h1 th:text="${subject}" style="margin: 0; font-size: 1.75rem;">새로운 아티클 알림</h1>
+        <h1 style="margin: 0; font-size: 1.75rem;">새로운 아티클 알림</h1>
     </div>
     <div class="content" style="padding: 20px;">
         <p>새로운 아티클이 업로드되었습니다. 아래 내용을 확인해보세요.</p>
@@ -15,6 +15,10 @@
             <div class="article" style="border-bottom: 1px solid #ddd; padding: 15px 0;">
                 <h2 class="article-title" th:text="${article.title}" style="font-size: 1.25rem; color: #667eea; margin: 0 0 8px;">아티클 제목</h2>
                 <p class="article-summary" th:text="${article.summary}" style="color: #555; margin: 8px 0;">아티클 요약 내용</p>
+                <!-- 태그 출력: articleTags가 존재하면 각 태그의 타입을 출력 -->
+                <p class="article-tags" th:if="${article.articleTags}" style="color: #888; font-size: 0.9rem; margin: 8px 0;">
+                    <span th:each="at : ${article.articleTags}" th:text="${'#' + at.tag.tagType + ' '}" ></span>
+                </p>
                 <p class="article-date" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}" style="font-size: 0.85rem; color: #999;">발행일</p>
                 <a class="read-more" th:href="${article.link}" target="_blank" style="display: inline-block; margin-top: 8px; color: #667eea; text-decoration: none; font-weight: bold;">자세히 보기</a>
             </div>
