@@ -1,5 +1,5 @@
 gpt:
   model: gpt-4o-mini
-  key: ${GPT_KEY}
+  key: ${GPT_KEY:123}
   sys:
-    prompt: ${GPT_PROMPT}
+    prompt: ${GPT_PROMPT:default}

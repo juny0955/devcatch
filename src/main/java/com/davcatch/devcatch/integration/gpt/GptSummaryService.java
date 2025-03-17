@@ -21,10 +21,10 @@ public class GptSummaryService {
 
 	private final RestTemplate restTemplate;
 
-	@Value("${gpt.model}")
+	@Value("${gpt.model:gpt-4o-mini}")
 	private String model;
 
-	@Value("${gpt.sys.prompt}")
+	@Value("${gpt.sys.prompt:test}")
 	private String sysPrompt;
 
 	/**
