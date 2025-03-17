@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: api, mail
+    active: api, mail, test
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver

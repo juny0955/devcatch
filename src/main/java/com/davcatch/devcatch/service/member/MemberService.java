@@ -121,6 +121,8 @@ public class MemberService {
 
 			member.addMemberTags(memberTags);
 		}
+
+		log.info("회원 {} 구독 설정 변경", memberId);
 	}
 
 	@Transactional
@@ -136,5 +138,7 @@ public class MemberService {
 
 		String encodedPassword = passwordEncoder.encode(request.getNewPassword());
 		member.changePassword(encodedPassword);
+
+		log.info("회원 {} 비밀번호 재설정", memberId);
 	}
 }
