@@ -9,7 +9,7 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class GPTConfig {
 
-	@Value("${gpt.key:default}")
+	@Value("${gpt.key}")
 	private String apiKey;
 
 	/**
