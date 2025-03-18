@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.davcatch.devcatch.controller.auth.request.RegRequest;
 import com.davcatch.devcatch.exception.CustomException;
 import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.service.auth.AuthService;

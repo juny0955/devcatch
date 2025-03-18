@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.member;
+package com.davcatch.devcatch.controller.member.request;
 
 import java.util.List;
 

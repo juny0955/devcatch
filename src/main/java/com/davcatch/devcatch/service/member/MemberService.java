@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.davcatch.devcatch.controller.member.ChangePasswordRequest;
+import com.davcatch.devcatch.controller.member.request.ChangePasswordRequest;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.member.MemberTag;
 import com.davcatch.devcatch.domain.tag.Tag;

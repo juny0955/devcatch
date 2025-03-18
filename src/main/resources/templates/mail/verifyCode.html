@@ -1,67 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="Content-Type" content="text/html">
     <title th:text="${subject}">이메일 인증</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-        }
-        .container {
-            max-width: 600px;
-            margin: 30px auto;
-            background: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            overflow: hidden;
-        }
-        .header {
-            /* 보라색 계열 그라데이션 */
-            background: linear-gradient(135deg, #764ba2, #667eea);
-            color: #ffffff;
-            padding: 20px;
-            text-align: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .content {
-            padding: 30px;
-            color: #333333;
-        }
-        .content h3 {
-            margin-top: 0;
-            /* 포인트 색상으로 보라색 계열 사용 */
-            color: #764ba2;
-        }
-        .code-box {
-            display: inline-block;
-            padding: 10px 20px;
-            background-color: #ececff;
-            border-radius: 4px;
-            font-size: 22px;
-            letter-spacing: 2px;
-            margin-top: 20px;
-            /* 텍스트 포인트 색상 */
-            color: #667eea;
-        }
-    </style>
 </head>
-<body>
-<div class="container">
-    <div class="header">
-        <h1 th:text="${subject}">이메일 인증</h1>
-    </div>
-    <div class="content">
-        <h3>이메일 인증코드 안내</h3>
-        <p>아래 인증코드를 입력하여 5분 이내에 인증을 완료해주세요.</p>
-        <div class="code-box" th:text="${verifyCode}">123456</div>
-    </div>
-</div>
+<body style="font-family: 'Inter', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif; background-color: #f0f9ff; margin: 0; padding: 20px; color: #333;">
+<!-- 전체 컨테이너 -->
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td align="center" valign="top">
+            <!-- 콘텐츠 테이블 -->
+            <table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                <!-- 헤더 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="background: linear-gradient(90deg, #0ea5e9, #0369a1); padding: 30px 20px;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td align="center">
+                                    <h1 style="color: #ffffff; font-size: 24px; font-weight: 700; margin: 0;">DevCatch</h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 콘텐츠 영역 -->
+                <tr>
+                    <td valign="top" style="padding: 10px 30px 30px;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td align="center">
+                                    <!-- 인증 안내 -->
+                                    <h3 style="color: #0284c7; font-size: 18px; font-weight: 600; margin: 0 0 10px;">이메일 인증코드 안내</h3>
+                                    <p style="color: #4b5563; font-size: 15px; line-height: 1.6; margin: 0 0 20px;">아래 인증코드를 입력하여 5분 이내에 인증을 완료해주세요.</p>
+
+                                    <!-- 인증코드 박스 -->
+                                    <div style="background-color: #f0f9ff; border: 1px solid #bae6fd; border-radius: 8px; padding: 15px 30px; margin: 10px 0 25px; display: inline-block;">
+                                        <span style="color: #0284c7; font-size: 24px; font-weight: 700; letter-spacing: 3px;" th:text="${verifyCode}">123456</span>
+                                    </div>
+
+                                    <!-- 추가 안내 -->
+                                    <p style="color: #64748b; font-size: 14px; margin: 0;">인증코드는 발송 시점으로부터 5분간 유효합니다.</p>
+                                    <p style="color: #64748b; font-size: 14px; margin: 10px 0 0;">본인이 요청하지 않은 경우 이 메일을 무시해주세요.</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 푸터 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="padding: 20px; background-color: #f8fafc;">
+                        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px;">이 메일은 DevCatch 회원가입 및 인증 과정에서 자동 발송되었습니다.</p>
+
+                        <!-- 웹사이트 링크 -->
+                        <p style="margin: 0 0 10px;">
+                            <a href="https://devcatch.site" style="color: #0ea5e9; font-size: 13px; text-decoration: none;">홈페이지 방문하기</a>
+                        </p>
+
+                        <!-- 카피라이트 -->
+                        <p style="font-size: 12px; color: #94a3b8; margin: 10px 0 0;">© 2025 DevCatch. All rights reserved.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

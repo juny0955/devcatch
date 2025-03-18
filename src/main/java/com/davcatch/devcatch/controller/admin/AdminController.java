@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.davcatch.devcatch.controller.admin.request.SendMailReqeust;
 import com.davcatch.devcatch.service.admin.AdminService;
 
 import lombok.RequiredArgsConstructor;

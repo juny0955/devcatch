@@ -2,17 +2,77 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${subject}">메일 제목</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
-<body style="font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px; color: #333;">
-<div class="container" style="max-width: 600px; margin: 0 auto; background: #fff; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px;">
-    <div class="content" style="font-size: 1rem; line-height: 1.5;">
-        <pre th:text="${content}">여기에 메일 내용이 표시됩니다.</pre>
-    </div>
-    <div class="footer" style="text-align: center; font-size: 0.85rem; color: #777; margin-top: 20px;">
-        <p>이 메일은 자동 발송되었습니다.</p>
-    </div>
-</div>
+<body style="font-family: 'Inter', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif; background-color: #f0f9ff; margin: 0; padding: 20px; color: #333;">
+<!-- 전체 컨테이너 -->
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td align="center" valign="top">
+            <!-- 콘텐츠 테이블 -->
+            <table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                <!-- 헤더 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="background: linear-gradient(90deg, #0ea5e9, #0369a1); padding: 30px 20px;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td align="center">
+                                    <h1 style="color: #ffffff; font-size: 24px; font-weight: 700; margin: 0;">DevCatch</h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 메일 제목 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="padding: 25px 20px 5px;">
+                        <h2 style="color: #0284c7; font-size: 20px; font-weight: 600; margin: 0;" th:text="${subject}">메일 제목</h2>
+                    </td>
+                </tr>
+
+                <!-- 콘텐츠 영역 -->
+                <tr>
+                    <td valign="top" style="padding: 20px 30px 30px;">
+                        <div style="font-size: 16px; line-height: 1.6; color: #4b5563;">
+                            <pre style="font-family: 'Inter', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif; margin: 0; white-space: pre-wrap; word-wrap: break-word;" th:text="${content}">여기에 메일 내용이 표시됩니다.</pre>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- 관리자 서명 영역 -->
+                <tr>
+                    <td valign="top" style="padding: 0 30px 20px;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td>
+                                    <div style="border-top: 1px solid #e2e8f0; padding-top: 20px;">
+                                        <p style="font-size: 15px; color: #64748b; font-weight: 500; margin: 0;">DevCatch 관리자</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 푸터 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="padding: 20px; background-color: #f8fafc;">
+                        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px;">이 메일은 DevCatch 관리자에 의해 발송되었습니다.</p>
+
+                        <!-- 웹사이트 링크 -->
+                        <p style="margin: 0 0 10px;">
+                            <a href="https://devcatch.site" style="color: #0ea5e9; font-size: 13px; text-decoration: none;">홈페이지 방문하기</a>
+                        </p>
+
+                        <!-- 카피라이트 -->
+                        <p style="font-size: 12px; color: #94a3b8; margin: 10px 0 0;">© 2025 DevCatch. All rights reserved.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

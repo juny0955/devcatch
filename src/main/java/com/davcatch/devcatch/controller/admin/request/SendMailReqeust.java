@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.admin;
+package com.davcatch.devcatch.controller.admin.request;
 
 import lombok.Data;
 

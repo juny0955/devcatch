@@ -2,37 +2,90 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>새로운 아티클 알림</title>
 </head>
-<body style="font-family: Arial, sans-serif; background: #f7f7f7; margin: 0; padding: 20px;">
-<div class="container" style="max-width: 600px; margin: auto; background: #fff; padding: 20px; border: 1px solid #eaeaea; border-radius: 8px; overflow: hidden;">
-    <div class="header" style="background: linear-gradient(135deg, #667eea, #764ba2); color: #fff; padding: 20px; text-align: center;">
-        <h1 style="margin: 0; font-size: 1.75rem;">새로운 아티클 알림</h1>
-    </div>
-    <div class="content" style="padding: 20px;">
-        <p>새로운 아티클이 업로드되었습니다. 아래 내용을 확인해보세요.</p>
-        <div th:if="${articles}" th:each="article : ${articles}">
-            <div class="article" style="border-bottom: 1px solid #ddd; padding: 15px 0;">
-                <h2 class="article-title" th:text="${article.title}" style="font-size: 1.25rem; color: #667eea; margin: 0 0 8px;">아티클 제목</h2>
-                <p class="article-summary" th:text="${article.summary}" style="color: #555; margin: 8px 0;">아티클 요약 내용</p>
-                <!-- 태그 출력: articleTags가 존재하면 각 태그의 타입을 출력 -->
-                <p class="article-tags" th:if="${article.articleTags}" style="color: #888; font-size: 0.9rem; margin: 8px 0;">
-                    <span th:each="at : ${article.articleTags}" th:text="${'#' + at.tag.tagType + ' '}" ></span>
-                </p>
-                <p class="article-date" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}" style="font-size: 0.85rem; color: #999;">발행일</p>
-                <a class="read-more" th:href="${article.link}" target="_blank" style="display: inline-block; margin-top: 8px; color: #667eea; text-decoration: none; font-weight: bold;">자세히 보기</a>
-            </div>
-        </div>
-    </div>
-    <div class="footer" style="text-align: center; font-size: 0.9rem; color: #777; margin-top: 20px; padding: 10px 0; border-top: 1px solid #eaeaea;">
-        <p>이 메일은 자동 발송되었습니다.</p>
-        <form th:action="@{https://devcatch.site/devcatch/reg/leave}" th:method="post">
-            <input type="hidden" name="email" th:value="${email}">
-            <button type="submit" style="background: none; border: none; padding: 0; font-size: inherit; color: #555; text-decoration: underline; cursor: pointer;">
-                구독 취소
-            </button>
-        </form>
-    </div>
-</div>
+<body style="font-family: 'Inter', 'Apple SD Gothic Neo', 'Noto Sans KR', Arial, sans-serif; background-color: #f0f9ff; margin: 0; padding: 20px; color: #333;">
+<!-- 전체 컨테이너 -->
+<table cellpadding="0" cellspacing="0" border="0" width="100%">
+    <tr>
+        <td align="center" valign="top">
+            <!-- 콘텐츠 테이블 -->
+            <table cellpadding="0" cellspacing="0" border="0" width="600" style="max-width: 600px; background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05); overflow: hidden;">
+                <!-- 헤더 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="background: linear-gradient(90deg, #0ea5e9, #0369a1); padding: 30px 20px;">
+                        <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                            <tr>
+                                <td align="center">
+                                    <h1 style="color: #ffffff; font-size: 24px; font-weight: 700; margin: 0;">DevCatch</h1>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+
+                <!-- 서브 헤더 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="padding: 20px 20px 10px;">
+                        <h2 style="color: #0284c7; font-size: 20px; font-weight: 600; margin: 0;">새로운 아티클 알림</h2>
+                        <p style="color: #64748b; font-size: 15px; margin: 10px 0 0;">구독하신 태그의 새로운 아티클이 업로드되었습니다.</p>
+                    </td>
+                </tr>
+
+                <!-- 콘텐츠 영역 -->
+                <tr>
+                    <td valign="top" style="padding: 0 20px;">
+                        <!-- 아티클 반복 영역 -->
+                        <div th:if="${articles}" th:each="article : ${articles}">
+                            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="border-bottom: 1px solid #e2e8f0; padding: 20px 0;">
+                                <tr>
+                                    <td>
+                                        <h3 style="font-size: 18px; font-weight: 600; color: #0284c7; margin: 0 0 10px;" th:text="${article.title}">아티클 제목</h3>
+                                        <p style="font-size: 15px; color: #4b5563; line-height: 1.6; margin: 0 0 12px;" th:text="${article.summary}">아티클 요약 내용입니다. 이곳에 아티클의 간략한 내용이 표시됩니다.</p>
+
+                                        <!-- 태그 영역 -->
+                                        <p style="margin: 8px 0;" th:if="${article.articleTags}">
+                                            <span th:each="at : ${article.articleTags}" style="display: inline-block; background-color: #e0f2fe; color: #0369a1; font-size: 12px; font-weight: 500; padding: 4px 8px; border-radius: 4px; margin-right: 5px; margin-bottom: 5px;" th:text="${'#' + at.tag.tagType}"></span>
+                                        </p>
+
+                                        <!-- 날짜 영역 -->
+                                        <p style="font-size: 13px; color: #94a3b8; margin: 10px 0;" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}">2025-03-18 14:30</p>
+
+                                        <!-- 버튼 영역 -->
+                                        <a th:href="${article.link}" target="_blank" style="display: inline-block; background-color: #0ea5e9; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 6px; margin-top: 12px;">자세히 보기</a>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- 푸터 영역 -->
+                <tr>
+                    <td align="center" valign="top" style="padding: 20px 20px 30px; background-color: #f8fafc;">
+                        <p style="font-size: 13px; color: #64748b; margin: 0 0 10px;">이 메일은 구독 설정에 따라 자동 발송되었습니다.</p>
+
+                        <!-- 마이페이지 링크 -->
+                        <p style="margin: 0 0 15px;">
+                            <a href="https://devcatch.site/member/mypage" style="color: #0ea5e9; font-size: 13px; text-decoration: none;">마이페이지에서 구독 설정 변경</a>
+                        </p>
+
+                        <!-- 구독 취소 폼 -->
+                        <form th:action="@{https://devcatch.site/devcatch/reg/leave}" th:method="post" style="margin: 0;">
+                            <input type="hidden" name="email" th:value="${email}">
+                            <button type="submit" style="background: none; border: none; color: #94a3b8; font-size: 13px; text-decoration: underline; cursor: pointer; padding: 0;">
+                                구독 취소
+                            </button>
+                        </form>
+
+                        <!-- 카피라이트 -->
+                        <p style="font-size: 12px; color: #94a3b8; margin: 20px 0 0;">© 2025 DevCatch. All rights reserved.</p>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
 </body>
 </html>

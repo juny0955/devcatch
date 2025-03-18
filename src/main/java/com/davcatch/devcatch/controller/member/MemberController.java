@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.davcatch.devcatch.controller.member.request.ChangePasswordRequest;
+import com.davcatch.devcatch.controller.member.request.ChangeSubscribeReqeust;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.exception.CustomException;

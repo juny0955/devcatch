@@ -6,12 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.admin.SendMailReqeust;
+import com.davcatch.devcatch.controller.admin.request.SendMailReqeust;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.repository.member.MemberRepository;
 import com.davcatch.devcatch.service.mail.MailService;
 import com.davcatch.devcatch.service.mail.MailTemplate;
-import com.davcatch.devcatch.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 

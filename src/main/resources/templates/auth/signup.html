@@ -2,105 +2,139 @@
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- 모바일 최적화를 위한 뷰포트 설정 -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>데브캐치 회원가입</title>
-    <!-- Bootstrap CDN -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <style>
-        /* 배경 그라데이션 및 기본 스타일 */
-        body {
-            background: linear-gradient(135deg, #667eea, #764ba2);
-            color: #333;
-            height: 100vh;
-            margin: 0;
-        }
-        /* 컨테이너 높이 설정 */
-        .container {
-            height: 100%;
-        }
-        /* 카드 스타일 */
-        .card {
-            border: none;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-        }
-        .card-header {
-            background-color: #fff;
-            color: #333;
-            font-size: 1.5rem;
-            font-weight: bold;
-            text-align: center;
-            padding: 1rem;
-            border-bottom: 1px solid #e0e0e0;
-        }
-        .card-body {
-            background: #fff;
-            padding: 2rem;
-        }
-        /* 버튼 커스터마이징 */
-        .btn-primary {
-            background-color: #667eea;
-            border-color: #667eea;
-        }
-        .btn-primary:hover {
-            background-color: #5a67d8;
-            border-color: #5a67d8;
-        }
-        /* 에러 Alert 여백 조정 */
-        .alert ul {
-            margin-bottom: 0;
-        }
-        /* 모바일 환경에서의 추가 스타일 */
-        @media (max-width: 576px) {
-            .card-body {
-                padding: 1.5rem;
-            }
-            .card-header {
-                font-size: 1.3rem;
-                padding: 0.75rem;
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Inter 폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            200: '#bae6fd',
+                            300: '#7dd3fc',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            700: '#0369a1',
+                            800: '#075985',
+                            900: '#0c4a6e',
+                        }
+                    }
+                }
             }
         }
-    </style>
+    </script>
 </head>
-<body>
-<div class="container d-flex justify-content-center align-items-center">
-    <!-- 반응형을 위해 col-md-6, col-sm-10 사용 -->
-    <div class="col-md-6 col-sm-10">
-        <div class="card">
-            <div class="card-header">
-                회원가입
+<body class="bg-gray-50 font-sans">
+<div class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-md">
+        <!-- 로고 영역 (선택사항) -->
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-primary-600">DevCatch</h2>
+        </div>
+
+        <!-- 에러 메시지 영역 -->
+        <div th:if="${errors}" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg" role="alert">
+            <div th:each="err : ${errors}" class="text-red-700 text-sm" th:text="${err.defaultMessage}"></div>
+        </div>
+        <div th:if="${error}" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert" th:text="${error}"></div>
+
+        <!-- 회원가입 카드 -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- 카드 헤더 -->
+            <div class="bg-gradient-to-r from-primary-500 to-primary-700 py-6 px-6">
+                <h1 class="text-white text-xl font-bold text-center">회원가입</h1>
             </div>
-            <div class="card-body">
-                <!-- 검증 오류 메시지 처리 -->
-                <div th:if="${errors}" class="alert alert-danger" role="alert">
-                    <div th:each="err : ${errors}" th:text="${err.defaultMessage}"></div>
-                </div>
-                <div th:if="${error}" class="alert alert-danger" role="alert" th:text="${error}"></div>
-                <!-- 폼 시작 -->
-                <form th:action="@{/auth/signup}" method="post">
-                    <div class="form-group">
-                        <label for="name">이름</label>
-                        <input type="text" class="form-control" id="name" name="name" placeholder="이름을 입력하세요" required>
+
+            <!-- 카드 본문 -->
+            <div class="p-6">
+                <form th:action="@{/auth/signup}" method="post" class="space-y-5">
+                    <!-- 이름 필드 -->
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700 mb-1">이름</label>
+                        <div class="relative">
+                            <input type="text" id="name" name="name"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 pl-10"
+                                   placeholder="이름을 입력하세요" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">이메일</label>
-                        <input type="email" class="form-control" id="email" name="email" placeholder="이메일을 입력하세요" required>
+
+                    <!-- 이메일 필드 -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">이메일</label>
+                        <div class="relative">
+                            <input type="email" id="email" name="email"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 pl-10"
+                                   placeholder="이메일을 입력하세요" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                                    <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">계정 인증 및 알림을 위해 사용됩니다</p>
                     </div>
-                    <div class="form-group">
-                        <label for="password">비밀번호</label>
-                        <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요" required>
+
+                    <!-- 비밀번호 필드 -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-gray-700 mb-1">비밀번호</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password"
+                                   class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 pl-10"
+                                   placeholder="비밀번호를 입력하세요" required>
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z" clip-rule="evenodd" />
+                                </svg>
+                            </div>
+                        </div>
+                        <p class="mt-1 text-xs text-gray-500">8자 이상의 영문, 숫자, 특수문자 조합을 권장합니다</p>
                     </div>
-                    <button type="submit" class="btn btn-primary btn-block">인증하기</button>
+
+                    <!-- 약관 동의
+                    <div class="flex items-center">
+                        <input id="terms" name="terms" type="checkbox" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded">
+                        <label for="terms" class="ml-2 block text-sm text-gray-700">
+                            <a href="#" class="text-primary-600 hover:text-primary-700">이용약관</a> 및 <a href="#" class="text-primary-600 hover:text-primary-700">개인정보처리방침</a>에 동의합니다
+                        </label>
+                    </div>
+                    -->
+
+
+                    <!-- 회원가입 버튼 -->
+                    <div class="pt-2">
+                        <button type="submit"
+                                class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-200 ease-in-out">
+                            회원가입하기
+                        </button>
+                    </div>
                 </form>
-                <!-- 폼 끝 -->
             </div>
+        </div>
+
+        <!-- 로그인 링크 -->
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-600">
+                이미 계정이 있으신가요?
+                <a href="/auth/login" class="text-primary-600 hover:text-primary-700 font-medium">로그인하기</a>
+            </p>
         </div>
     </div>
 </div>
-<!-- Bootstrap JS (옵션) -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
