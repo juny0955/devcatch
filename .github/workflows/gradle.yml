@@ -44,7 +44,7 @@ jobs:
       run: chmod +x gradlew
       
     - name: Build with Gradle Wrapper
-      run: ./gradlew build -Dspring.profiles.active=test
+      run: ./gradlew build -Dspring.profiles.active=test, mail, api
 
     - name: Login Docker Hub & Push Image
       run: |
