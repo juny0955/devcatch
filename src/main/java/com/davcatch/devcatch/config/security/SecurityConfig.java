@@ -30,7 +30,7 @@ public class SecurityConfig {
 			.formLogin(login -> login
 				.loginPage("/auth/login")
 				.loginProcessingUrl("/auth/login")
-				.defaultSuccessUrl("/member/mypage", true)
+				.defaultSuccessUrl("/", true)
 			)
 			.logout(logout -> logout
 				.logoutUrl("/auth/logout")
