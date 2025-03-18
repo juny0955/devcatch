@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.annotations.BatchSize;
+
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
