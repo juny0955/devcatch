@@ -31,6 +31,7 @@ public class MainController {
 			.toList();
 
 		model.addAttribute("articles", articleResponses);
+		model.addAttribute("activeMenu", "home");
 		return "index";
 	}
 }

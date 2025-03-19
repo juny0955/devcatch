@@ -3,7 +3,9 @@ package com.davcatch.devcatch.service.article;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -44,5 +46,9 @@ public class ArticleService {
 
 	public List<Article> getNewArticles() {
 		return articleRepository.findNewArticlesTOP6(PageRequest.of(0, 6));
+	}
+
+	public Page<Article> getArticlesList(Pageable pageable) {
+		return articleRepository.findArticlesList(pageable);
 	}
 }

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>아티클 목록 - 데브캐치</title>
+  <!-- Pretendard 폰트 추가 (CDN 방식) -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind 설정 -->
+  <script th:src="@{/js/tailwind-config.js}"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+<!-- 네비게이션 바 -->
+<div th:replace="~{fragments/nav :: navigation(${activeMenu})}"></div>
+
+<!-- 메인 콘텐츠 -->
+<main class="py-10">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- 페이지 헤더 -->
+    <div class="pb-5 border-b border-gray-200 mb-8">
+      <h1 class="text-3xl font-bold leading-tight text-gray-900">아티클 목록</h1>
+    </div>
+
+    <!-- 검색 및 필터 섹션 -->
+    <div class="mb-8">
+      <div class="bg-white rounded-lg shadow p-6">
+        <form th:action="@{/article/list}" method="get" class="space-y-6">
+          <!-- 키워드 검색 -->
+          <div>
+            <label for="keyword" class="block text-sm font-medium text-gray-700">키워드 검색</label>
+            <div class="mt-1 relative rounded-md shadow-sm">
+              <input type="text" name="keyword" id="keyword" th:value="${param.keyword}"
+                     class="focus:ring-primary-500 focus:border-primary-500 block w-full pl-4 pr-12 py-3 sm:text-sm border-gray-300 rounded-md"
+                     placeholder="검색어를 입력하세요">
+              <div class="absolute inset-y-0 right-0 flex items-center pr-3">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- 태그 필터 - 개선된 디자인 -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2">태그 필터</label>
+            <div class="flex flex-wrap gap-2">
+              <a href="#" th:href="@{/article/list(keyword=${param.keyword})}"
+                 th:class="${selectedTag == null} ? 'bg-primary-600 text-white hover:bg-primary-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'"
+                 class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors">
+                전체
+              </a>
+              <a href="#" th:each="availableTag : ${availableTags}"
+                 th:href="@{/article/list(tag=${availableTag}, keyword=${param.keyword})}"
+                 th:class="${availableTag == selectedTag} ? 'bg-primary-600 text-white hover:bg-primary-700' : 'bg-gray-100 text-gray-800 hover:bg-gray-200'"
+                 class="inline-flex items-center px-4 py-2 rounded-full text-sm font-medium transition-colors">
+                <span th:text="${'#' + availableTag}">#태그</span>
+              </a>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 아티클 목록 -->
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <!-- 목록 헤더 -->
+      <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+        <div class="flex justify-between items-center">
+          <h3 class="text-lg font-medium text-gray-900">
+            검색 결과 <span class="text-primary-600 font-semibold" th:text="${articles.totalElements}">100</span>건
+          </h3>
+          <div class="text-sm text-gray-500">
+            <span th:if="${selectedTag != null}" th:text="${'#' + selectedTag}"></span>
+            <span th:if="${param.keyword != null && param.keyword != ''}" th:text="${', 키워드: ' + param.keyword}"></span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 목록 내용 -->
+      <div class="divide-y divide-gray-200">
+        <!-- 각 아티클 항목 -->
+        <div th:each="article : ${articles.content}" class="px-6 py-5 flex items-start space-x-4">
+          <!-- 아이콘 -->
+          <div class="flex-shrink-0 w-12 h-12 rounded-md bg-primary-100 flex items-center justify-center text-primary-600">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+            </svg>
+          </div>
+
+          <!-- 콘텐츠 -->
+          <div class="flex-1 min-w-0">
+            <!-- 태그 -->
+            <div class="flex flex-wrap gap-1 mb-1">
+                <span th:each="tag : ${article.tags}" class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+                  <span th:text="${'#' + tag}">#태그</span>
+                </span>
+            </div>
+
+            <!-- 제목 -->
+            <h4 class="text-lg font-semibold text-gray-900 leading-6">
+              <a th:href="${article.link}" target="_blank" class="hover:text-primary-600" th:text="${article.title}">아티클 제목</a>
+            </h4>
+
+            <!-- 요약 -->
+            <p class="mt-1 text-sm text-gray-500 leading-5 line-clamp-2" th:text="${article.summary}">
+              아티클 요약 내용이 표시됩니다. 아티클의 주요 내용을 간략하게 소개하는 문장입니다.
+            </p>
+
+            <!-- 메타 정보 -->
+            <div class="mt-2 flex items-center text-xs text-gray-500">
+              <span th:text="${article.name}">작성자</span>
+              <span class="mx-1">&middot;</span>
+              <time th:datetime="${#dates.format(article.publishedAt, 'yyyy-MM-dd')}" th:text="${#dates.format(article.publishedAt, 'yyyy.MM.dd')}">2025.03.19</time>
+            </div>
+          </div>
+        </div>
+
+        <!-- 데이터가 없을 경우 -->
+        <div th:if="${articles.empty}" class="px-6 py-10 text-center">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-gray-100">
+            <svg class="h-8 w-8 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </div>
+          <h3 class="mt-2 text-sm font-medium text-gray-900">검색 결과가 없습니다</h3>
+          <p class="mt-1 text-sm text-gray-500">다른 검색어나 태그로 다시 시도해보세요.</p>
+          <div class="mt-6">
+            <a th:href="@{/article/list}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none">
+              전체 목록 보기
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- 페이지네이션 - 개선된 디자인 -->
+      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <nav th:if="${articles.totalPages > 0}" class="flex items-center justify-between">
+          <!-- 모바일 페이징 -->
+          <div class="flex-1 flex justify-between sm:hidden">
+            <a th:if="${articles.hasPrevious()}"
+               th:href="@{/article/list(page=${articles.number - 1}, size=${articles.size}, keyword=${param.keyword}, tag=${selectedTag})}"
+               class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+              이전
+            </a>
+            <span th:unless="${articles.hasPrevious()}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
+              이전
+            </span>
+
+            <a th:if="${articles.hasNext()}"
+               th:href="@{/article/list(page=${articles.number + 1}, size=${articles.size}, keyword=${param.keyword}, tag=${selectedTag})}"
+               class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+              다음
+            </a>
+            <span th:unless="${articles.hasNext()}" class="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-300 bg-gray-50 cursor-not-allowed">
+              다음
+            </span>
+          </div>
+
+          <!-- 데스크톱 페이징 -->
+          <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-center">
+            <div>
+              <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+                <!-- 이전 버튼 -->
+                <a th:if="${articles.hasPrevious()}"
+                   th:href="@{/article/list(page=${articles.number - 1}, size=${articles.size}, keyword=${param.keyword}, tag=${selectedTag})}"
+                   class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <span class="sr-only">이전</span>
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+                <span th:unless="${articles.hasPrevious()}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-300 cursor-not-allowed">
+                  <span class="sr-only">이전</span>
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+
+                <!-- 페이지 번호 -->
+                <span th:with="startNumber=${T(java.lang.Math).floor(articles.number/10)*10 + 1}, endNumber=(${articles.totalPages > startNumber + 9 ? startNumber + 9 : articles.totalPages})">
+                  <th:block th:each="page : ${#numbers.sequence(startNumber, endNumber)}">
+                    <a th:if="${page == articles.number + 1}"
+                       class="z-10 bg-primary-50 border-primary-500 text-primary-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                      <span th:text="${page}">1</span>
+                    </a>
+                    <a th:unless="${page == articles.number + 1}"
+                       th:href="@{/article/list(page=${page - 1}, size=${articles.size}, keyword=${param.keyword}, tag=${selectedTag})}"
+                       class="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                      <span th:text="${page}">1</span>
+                    </a>
+                  </th:block>
+                </span>
+
+                <!-- 다음 버튼 -->
+                <a th:if="${articles.hasNext()}"
+                   th:href="@{/article/list(page=${articles.number + 1}, size=${articles.size}, keyword=${param.keyword}, tag=${selectedTag})}"
+                   class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <span class="sr-only">다음</span>
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </a>
+                <span th:unless="${articles.hasNext()}" class="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-gray-50 text-sm font-medium text-gray-300 cursor-not-allowed">
+                  <span class="sr-only">다음</span>
+                  <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+                  </svg>
+                </span>
+              </nav>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</main>
+
+<div th:replace="~{fragments/footer :: footer}"></div>
+
+<!-- 네비게이션 JS -->
+<div th:replace="~{fragments/nav :: navigationScript}"></div>
+
+<!-- 자바스크립트 -->
+<script>
+  // 검색 폼 제출 처리
+  document.querySelector('form')?.addEventListener('submit', function(e) {
+    const keywordInput = document.getElementById('keyword');
+    // 공백만 있는 경우 파라미터에서 제외
+    if (keywordInput.value.trim() === '') {
+      e.preventDefault();
+      keywordInput.value = '';
+      this.submit();
+    }
+  });
+</script>
+</body>
+</html>

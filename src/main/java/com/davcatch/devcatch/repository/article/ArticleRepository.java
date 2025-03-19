@@ -3,6 +3,8 @@ package com.davcatch.devcatch.repository.article;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +31,9 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	@Query("select a from Article a "
 		+ "order by a.publishedAt desc")
 	List<Article> findNewArticlesTOP6(Pageable pageable);
+
+	@EntityGraph(attributePaths = {"source"})
+	@Query("select a from Article a "
+		+ "order by a.publishedAt desc")
+	Page<Article> findArticlesList(Pageable pageable);
 }
