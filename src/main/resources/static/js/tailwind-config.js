@@ -3,7 +3,7 @@ tailwind.config = {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'sans-serif'],
+                sans: ['Pretendard', 'sans-serif'],
             },
             colors: {
                 primary: {
