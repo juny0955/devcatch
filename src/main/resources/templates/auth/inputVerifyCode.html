@@ -8,31 +8,8 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter 폰트 -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
-                    colors: {
-                        primary: {
-                            50: '#f0f9ff',
-                            100: '#e0f2fe',
-                            200: '#bae6fd',
-                            300: '#7dd3fc',
-                            400: '#38bdf8',
-                            500: '#0ea5e9',
-                            600: '#0284c7',
-                            700: '#0369a1',
-                            800: '#075985',
-                            900: '#0c4a6e',
-                        }
-                    }
-                }
-            }
-        }
-    </script>
+    <!-- Tailwind 설정 -->
+    <script th:src="@{/js/tailwind-config.js}"></script>
 </head>
 <body class="bg-gray-50 font-sans">
 <div class="min-h-screen flex items-center justify-center px-4 py-12">
