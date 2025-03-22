@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article.strategy.impl;
+package com.davcatch.devcatch.schedue.article.parser.strategy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,10 @@ import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.integration.rss.RssReader;
-import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
-import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractor;
-import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractorFactory;
-import com.davcatch.devcatch.service.schedue.article.strategy.AbstractArticleStrategy;
+import com.davcatch.devcatch.schedue.article.extractor.factory.ContentExtractorFactory;
+import com.davcatch.devcatch.schedue.article.dto.ParsedArticle;
+import com.davcatch.devcatch.schedue.article.extractor.strategy.ContentExtractorStrategy;
+import com.davcatch.devcatch.schedue.article.strategy.AbstractArticleStrategy;
 import com.rometools.rome.feed.synd.SyndEntry;
 
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ public class RssParseStrategy extends AbstractArticleStrategy {
 
 	@Override
 	public List<ParsedArticle> process(Source source) throws CustomException {
-		ContentExtractor extractor = getContentExtractor(source.getParseMethod());
+		ContentExtractorStrategy extractor = getContentExtractor(source.getParseMethod());
 		List<SyndEntry> entries = getEntries(source);
 
 		List<ParsedArticle> parsedArticles = new ArrayList<>();

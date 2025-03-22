@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article.strategy;
+package com.davcatch.devcatch.schedue.article.parser.factory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
+import com.davcatch.devcatch.schedue.article.parser.strategy.ArticleParseStrategy;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

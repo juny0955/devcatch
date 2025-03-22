@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article.strategy;
+package com.davcatch.devcatch.schedue.article.strategy;
 
 import java.util.Collections;
 import java.util.List;
@@ -7,8 +7,9 @@ import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.integration.rss.RssReader;
-import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractor;
-import com.davcatch.devcatch.service.schedue.article.extractor.ContentExtractorFactory;
+import com.davcatch.devcatch.schedue.article.parser.strategy.ArticleParseStrategy;
+import com.davcatch.devcatch.schedue.article.extractor.strategy.ContentExtractorStrategy;
+import com.davcatch.devcatch.schedue.article.extractor.factory.ContentExtractorFactory;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
-public abstract class AbstractArticleStrategy implements ArticleParseStrategy{
+public abstract class AbstractArticleStrategy implements ArticleParseStrategy {
 
 	private final RssReader rssReader;
 	private final ContentExtractorFactory contentExtractorFactory;
@@ -31,7 +32,7 @@ public abstract class AbstractArticleStrategy implements ArticleParseStrategy{
 			});
 	}
 
-	protected ContentExtractor getContentExtractor(ParseMethod parseMethod) throws CustomException {
+	protected ContentExtractorStrategy getContentExtractor(ParseMethod parseMethod) throws CustomException {
 		return contentExtractorFactory.getExtractor(parseMethod);
 	}
 }

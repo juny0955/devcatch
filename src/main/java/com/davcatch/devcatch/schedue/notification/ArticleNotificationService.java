@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.notification;
+package com.davcatch.devcatch.schedue.notification;
 
 import java.util.ArrayList;
 import java.util.Collections;

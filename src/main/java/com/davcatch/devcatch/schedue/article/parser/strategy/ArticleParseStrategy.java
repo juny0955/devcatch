@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article.strategy;
+package com.davcatch.devcatch.schedue.article.parser.strategy;
 
 import java.util.List;
 import java.util.Set;
@@ -6,7 +6,7 @@ import java.util.Set;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.common.exception.CustomException;
-import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
+import com.davcatch.devcatch.schedue.article.dto.ParsedArticle;
 
 public interface ArticleParseStrategy {
 

@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article;
+package com.davcatch.devcatch.schedue.article;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -9,8 +9,8 @@ import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.integration.gpt.response.GptResponse;
-import com.davcatch.devcatch.service.schedue.article.dto.Content;
-import com.davcatch.devcatch.service.schedue.article.dto.ContentResponse;
+import com.davcatch.devcatch.schedue.article.dto.ContentResponse;
+import com.davcatch.devcatch.schedue.article.dto.Content;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
