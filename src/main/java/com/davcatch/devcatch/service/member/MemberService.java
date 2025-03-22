@@ -6,13 +6,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.davcatch.devcatch.controller.member.request.ChangePasswordRequest;
+import com.davcatch.devcatch.controller.web.member.request.ChangePasswordRequest;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.member.MemberTag;
 import com.davcatch.devcatch.domain.tag.Tag;
 import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.exception.CustomException;
-import com.davcatch.devcatch.exception.ErrorCode;
+import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.repository.member.MemberRepository;
 import com.davcatch.devcatch.service.tag.TagService;
 
@@ -94,7 +94,7 @@ public class MemberService {
 
 	/**
 	 * 회원 구독 태그 변경
-	 * @param member 변경할 회원
+	 * @param memberId 변경할 회원 ID
 	 * @param subscribeAll 전체 구독 여부
 	 * @param selectedTags 선택 구독 목록
 	 */
@@ -113,7 +113,7 @@ public class MemberService {
 			if (selectedTags == null || selectedTags.isEmpty())
 				throw new CustomException(ErrorCode.BAD_REQUEST);
 
-			List<Tag> tags = tagService.getInTags(selectedTags);
+			List<Tag> tags = tagService.getInTagTypes(selectedTags);
 
 			List<MemberTag> memberTags = tags.stream()
 				.map(tag -> MemberTag.of(tag, member))

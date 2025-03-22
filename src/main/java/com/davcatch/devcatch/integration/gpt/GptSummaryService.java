@@ -4,8 +4,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import com.davcatch.devcatch.exception.CustomException;
-import com.davcatch.devcatch.exception.ErrorCode;
+import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.integration.gpt.request.GptRequest;
 import com.davcatch.devcatch.integration.gpt.response.GptResponse;
 

@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.auth.request.RegRequest;
+import com.davcatch.devcatch.controller.web.auth.request.RegRequest;
 import com.davcatch.devcatch.domain.member.Member;
-import com.davcatch.devcatch.exception.CustomException;
-import com.davcatch.devcatch.exception.ErrorCode;
-import com.davcatch.devcatch.service.cache.VerifyCodeCacheService;
-import com.davcatch.devcatch.service.mail.MailService;
-import com.davcatch.devcatch.service.mail.MailTemplate;
-import com.davcatch.devcatch.service.mail.VerificationInfo;
+import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.exception.ErrorCode;
+import com.davcatch.devcatch.service.common.cache.VerifyCodeCacheService;
+import com.davcatch.devcatch.service.common.mail.MailService;
+import com.davcatch.devcatch.service.common.mail.MailTemplate;
+import com.davcatch.devcatch.service.common.mail.VerificationInfo;
 import com.davcatch.devcatch.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;

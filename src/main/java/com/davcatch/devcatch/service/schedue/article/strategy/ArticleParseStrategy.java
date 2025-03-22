@@ -5,7 +5,7 @@ import java.util.Set;
 
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
-import com.davcatch.devcatch.exception.CustomException;
+import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 
 public interface ArticleParseStrategy {

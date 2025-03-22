@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DevCatch 관리자 대시보드</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Pretendard 폰트 CDN -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+    <!-- Tailwind 설정 -->
+    <script th:src="@{/js/tailwind-config.js}"></script>
+</head>
+<body class="bg-gray-50 font-sans">
+<div class="flex h-screen overflow-hidden">
+    <!-- 사이드바 -->
+    <div class="hidden md:flex md:flex-shrink-0">
+        <div class="flex flex-col w-64 bg-gradient-to-b from-primary-700 to-primary-900">
+            <!-- 로고 -->
+            <div class="h-16 flex items-center justify-center">
+                <h2 class="text-2xl font-bold text-white">
+                    <a th:href="@{/}">DevCatch</a>
+                </h2>
+            </div>
+
+            <!-- 메뉴 -->
+            <div class="flex-1 flex flex-col overflow-y-auto pt-5 pb-4">
+                <nav class="mt-5 flex-1 px-2 space-y-1">
+                    <a href="/admin" class="bg-primary-800 text-white group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-white mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        대시보드
+                    </a>
+
+                    <a href="/admin/sources" class="text-primary-100 hover:bg-primary-800 group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-primary-100 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                        소스 관리
+                    </a>
+
+                    <a href="/admin/articles" class="text-primary-100 hover:bg-primary-800 group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-primary-100 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
+                        </svg>
+                        아티클 관리
+                    </a>
+
+                    <a href="/admin/members" class="text-primary-100 hover:bg-primary-800 group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-primary-100 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        회원 관리
+                    </a>
+
+                    <a href="/admin/send-mail" class="text-primary-100 hover:bg-primary-800 group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-primary-100 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        일괄 메일 발송
+                    </a>
+
+                    <a href="/admin/scheduler" class="text-primary-100 hover:bg-primary-800 group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-primary-100 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        스케줄러 관리
+                    </a>
+
+                    <a href="/admin/settings" class="text-primary-100 hover:bg-primary-800 group flex items-center px-3 py-3 text-sm font-medium rounded-md">
+                        <svg class="text-primary-100 mr-3 h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        </svg>
+                        시스템 설정
+                    </a>
+                </nav>
+            </div>
+
+            <!-- 로그아웃 -->
+            <div class="flex-shrink-0 flex border-t border-primary-800 p-4">
+                <form th:action="@{/auth/logout}" method="post" class="flex-shrink-0 w-full group">
+                    <button type="submit" class="w-full flex items-center px-4 py-2 text-sm text-primary-100 hover:bg-primary-800 rounded-md">
+                        <svg class="mr-3 h-5 w-5 text-primary-100" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        로그아웃
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <!-- 상단 네비게이션 -->
+        <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+            <button type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden">
+                <span class="sr-only">메뉴 열기</span>
+                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+            <div class="flex-1 px-4 flex justify-between">
+                <div class="flex-1 flex">
+                    <h1 class="text-2xl font-semibold text-gray-800 self-center">관리자 대시보드</h1>
+                </div>
+                <div class="ml-4 flex items-center md:ml-6">
+                    <!-- 관리자 정보 드롭다운 -->
+                    <div class="ml-3 relative">
+                        <div>
+                            <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button">
+                                <span class="sr-only">계정 메뉴 열기</span>
+                                <div class="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 컨텐츠 영역 -->
+        <main class="flex-1 relative overflow-y-auto focus:outline-none bg-gray-50">
+            <div class="py-6">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <!-- 대시보드 카드 그리드 -->
+                    <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                        <!-- 회원수 카드 -->
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-primary-500 rounded-md p-3">
+                                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">전체 회원수</dt>
+                                            <dd>
+                                                <div class="text-lg font-medium text-gray-900">1,254명</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-5 py-3">
+                                <div class="text-sm">
+                                    <a href="/admin/members" class="font-medium text-primary-600 hover:text-primary-500">자세히 보기</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 아티클 수 카드 -->
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">전체 아티클 수</dt>
+                                            <dd>
+                                                <div class="text-lg font-medium text-gray-900">4,321개</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-5 py-3">
+                                <div class="text-sm">
+                                    <a href="/admin/articles" class="font-medium text-primary-600 hover:text-primary-500">자세히 보기</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 오늘 방문자 수 카드 -->
+                        <div class="bg-white overflow-hidden shadow rounded-lg">
+                            <div class="p-5">
+                                <div class="flex items-center">
+                                    <div class="flex-shrink-0 bg-indigo-500 rounded-md p-3">
+                                        <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    </div>
+                                    <div class="ml-5 w-0 flex-1">
+                                        <dl>
+                                            <dt class="text-sm font-medium text-gray-500 truncate">오늘 방문자 수</dt>
+                                            <dd>
+                                                <div class="text-lg font-medium text-gray-900">278명</div>
+                                            </dd>
+                                        </dl>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 px-5 py-3">
+                                <div class="text-sm">
+                                    <a href="/admin/analytics" class="font-medium text-primary-600 hover:text-primary-500">자세히 보기</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 최근 아티클 테이블 -->
+                    <div class="mt-8">
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">최근 등록된 아티클</h2>
+                        <div class="mt-4">
+                            <div class="flex flex-col">
+                                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">제목</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">소스</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">태그</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">등록일</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">상태</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                <!-- Sample row 1 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">Spring Boot 3.4 새로운 기능 살펴보기</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">당근 기술 블로그</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">BACKEND</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-23</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">발송 완료</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 2 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">React 19 마이그레이션 가이드</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">토스 기술 블로그</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">FRONTEND</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-22</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">발송 완료</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 3 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">AI 모델 최적화 방법론</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">카카오 기술 블로그</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">AI</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-21</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">발송 완료</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 4 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">Kubernetes 2.0 변경사항</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">네이버 D2</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">DEVOPS</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-21</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">발송 예정</span>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 5 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">Flutter 4.0 새로운 기능</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">쿠팡 기술 블로그</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">MOBILE</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-20</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">발송 완료</span>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-right">
+                            <a href="/admin/articles" class="text-sm font-medium text-primary-600 hover:text-primary-500">전체 아티클 보기 →</a>
+                        </div>
+                    </div>
+
+                    <!-- 최근 가입 회원 테이블 -->
+                    <div class="mt-8">
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">최근 가입 회원</h2>
+                        <div class="mt-4">
+                            <div class="flex flex-col">
+                                <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                                    <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                        <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                            <table class="min-w-full divide-y divide-gray-200">
+                                                <thead class="bg-gray-50">
+                                                <tr>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">이름</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">이메일</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">가입일</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">구독 상태</th>
+                                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">관리</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="bg-white divide-y divide-gray-200">
+                                                <!-- Sample row 1 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">김개발</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">dev.kim@example.com</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-23</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">전체 구독</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">수정</a>
+                                                        <a href="#" class="text-red-600 hover:text-red-900">삭제</a>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 2 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">이프론트</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">front.lee@example.com</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-22</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">개별 구독</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">수정</a>
+                                                        <a href="#" class="text-red-600 hover:text-red-900">삭제</a>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 3 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">박데브옵스</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">devops.park@example.com</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-21</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">전체 구독</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">수정</a>
+                                                        <a href="#" class="text-red-600 hover:text-red-900">삭제</a>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 4 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">최인공지능</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">ai.choi@example.com</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-20</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">개별 구독</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">수정</a>
+                                                        <a href="#" class="text-red-600 hover:text-red-900">삭제</a>
+                                                    </td>
+                                                </tr>
+                                                <!-- Sample row 5 -->
+                                                <tr>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm font-medium text-gray-900">정백엔드</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <div class="text-sm text-gray-500">backend.jung@example.com</div>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2025-03-19</td>
+                                                    <td class="px-6 py-4 whitespace-nowrap">
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">전체 구독</span>
+                                                    </td>
+                                                    <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                                                        <a href="#" class="text-primary-600 hover:text-primary-900 mr-3">수정</a>
+                                                        <a href="#" class="text-red-600 hover:text-red-900">삭제</a>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4 text-right">
+                            <a href="/admin/members" class="text-sm font-medium text-primary-600 hover:text-primary-500">전체 회원 보기 →</a>
+                        </div>
+                    </div>
+
+                    <!-- 시스템 상태 -->
+                    <div class="mt-8">
+                        <h2 class="text-lg leading-6 font-medium text-gray-900">시스템 상태</h2>
+                        <div class="mt-4 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                            <!-- 스케줄러 상태 -->
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                            <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-5 w-0 flex-1">
+                                            <dl>
+                                                <dt class="text-sm font-medium text-gray-500 truncate">스케줄러 상태</dt>
+                                                <dd>
+                                                    <div class="text-lg font-medium text-gray-900">정상 실행중</div>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                                    <div class="text-sm">
+                                        <span class="text-xs text-gray-500">마지막 실행: 2025-03-23 00:00</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 서버 상태 -->
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                            <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-5 w-0 flex-1">
+                                            <dl>
+                                                <dt class="text-sm font-medium text-gray-500 truncate">서버 상태</dt>
+                                                <dd>
+                                                    <div class="text-lg font-medium text-gray-900">정상</div>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                                    <div class="text-sm">
+                                        <span class="text-xs text-gray-500">CPU: 23%, 메모리: 45%</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- GPT API 상태 -->
+                            <div class="bg-white overflow-hidden shadow rounded-lg">
+                                <div class="px-4 py-5 sm:p-6">
+                                    <div class="flex items-center">
+                                        <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                                            <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                            </svg>
+                                        </div>
+                                        <div class="ml-5 w-0 flex-1">
+                                            <dl>
+                                                <dt class="text-sm font-medium text-gray-500 truncate">GPT API 상태</dt>
+                                                <dd>
+                                                    <div class="text-lg font-medium text-gray-900">정상</div>
+                                                </dd>
+                                            </dl>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 px-4 py-4 sm:px-6">
+                                    <div class="text-sm">
+                                        <span class="text-xs text-gray-500">마지막 요청: 2025-03-23 01:15</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 빠른 액션 버튼 -->
+                    <div class="mt-8 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
+                        <a href="/admin/scheduler/run" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            스케줄러 수동 실행
+                        </a>
+                        <a href="/admin/send-mail" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                            일괄 메일 발송
+                        </a>
+                        <a href="/admin/sources/add" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500">
+                            <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                            </svg>
+                            새 소스 추가
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- 자바스크립트 -->
+<script>
+    // 유저 메뉴 토글 (드롭다운)
+    document.getElementById('user-menu-button')?.addEventListener('click', function() {
+        const menu = document.getElementById('user-menu');
+        if (menu) menu.classList.toggle('hidden');
+    });
+</script>
+</body>
+</html>

@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.davcatch.devcatch.domain.BaseTime;
-import com.davcatch.devcatch.service.mail.VerificationInfo;
+import com.davcatch.devcatch.service.common.mail.VerificationInfo;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;

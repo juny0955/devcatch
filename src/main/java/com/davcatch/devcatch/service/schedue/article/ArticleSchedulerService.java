@@ -8,22 +8,20 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
+import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.domain.tag.Tag;
-import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.exception.CustomException;
-import com.davcatch.devcatch.exception.ErrorCode;
 import com.davcatch.devcatch.integration.gpt.GptSummaryService;
 import com.davcatch.devcatch.integration.gpt.response.GptResponse;
-import com.davcatch.devcatch.repository.SourceRepository;
-import com.davcatch.devcatch.repository.TagRepository;
+import com.davcatch.devcatch.repository.source.SourceRepository;
 import com.davcatch.devcatch.service.article.ArticleService;
 import com.davcatch.devcatch.service.schedue.article.dto.Content;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
 import com.davcatch.devcatch.service.schedue.article.strategy.ArticleParseStrategy;
 import com.davcatch.devcatch.service.schedue.article.strategy.ArticleParseStrategyFactory;
+import com.davcatch.devcatch.service.tag.TagService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -37,7 +35,7 @@ public class ArticleSchedulerService {
 	private final ArticleService articleService;
 	private final ArticleParseStrategyFactory articleParseStrategyFactory;
 	private final GptSummaryService gptSummaryService;
-	private final TagRepository tagRepository;
+	private final TagService tagService;
 	private final ContentParser contentParser;
 
 	public void createNewArticle() {
@@ -64,11 +62,9 @@ public class ArticleSchedulerService {
 					Content content = contentParser.parseContent(response);
 
 					Article article = Article.of(source, parsedArticle, content.getSummary());
-					for (TagType tagType : content.getTag()) {
-						Tag tag = tagRepository.findByTagType(tagType).orElseThrow(() -> new CustomException(ErrorCode.TAG_NOT_FOUND));
 
-						article.addArticleTag(ArticleTag.of(article, tag));
-					}
+					List<Tag> tagTypes = tagService.getInTagTypes(content.getTag());
+					tagTypes.forEach(tag -> article.addArticleTag(ArticleTag.of(article, tag)));
 
 					articleService.save(article);
 					count++;

@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
-import com.davcatch.devcatch.exception.CustomException;
+import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.integration.crawling.WebCrawler;
 import com.davcatch.devcatch.integration.rss.RssReader;
 import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;

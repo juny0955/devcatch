@@ -14,8 +14,8 @@ import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.service.article.ArticleService;
-import com.davcatch.devcatch.service.mail.MailService;
-import com.davcatch.devcatch.service.mail.MailTemplate;
+import com.davcatch.devcatch.service.common.mail.MailService;
+import com.davcatch.devcatch.service.common.mail.MailTemplate;
 import com.davcatch.devcatch.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
