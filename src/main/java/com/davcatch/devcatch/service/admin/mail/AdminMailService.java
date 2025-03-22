@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.admin;
+package com.davcatch.devcatch.service.admin.mail;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.admin.request.SendMailReqeust;
+import com.davcatch.devcatch.controller.admin.mail.request.SendMailReqeust;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.repository.member.MemberRepository;
 import com.davcatch.devcatch.service.common.mail.MailService;
@@ -17,7 +17,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class AdminService {
+public class AdminMailService {
 
 	private final MemberRepository memberRepository;
 	private final MailService mailService;

@@ -1,27 +1,21 @@
-package com.davcatch.devcatch.controller.admin;
+package com.davcatch.devcatch.controller.admin.mail;
 
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.davcatch.devcatch.controller.admin.request.SendMailReqeust;
-import com.davcatch.devcatch.service.admin.AdminService;
+import com.davcatch.devcatch.controller.admin.mail.request.SendMailReqeust;
+import com.davcatch.devcatch.service.admin.mail.AdminMailService;
 
 import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/admin")
-public class AdminController {
+public class MailController {
 
-	private final AdminService adminService;
-
-	@GetMapping("/dashboard")
-	public String dashBoard(Model model) {
-		return "admin/dashboard";
-	}
+	private final AdminMailService adminMailService;
 
 	@GetMapping("/send-mail")
 	public String sendMail() {
@@ -30,7 +24,7 @@ public class AdminController {
 
 	@PostMapping("/send-mail")
 	public String doSendMail(SendMailReqeust reqeust) {
-		adminService.sendMailToAllMember(reqeust);
+		adminMailService.sendMailToAllMember(reqeust);
 		return "redirect:/admin/send-mail";
 	}
 }

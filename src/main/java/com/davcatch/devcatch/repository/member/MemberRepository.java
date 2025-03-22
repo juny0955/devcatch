@@ -3,6 +3,7 @@ package com.davcatch.devcatch.repository.member;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,4 +25,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 	@EntityGraph(attributePaths = {"memberTags", "memberTags.tag"})
 	@Query("select m from Member m where m.id = :memberId")
 	Optional<Member> findMemberWithTag(Long memberId);
+
+	@Query("select m from Member m order by m.createdAt desc")
+	List<Member> findDashBoardList(Pageable pageable);
 }

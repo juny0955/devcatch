@@ -13,7 +13,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class SourceService {
+public class AdminSourceService {
 
 	private final SourceRepository sourceRepository;
 

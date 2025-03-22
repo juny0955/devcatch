@@ -36,4 +36,8 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	@Query("select a from Article a "
 		+ "order by a.publishedAt desc")
 	Page<Article> findArticlesList(Pageable pageable);
+
+	@Query("select a from Article a "
+		+ "order by a.publishedAt desc")
+	List<Article> findDashboardList(PageRequest pageRequest);
 }
