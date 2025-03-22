@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.davcatch.devcatch.controller.web.main.response.MainArticleResponse;
 import com.davcatch.devcatch.domain.article.Article;
@@ -36,10 +37,4 @@ public class MainController {
 		model.addAttribute("activeMenu", "home");
 		return "index";
 	}
-
-	@GetMapping("/sitemap.xml")
-	public String sitemap() {
-		return "sitemap.xml";
-	}
-
 }
