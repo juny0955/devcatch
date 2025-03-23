@@ -11,10 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.BatchSize;
-
 import com.davcatch.devcatch.domain.source.Source;
-import com.davcatch.devcatch.service.schedue.article.dto.ParsedArticle;
+import com.davcatch.devcatch.schedue.article.dto.ParsedArticle;
 
 /**
  * 아티클 정보 테이블

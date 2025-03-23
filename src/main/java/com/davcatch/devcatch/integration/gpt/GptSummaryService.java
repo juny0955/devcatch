@@ -33,7 +33,7 @@ public class GptSummaryService {
 	 * @return GPT 요약 내용
 	 */
 	public GptResponse getSummary(String content) throws CustomException {
-		log.info("GPT API 요청 시작");
+		log.debug("GPT API 요청 시작");
 
 		GptResponse response;
 
@@ -41,16 +41,16 @@ public class GptSummaryService {
 			GptRequest request = GptRequest.create(content, model, sysPrompt);
 			response = restTemplate.postForObject(URL, request, GptResponse.class);
 		} catch (Exception e) {
-			log.info("GPT API 요청중 에러 발생 : {}", e.getMessage());
+			log.error("GPT API 요청중 에러 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.GPT_REQUEST_ERROR);
 		}
 
 		if (response == null) {
-			log.info("GPT API 응답 BODY 없음");
+			log.warn("GPT API 응답 BODY 없음");
 			throw new CustomException(ErrorCode.GPT_REQUEST_BODY_NULL);
 		}
 
-		log.info("GPT API 요청 정상 종료");
+		log.debug("GPT API 요청 정상 종료");
 		return response;
 	}
 }

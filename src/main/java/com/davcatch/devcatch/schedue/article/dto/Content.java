@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article.dto;
+package com.davcatch.devcatch.schedue.article.dto;
 
 import java.util.List;
 import java.util.Set;

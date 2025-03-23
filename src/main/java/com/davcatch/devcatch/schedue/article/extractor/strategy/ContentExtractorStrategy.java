@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.schedue.article.extractor;
+package com.davcatch.devcatch.schedue.article.extractor.strategy;
 
 import java.util.Set;
 
@@ -7,7 +7,7 @@ import org.jsoup.nodes.Document;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.rometools.rome.feed.synd.SyndEntry;
 
-public interface ContentExtractor {
+public interface ContentExtractorStrategy {
 
 	/**
 	 * 본문 내용 파싱
