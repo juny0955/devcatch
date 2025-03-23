@@ -2,6 +2,7 @@ package com.davcatch.devcatch.repository.article;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -25,8 +26,6 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 		+ "where a.isSent = false ")
 	List<Article> findSendArticles();
 
-	boolean existsByLink(String link);
-
 	@EntityGraph(attributePaths = {"source"})
 	@Query("select a from Article a "
 		+ "order by a.publishedAt desc")
@@ -40,4 +39,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	@Query("select a from Article a "
 		+ "order by a.publishedAt desc")
 	List<Article> findDashboardList(PageRequest pageRequest);
+
+	@Query("select a.link from Article a where a.link in :links")
+	Set<String> findExistsLinks(Set<String> links);
 }

@@ -28,8 +28,4 @@ public class TagService {
 	public List<Tag> getInTagTypes(List<TagType> tagTypes) {
 		return tagRepository.findInTagType(tagTypes);
 	}
-
-	public Tag getByTageType(TagType tagType) throws CustomException {
-		return tagRepository.findByTagType(tagType).orElseThrow(() -> new CustomException(ErrorCode.TAG_NOT_FOUND));
-	}
 }

@@ -5,9 +5,14 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.domain.article.Article;
+import com.davcatch.devcatch.domain.article.ArticleTag;
 import com.davcatch.devcatch.domain.source.Source;
+import com.davcatch.devcatch.domain.tag.Tag;
+import com.davcatch.devcatch.schedue.article.dto.ArticleSummary;
 import com.davcatch.devcatch.schedue.article.dto.ParsedArticle;
+import com.davcatch.devcatch.schedue.article.processor.summary.ArticleSummaryService;
 import com.davcatch.devcatch.service.article.ArticleService;
 import com.davcatch.devcatch.service.tag.TagService;
 
@@ -20,7 +25,6 @@ import lombok.extern.slf4j.Slf4j;
 public class ArticleProcessorService {
 
 	private final ArticleSummaryService articleSummaryService;
-	private final ArticleTaggerService articleTaggerService;
 	private final TagService tagService;
 	private final ArticleService articleService;
 
@@ -43,7 +47,15 @@ public class ArticleProcessorService {
 		return processedArticles;
 	}
 
-	private Article processArticle(Source source, ParsedArticle parsedArticle) {
-		ArticleSummary summary = .s
+	private Article processArticle(Source source, ParsedArticle parsedArticle) throws CustomException {
+		ArticleSummary summary = articleSummaryService.summarizeArticle(parsedArticle.getContent());
+
+		Article article = Article.of(source, parsedArticle, summary.getSummary());
+
+		List<Tag> tags = tagService.getInTagTypes(summary.getTags());
+		tags.forEach(tag -> article.addArticleTag(ArticleTag.of(article, tag)));
+
+		articleService.save(article);
+		return article;
 	}
 }

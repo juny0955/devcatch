@@ -8,6 +8,7 @@ import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.schedue.article.parser.ArticleParseService;
 import com.davcatch.devcatch.schedue.article.dto.ParsedArticle;
+import com.davcatch.devcatch.schedue.article.processor.ArticleProcessorService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class ArticleSchedulerTask {
 
 			log.info("[{}] {}개 아티클 수집 완료", source.getName(), collectedArticles.size());
 
-			List<Article> processedArticles = articleProcessorService.processCollectedArticle(source, collectedArticles);
+			List<Article> processedArticles = articleProcessorService.processParsedArticles(source, collectedArticles);
 
 			log.info("[{}] {}개 아티클 처리 완료", source.getName(), processedArticles.size());
 		} catch (Exception e) {

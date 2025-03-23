@@ -13,9 +13,11 @@ import com.davcatch.devcatch.schedue.article.parser.strategy.ArticleParseStrateg
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ArticleParseStrategyFactory {
 
 	private final List<ArticleParseStrategy> articleParseStrategies;
@@ -33,8 +35,10 @@ public class ArticleParseStrategyFactory {
 	public ArticleParseStrategy getStrategy(ParseMethod parseMethod) throws CustomException {
 		ArticleParseStrategy strategy = strategyMap.get(parseMethod);
 
-		if (strategy == null)
+		if (strategy == null) {
+			log.error("파싱 메서드 {}에 대한 전략을 찾지 못함", parseMethod);
 			throw new CustomException(ErrorCode.NO_SUPPORTS_STRATEGY);
+		}
 
 		return strategy;
 	}

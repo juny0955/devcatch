@@ -2,8 +2,6 @@ package com.davcatch.devcatch.schedue.article.dto;
 
 import java.util.Date;
 
-import com.rometools.rome.feed.synd.SyndEntry;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

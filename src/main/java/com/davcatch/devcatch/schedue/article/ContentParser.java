@@ -34,7 +34,7 @@ public class ContentParser {
 
 			return Content.of(contentResponse.getSummary(), tagTypes);
 		} catch (JsonProcessingException e) {
-			log.info("GPT Rsponse 파싱중 오류 발생 : {}", e.getMessage());
+			log.info("GPT 응답 파싱중 오류 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.CONTENT_PARSE_ERROR);
 		}
 	}

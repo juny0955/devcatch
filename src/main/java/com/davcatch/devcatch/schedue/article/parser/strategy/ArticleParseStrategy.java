@@ -11,12 +11,18 @@ import com.davcatch.devcatch.schedue.article.dto.ParsedArticle;
 public interface ArticleParseStrategy {
 
 	/**
-	 * Article Parsing
+	 * 아티클 파싱
+	 *
 	 * @param source 해당 Source
-	 * @return 파싱된 Article List
-	 * @throws CustomException
+	 * @return 파싱된 아티클 목록
+	 * @throws CustomException 파싱중 오류 발생 시
 	 */
 	List<ParsedArticle> process(Source source) throws CustomException;
 
+	/**
+	 * 지원하는 파싱 방식 목록
+	 *
+	 * @return 파싱 방식 목록
+	 */
 	Set<ParseMethod> getSupportedParseMethods();
 }

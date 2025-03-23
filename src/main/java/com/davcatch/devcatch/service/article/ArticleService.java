@@ -1,7 +1,6 @@
 package com.davcatch.devcatch.service.article;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -32,16 +31,8 @@ public class ArticleService {
 		}
 	}
 
-	public Optional<Article> getByLastPublishedArticle(Long sourceId) {
-		return articleRepository.findLastPublishedArticle(sourceId);
-	}
-
 	public List<Article> getSendArticles() {
 		return articleRepository.findSendArticles();
-	}
-
-	public boolean checkExistsLink(String link) {
-		return articleRepository.existsByLink(link);
 	}
 
 	public List<Article> getNewArticles() {
