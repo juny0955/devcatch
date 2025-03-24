@@ -3,7 +3,7 @@ package com.davcatch.devcatch;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.davcatch.devcatch.schedue.SchedulerRunner;
+import com.davcatch.devcatch.schedule.SchedulerRunner;
 
 import lombok.RequiredArgsConstructor;
 
