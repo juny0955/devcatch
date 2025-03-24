@@ -1,64 +1,66 @@
+<!-- templates/admin/sendMail.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>전체 사용자 메일 전송</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Pretendard 폰트 CDN -->
-    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
-    <!-- Tailwind 설정 -->
-    <script th:src="@{/js/tailwind-config.js}"></script>
+    <title>일괄 메일 발송 - DevCatch 관리자</title>
 </head>
-<body class="bg-gray-50 font-sans">
-<div class="min-h-screen flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-lg">
-        <!-- 로고 영역 -->
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-bold text-primary-600">
-                <a th:href="@{/}">DevCatch</a>
-            </h2>
-            <p class="text-gray-600 mt-2">관리자 페이지</p>
-        </div>
+<body>
+<!-- 관리자 레이아웃을 사용 -->
+<div th:replace="~{layout/admin_layout :: html(
+    pageTitle='일괄 메일 발송',
+    headerTitle='일괄 메일 발송',
+    activeMenu='send-mail',
+    content=~{::content},
+    additionalResources=~{::additionalResources},
+    additionalScripts=~{::additionalScripts}
+)}">
 
-        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-            <!-- 헤더 -->
-            <div class="bg-gradient-to-r from-primary-500 to-primary-700 py-6 px-6">
-                <h1 class="text-white text-xl font-bold text-center">전체 사용자 메일 전송</h1>
-            </div>
+    <!-- 추가 리소스 -->
+    <th:block th:fragment="additionalResources">
+        <!-- 필요한 경우 여기에 특별한 CSS나 리소스 추가 -->
+    </th:block>
 
-            <!-- 폼 -->
-            <div class="p-6">
-                <form th:action="@{/admin/send-mail}" method="post" class="space-y-6">
+    <!-- 메인 콘텐츠 -->
+    <th:block th:fragment="content">
+        <div th:replace="~{admin/content/sendmail_content :: content}"></div>
+    </th:block>
 
-                    <!-- 내용 필드 -->
-                    <div>
-                        <label for="content" class="block text-sm font-medium text-gray-700 mb-1">메일 내용</label>
-                        <textarea id="content" name="content" rows="6"
-                                  class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
-                                  placeholder="메일 내용을 입력하세요" required></textarea>
-                        <p class="mt-1 text-xs text-gray-500">모든 구독자에게 이 내용이 전송됩니다. 신중하게 작성해주세요.</p>
-                    </div>
+    <!-- 추가 스크립트 -->
+    <th:block th:fragment="additionalScripts">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // 메일 전송 전 확인 대화상자
+                const sendButton = document.getElementById('send-button');
+                const mailForm = sendButton.closest('form');
 
-                    <!-- 전송 버튼 -->
-                    <div class="pt-2">
-                        <button type="submit"
-                                class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-200 ease-in-out">
-                            메일 전송
-                        </button>
-                    </div>
-                </form>
-            </div>
-        </div>
+                if (sendButton && mailForm) {
+                    mailForm.addEventListener('submit', function(e) {
+                        e.preventDefault();
 
-        <!-- 뒤로가기 링크 -->
-        <div class="mt-4 text-center">
-            <a href="/admin/dashboard" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
-                관리자 대시보드로 돌아가기
-            </a>
-        </div>
-    </div>
+                        const subject = document.getElementById('subject').value;
+                        const recipientType = document.querySelector('input[name="recipient"]:checked').value;
+                        const recipientText = recipientType === 'all' ? '모든 구독자' : '활성 구독자';
+
+                        // 선택된 태그 확인
+                        const selectedTags = Array.from(document.querySelectorAll('input[name="selectedTags"]:checked'))
+                            .map(checkbox => checkbox.value);
+
+                        let confirmMessage = `"${subject}" 제목의 메일을 ${recipientText}에게 발송하시겠습니까?`;
+
+                        if (selectedTags.length > 0) {
+                            confirmMessage += `\n선택된 태그: ${selectedTags.map(tag => '#' + tag).join(', ')}`;
+                        }
+
+                        if (confirm(confirmMessage)) {
+                            mailForm.submit();
+                        }
+                    });
+                }
+            });
+        </script>
+    </th:block>
 </div>
 </body>
 </html>

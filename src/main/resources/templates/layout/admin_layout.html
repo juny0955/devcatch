@@ -17,12 +17,12 @@
 <body class="bg-gray-50 font-sans">
 <div class="flex h-screen overflow-hidden">
     <!-- 사이드바 프래그먼트 -->
-    <div th:replace="~{fragments/admin_sidebar :: sidebar(${activeMenu})}"></div>
+    <div th:replace="~{admin/fragments/admin_sidebar :: sidebar(${activeMenu})}"></div>
 
     <!-- 메인 콘텐츠 영역 -->
     <div class="flex flex-col w-0 flex-1 overflow-hidden">
         <!-- 헤더 프래그먼트 -->
-        <div th:replace="~{fragments/admin_header :: header(${headerTitle})}"></div>
+        <div th:replace="~{admin/fragments/admin_header :: header(${headerTitle})}"></div>
 
         <!-- 컨텐츠 영역 -->
         <main class="flex-1 relative overflow-y-auto focus:outline-none bg-gray-50">
