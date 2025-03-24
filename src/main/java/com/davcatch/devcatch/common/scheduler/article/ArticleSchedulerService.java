@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article;
+package com.davcatch.devcatch.common.scheduler.article;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -7,7 +7,7 @@ import java.util.concurrent.Executor;
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.domain.source.Source;
-import com.davcatch.devcatch.service.source.SourceService;
+import com.davcatch.devcatch.web.service.source.SourceService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

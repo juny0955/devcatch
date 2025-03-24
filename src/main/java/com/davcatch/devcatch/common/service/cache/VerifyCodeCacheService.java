@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.common.cache;
+package com.davcatch.devcatch.common.service.cache;
 
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import com.davcatch.devcatch.common.config.CacheConfig;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
-import com.davcatch.devcatch.service.common.mail.VerificationInfo;
+import com.davcatch.devcatch.common.service.mail.VerificationInfo;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

@@ -1,13 +1,13 @@
-package com.davcatch.devcatch.scheduler.article.processor.summary;
+package com.davcatch.devcatch.common.scheduler.article.processor.summary;
 
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.common.exception.CustomException;
-import com.davcatch.devcatch.integration.gpt.GptSummaryService;
-import com.davcatch.devcatch.integration.gpt.response.GptResponse;
-import com.davcatch.devcatch.scheduler.article.ContentParser;
-import com.davcatch.devcatch.scheduler.article.dto.ArticleSummary;
-import com.davcatch.devcatch.scheduler.article.dto.Content;
+import com.davcatch.devcatch.common.scheduler.article.ContentParser;
+import com.davcatch.devcatch.common.scheduler.article.dto.ArticleSummary;
+import com.davcatch.devcatch.common.scheduler.article.dto.Content;
+import com.davcatch.devcatch.common.integration.gpt.GptSummaryService;
+import com.davcatch.devcatch.common.integration.gpt.response.GptResponse;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

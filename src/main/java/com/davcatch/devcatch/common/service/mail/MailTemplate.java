@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.common.mail;
+package com.davcatch.devcatch.common.service.mail;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

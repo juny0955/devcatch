@@ -1,10 +1,8 @@
-package com.davcatch.devcatch.integration.gpt.request;
+package com.davcatch.devcatch.common.integration.gpt.request;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Value;
-
-import com.davcatch.devcatch.integration.gpt.Messages;
+import com.davcatch.devcatch.common.integration.gpt.Messages;
 
 import lombok.Builder;
 import lombok.Data;

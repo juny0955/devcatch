@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.integration.crawling;
+package com.davcatch.devcatch.common.integration.crawling;
 
 import java.io.IOException;
 import java.util.Optional;

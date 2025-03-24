@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.dto;
+package com.davcatch.devcatch.common.scheduler.article.dto;
 
 import java.util.ArrayList;
 import java.util.List;

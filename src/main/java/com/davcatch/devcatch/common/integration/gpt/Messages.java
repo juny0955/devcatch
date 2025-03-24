@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.integration.gpt;
+package com.davcatch.devcatch.common.integration.gpt;
 
 import java.util.List;
 

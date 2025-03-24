@@ -1,17 +1,16 @@
-package com.davcatch.devcatch.controller.web.main;
+package com.davcatch.devcatch.web.controller.main;
 
 import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.davcatch.devcatch.controller.web.main.response.MainArticleResponse;
+import com.davcatch.devcatch.web.controller.main.response.MainArticleResponse;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
-import com.davcatch.devcatch.service.article.ArticleService;
-import com.davcatch.devcatch.service.article.ArticleTagService;
+import com.davcatch.devcatch.web.service.article.ArticleService;
+import com.davcatch.devcatch.web.service.article.ArticleTagService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +34,6 @@ public class MainController {
 
 		model.addAttribute("articles", articleResponses);
 		model.addAttribute("activeMenu", "home");
-		return "index";
+		return "web/index";
 	}
 }

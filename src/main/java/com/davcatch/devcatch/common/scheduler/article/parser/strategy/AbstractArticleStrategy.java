@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.parser.strategy;
+package com.davcatch.devcatch.common.scheduler.article.parser.strategy;
 
 import java.util.Collections;
 import java.util.List;
@@ -6,9 +6,9 @@ import java.util.List;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.common.exception.CustomException;
-import com.davcatch.devcatch.integration.rss.RssReaderService;
-import com.davcatch.devcatch.scheduler.article.extractor.strategy.ContentExtractorStrategy;
-import com.davcatch.devcatch.scheduler.article.extractor.factory.ContentExtractorFactory;
+import com.davcatch.devcatch.common.integration.rss.RssReaderService;
+import com.davcatch.devcatch.common.scheduler.article.extractor.strategy.ContentExtractorStrategy;
+import com.davcatch.devcatch.common.scheduler.article.extractor.factory.ContentExtractorFactory;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 

@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.parser;
+package com.davcatch.devcatch.common.scheduler.article.parser;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.scheduler.article.parser.factory.ArticleParseStrategyFactory;
+import com.davcatch.devcatch.common.scheduler.article.parser.strategy.ArticleParseStrategy;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.repository.article.ArticleRepository;
-import com.davcatch.devcatch.scheduler.article.dto.ParsedArticle;
-import com.davcatch.devcatch.scheduler.article.parser.factory.ArticleParseStrategyFactory;
-import com.davcatch.devcatch.scheduler.article.parser.strategy.ArticleParseStrategy;
+import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

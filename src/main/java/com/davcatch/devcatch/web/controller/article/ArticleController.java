@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.web.article;
+package com.davcatch.devcatch.web.controller.article;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.davcatch.devcatch.controller.web.article.response.ArticleResponse;
+import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
 import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.service.article.ArticleService;
-import com.davcatch.devcatch.service.article.ArticleTagService;
+import com.davcatch.devcatch.web.service.article.ArticleService;
+import com.davcatch.devcatch.web.service.article.ArticleTagService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,6 +54,6 @@ public class ArticleController {
 		model.addAttribute("articles", articleResponsePage);
 		model.addAttribute("availableTags", Arrays.asList(TagType.values()));
 		model.addAttribute("activeMenu", "articles");
-		return "article/list";
+		return "web/article/list";
 	}
 }

@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.extractor.strategy;
+package com.davcatch.devcatch.common.scheduler.article.extractor.strategy;
 
 import java.util.Set;
 

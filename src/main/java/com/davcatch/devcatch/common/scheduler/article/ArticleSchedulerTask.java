@@ -1,14 +1,14 @@
-package com.davcatch.devcatch.scheduler.article;
+package com.davcatch.devcatch.common.scheduler.article;
 
 import java.util.List;
 
 import org.springframework.stereotype.Component;
 
+import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
+import com.davcatch.devcatch.common.scheduler.article.parser.ArticleParseService;
+import com.davcatch.devcatch.common.scheduler.article.processor.ArticleProcessorService;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.Source;
-import com.davcatch.devcatch.scheduler.article.parser.ArticleParseService;
-import com.davcatch.devcatch.scheduler.article.dto.ParsedArticle;
-import com.davcatch.devcatch.scheduler.article.processor.ArticleProcessorService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

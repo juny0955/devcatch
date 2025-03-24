@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.schedule.article.parser;
+package com.davcatch.devcatch.scheduler.article.parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -22,13 +22,14 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.scheduler.article.parser.ArticleParseService;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.repository.article.ArticleRepository;
-import com.davcatch.devcatch.schedule.article.dto.ParsedArticle;
-import com.davcatch.devcatch.schedule.article.parser.factory.ArticleParseStrategyFactory;
-import com.davcatch.devcatch.schedule.article.parser.strategy.ArticleParseStrategy;
+import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
+import com.davcatch.devcatch.common.scheduler.article.parser.factory.ArticleParseStrategyFactory;
+import com.davcatch.devcatch.common.scheduler.article.parser.strategy.ArticleParseStrategy;
 
 @ExtendWith(MockitoExtension.class)
 class ArticleParseServiceTest {

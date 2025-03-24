@@ -1,16 +1,16 @@
-package com.davcatch.devcatch.scheduler.article;
+package com.davcatch.devcatch.common.scheduler.article;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.davcatch.devcatch.common.scheduler.article.dto.Content;
+import com.davcatch.devcatch.common.scheduler.article.dto.ContentResponse;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
-import com.davcatch.devcatch.integration.gpt.response.GptResponse;
-import com.davcatch.devcatch.scheduler.article.dto.ContentResponse;
-import com.davcatch.devcatch.scheduler.article.dto.Content;
+import com.davcatch.devcatch.common.integration.gpt.response.GptResponse;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 

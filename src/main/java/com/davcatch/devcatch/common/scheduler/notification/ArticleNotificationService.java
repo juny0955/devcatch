@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.notification;
+package com.davcatch.devcatch.common.scheduler.notification;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,10 +13,10 @@ import org.thymeleaf.context.Context;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.service.article.ArticleService;
-import com.davcatch.devcatch.service.common.mail.MailService;
-import com.davcatch.devcatch.service.common.mail.MailTemplate;
-import com.davcatch.devcatch.service.member.MemberService;
+import com.davcatch.devcatch.web.service.article.ArticleService;
+import com.davcatch.devcatch.common.service.mail.MailService;
+import com.davcatch.devcatch.common.service.mail.MailTemplate;
+import com.davcatch.devcatch.web.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

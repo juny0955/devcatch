@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.web.main.response;
+package com.davcatch.devcatch.web.controller.main.response;
 
 import java.util.Date;
 import java.util.List;

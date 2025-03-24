@@ -1,10 +1,10 @@
-package com.davcatch.devcatch.scheduler;
+package com.davcatch.devcatch.common.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import com.davcatch.devcatch.scheduler.notification.ArticleNotificationService;
-import com.davcatch.devcatch.scheduler.article.ArticleSchedulerService;
+import com.davcatch.devcatch.common.scheduler.article.ArticleSchedulerService;
+import com.davcatch.devcatch.common.scheduler.notification.ArticleNotificationService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

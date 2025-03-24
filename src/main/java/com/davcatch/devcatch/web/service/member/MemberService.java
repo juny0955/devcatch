@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.member;
+package com.davcatch.devcatch.web.service.member;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.davcatch.devcatch.controller.web.member.request.ChangePasswordRequest;
+import com.davcatch.devcatch.web.controller.member.request.ChangePasswordRequest;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.member.MemberTag;
 import com.davcatch.devcatch.domain.tag.Tag;
@@ -14,7 +14,7 @@ import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.repository.member.MemberRepository;
-import com.davcatch.devcatch.service.tag.TagService;
+import com.davcatch.devcatch.web.service.tag.TagService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

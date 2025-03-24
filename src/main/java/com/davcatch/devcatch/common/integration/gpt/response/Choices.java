@@ -1,6 +1,6 @@
-package com.davcatch.devcatch.integration.gpt.response;
+package com.davcatch.devcatch.common.integration.gpt.response;
 
-import com.davcatch.devcatch.integration.gpt.Messages;
+import com.davcatch.devcatch.common.integration.gpt.Messages;
 
 import lombok.Data;
 

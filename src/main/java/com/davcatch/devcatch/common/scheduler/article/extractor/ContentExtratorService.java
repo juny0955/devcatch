@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.extractor;
+package com.davcatch.devcatch.common.scheduler.article.extractor;
 
 public class ContentExtratorService {
 }

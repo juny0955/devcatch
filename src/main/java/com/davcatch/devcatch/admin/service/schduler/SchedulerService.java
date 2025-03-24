@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.admin.schduler;
+package com.davcatch.devcatch.admin.service.schduler;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -6,11 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
-import com.davcatch.devcatch.scheduler.article.ArticleSchedulerService;
-import com.davcatch.devcatch.scheduler.notification.ArticleNotificationService;
+import com.davcatch.devcatch.common.scheduler.article.ArticleSchedulerService;
+import com.davcatch.devcatch.common.scheduler.notification.ArticleNotificationService;
 
 @Service
 @RequiredArgsConstructor

@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.extractor.factory;
+package com.davcatch.devcatch.common.scheduler.article.extractor.factory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -6,10 +6,10 @@ import java.util.Map;
 
 import org.springframework.stereotype.Component;
 
+import com.davcatch.devcatch.common.scheduler.article.extractor.strategy.ContentExtractorStrategy;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
-import com.davcatch.devcatch.scheduler.article.extractor.strategy.ContentExtractorStrategy;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;

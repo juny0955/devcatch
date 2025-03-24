@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.admin.mail;
+package com.davcatch.devcatch.admin.service.mail;
 
 import java.util.List;
 
@@ -6,11 +6,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.admin.mail.request.SendMailReqeust;
+import com.davcatch.devcatch.admin.controller.mail.request.SendMailReqeust;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.repository.member.MemberRepository;
-import com.davcatch.devcatch.service.common.mail.MailService;
-import com.davcatch.devcatch.service.common.mail.MailTemplate;
+import com.davcatch.devcatch.common.service.mail.MailService;
+import com.davcatch.devcatch.common.service.mail.MailTemplate;
 
 import lombok.RequiredArgsConstructor;
 

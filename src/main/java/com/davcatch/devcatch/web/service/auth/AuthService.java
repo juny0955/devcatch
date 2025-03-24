@@ -1,23 +1,22 @@
-package com.davcatch.devcatch.service.auth;
+package com.davcatch.devcatch.web.service.auth;
 
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.controller.web.auth.request.RegRequest;
+import com.davcatch.devcatch.web.controller.auth.request.RegRequest;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
-import com.davcatch.devcatch.service.common.cache.VerifyCodeCacheService;
-import com.davcatch.devcatch.service.common.mail.MailService;
-import com.davcatch.devcatch.service.common.mail.MailTemplate;
-import com.davcatch.devcatch.service.common.mail.VerificationInfo;
-import com.davcatch.devcatch.service.member.MemberService;
+import com.davcatch.devcatch.common.service.cache.VerifyCodeCacheService;
+import com.davcatch.devcatch.common.service.mail.MailService;
+import com.davcatch.devcatch.common.service.mail.MailTemplate;
+import com.davcatch.devcatch.common.service.mail.VerificationInfo;
+import com.davcatch.devcatch.web.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

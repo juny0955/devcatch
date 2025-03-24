@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.scheduler.article.processor;
+package com.davcatch.devcatch.common.scheduler.article.processor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,11 +10,11 @@ import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.domain.tag.Tag;
-import com.davcatch.devcatch.scheduler.article.dto.ArticleSummary;
-import com.davcatch.devcatch.scheduler.article.dto.ParsedArticle;
-import com.davcatch.devcatch.scheduler.article.processor.summary.ArticleSummaryService;
-import com.davcatch.devcatch.service.article.ArticleService;
-import com.davcatch.devcatch.service.tag.TagService;
+import com.davcatch.devcatch.common.scheduler.article.dto.ArticleSummary;
+import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
+import com.davcatch.devcatch.common.scheduler.article.processor.summary.ArticleSummaryService;
+import com.davcatch.devcatch.web.service.article.ArticleService;
+import com.davcatch.devcatch.web.service.tag.TagService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

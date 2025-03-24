@@ -1,10 +1,75 @@
+<!-- templates/layout/admin_layout.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle} + ' - DevCatch 관리자'">DevCatch 관리자</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Pretendard 폰트 CDN -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+    <!-- Tailwind 설정 -->
+    <script th:src="@{/js/tailwind-config.js}"></script>
+    <!-- 추가 스타일 및 스크립트 -->
+    <th:block th:replace="${additionalResources}" />
 </head>
-<body>
-$END$
+<body class="bg-gray-50 font-sans">
+<div class="flex h-screen overflow-hidden">
+    <!-- 사이드바 프래그먼트 -->
+    <div th:replace="~{fragments/admin_sidebar :: sidebar(${activeMenu})}"></div>
+
+    <!-- 메인 콘텐츠 영역 -->
+    <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <!-- 헤더 프래그먼트 -->
+        <div th:replace="~{fragments/admin_header :: header(${headerTitle})}"></div>
+
+        <!-- 컨텐츠 영역 -->
+        <main class="flex-1 relative overflow-y-auto focus:outline-none bg-gray-50">
+            <div class="py-6">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <!-- 메인 콘텐츠 -->
+                    <div th:replace="${content}"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- 공통 JavaScript -->
+<script>
+    // 모바일 메뉴 토글
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const sidebar = document.querySelector('.md\\:flex-shrink-0');
+
+        if (mobileMenuButton && sidebar) {
+            mobileMenuButton.addEventListener('click', function() {
+                sidebar.classList.toggle('hidden');
+                sidebar.classList.toggle('md:flex');
+            });
+        }
+
+        // 사용자 메뉴 드롭다운 토글
+        const userMenuButton = document.getElementById('user-menu-button');
+        const userDropdownMenu = document.getElementById('user-dropdown-menu');
+
+        if (userMenuButton && userDropdownMenu) {
+            userMenuButton.addEventListener('click', function() {
+                userDropdownMenu.classList.toggle('hidden');
+            });
+
+            // 외부 클릭 시 드롭다운 닫기
+            document.addEventListener('click', function(event) {
+                if (!userMenuButton.contains(event.target) && !userDropdownMenu.contains(event.target)) {
+                    userDropdownMenu.classList.add('hidden');
+                }
+            });
+        }
+    });
+</script>
+
+<!-- 추가 스크립트 -->
+<th:block th:replace="${additionalScripts}" />
 </body>
 </html>

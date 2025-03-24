@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.web.article.response;
+package com.davcatch.devcatch.web.controller.article.response;
 
 import java.util.List;
 

@@ -1,12 +1,12 @@
-package com.davcatch.devcatch.controller.admin.mail;
+package com.davcatch.devcatch.admin.controller.mail;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.davcatch.devcatch.controller.admin.mail.request.SendMailReqeust;
-import com.davcatch.devcatch.service.admin.mail.AdminMailService;
+import com.davcatch.devcatch.admin.controller.mail.request.SendMailReqeust;
+import com.davcatch.devcatch.admin.service.mail.AdminMailService;
 
 import lombok.RequiredArgsConstructor;
 

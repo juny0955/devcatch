@@ -13,7 +13,7 @@
 </head>
 <body class="bg-gray-50 font-sans">
 <!-- 네비게이션 바 -->
-<div th:replace="~{fragments/nav :: navigation(${activeMenu})}"></div>
+<div th:replace="~{web/fragments/nav :: navigation(${activeMenu})}"></div>
 
 <!-- 메인 콘텐츠 -->
 <main class="py-10">
@@ -217,10 +217,10 @@
   </div>
 </main>
 
-<div th:replace="~{fragments/footer :: footer}"></div>
+<div th:replace="~{web/fragments/footer :: footer}"></div>
 
 <!-- 네비게이션 JS -->
-<div th:replace="~{fragments/nav :: navigationScript}"></div>
+<div th:replace="~{web/fragments/nav :: navigationScript}"></div>
 
 <!-- 자바스크립트 -->
 <script>

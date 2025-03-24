@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.tag;
+package com.davcatch.devcatch.web.service.tag;
 
 import java.util.List;
 

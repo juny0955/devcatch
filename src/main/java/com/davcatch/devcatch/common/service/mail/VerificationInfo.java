@@ -1,8 +1,8 @@
-package com.davcatch.devcatch.service.common.mail;
+package com.davcatch.devcatch.common.service.mail;
 
 import java.time.LocalDateTime;
 
-import com.davcatch.devcatch.controller.web.auth.request.RegRequest;
+import com.davcatch.devcatch.web.controller.auth.request.RegRequest;
 
 import lombok.Builder;
 import lombok.Data;

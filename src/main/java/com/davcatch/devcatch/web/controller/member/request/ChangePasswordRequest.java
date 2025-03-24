@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.web.member.request;
+package com.davcatch.devcatch.web.controller.member.request;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;

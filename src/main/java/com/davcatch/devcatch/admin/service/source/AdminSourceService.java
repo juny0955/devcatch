@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.service.admin.source;
+package com.davcatch.devcatch.admin.service.source;
 
 import java.util.List;
 

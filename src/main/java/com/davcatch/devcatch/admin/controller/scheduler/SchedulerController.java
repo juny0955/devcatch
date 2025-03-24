@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.admin.scheduler;
+package com.davcatch.devcatch.admin.controller.scheduler;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.davcatch.devcatch.service.admin.schduler.SchedulerService;
+import com.davcatch.devcatch.admin.service.schduler.SchedulerService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

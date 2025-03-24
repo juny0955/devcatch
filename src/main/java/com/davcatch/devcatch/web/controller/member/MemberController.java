@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.web.member;
+package com.davcatch.devcatch.web.controller.member;
 
 import java.util.Arrays;
 
@@ -11,13 +11,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.davcatch.devcatch.controller.web.member.request.ChangePasswordRequest;
-import com.davcatch.devcatch.controller.web.member.request.ChangeSubscribeReqeust;
+import com.davcatch.devcatch.web.controller.member.request.ChangePasswordRequest;
+import com.davcatch.devcatch.web.controller.member.request.ChangeSubscribeReqeust;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
-import com.davcatch.devcatch.service.member.MemberService;
+import com.davcatch.devcatch.web.service.member.MemberService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -32,7 +32,7 @@ public class MemberController {
 	@GetMapping("/mypage")
 	public String mypage(@AuthenticationPrincipal Member member, Model model) {
 		model.addAttribute("member", member);
-		return "member/mypage";
+		return "web/member/mypage";
 	}
 
 	@GetMapping("/setting/subscribe")
@@ -50,7 +50,7 @@ public class MemberController {
 			return "redirect:/member/mypage";
 		}
 
-		return "member/setting/subscribe";
+		return "web/member/setting/subscribe";
 	}
 
 	@PostMapping("/setting/subscribe")
@@ -76,7 +76,7 @@ public class MemberController {
 
 	@GetMapping("/setting/password")
 	public String settingPassword() {
-		return "member/setting/password";
+		return "web/member/setting/password";
 	}
 
 	@PostMapping("/setting/password")

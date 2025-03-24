@@ -12,7 +12,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.davcatch.devcatch.domain.source.Source;
-import com.davcatch.devcatch.schedule.article.dto.ParsedArticle;
+import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
 
 /**
  * 아티클 정보 테이블

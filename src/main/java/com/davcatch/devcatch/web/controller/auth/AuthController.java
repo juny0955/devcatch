@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.controller.web.auth;
+package com.davcatch.devcatch.web.controller.auth;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.davcatch.devcatch.controller.web.auth.request.RegRequest;
+import com.davcatch.devcatch.web.controller.auth.request.RegRequest;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
-import com.davcatch.devcatch.service.auth.AuthService;
+import com.davcatch.devcatch.web.service.auth.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class AuthController {
 
 	@GetMapping(value = "/signup")
 	public String reg() {
-		return "auth/signup";
+		return "web/auth/signup";
 	}
 
 	@PostMapping(value = "/signup")
@@ -51,7 +51,7 @@ public class AuthController {
 
 	@GetMapping("/email/verify")
 	public String verify() {
-		return "auth/inputVerifyCode";
+		return "web/auth/inputVerifyCode";
 	}
 
 	@PostMapping("/email/verify")
@@ -69,7 +69,7 @@ public class AuthController {
 			return "redirect:/auth/email/verify";
 		}
 
-		return "auth/welcome";
+		return "web/auth/welcome";
 	}
 
 	@PostMapping("/leave")
@@ -80,11 +80,11 @@ public class AuthController {
 
 	@GetMapping("/goodbye")
 	public String goodbye() {
-		return "auth/leave";
+		return "web/auth/leave";
 	}
 
 	@GetMapping("/login")
 	public String login() {
-		return "auth/login";
+		return "web/auth/login";
 	}
 }
