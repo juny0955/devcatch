@@ -1,0 +1,46 @@
+<!-- fragments/admin_header.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 상단 헤더 프래그먼트 -->
+<div th:fragment="header(title)" class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+  <button type="button" class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-primary-500 md:hidden" id="mobile-menu-button">
+    <span class="sr-only">메뉴 열기</span>
+    <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+  </button>
+  <div class="flex-1 px-4 flex justify-between">
+    <div class="flex-1 flex">
+      <h1 class="text-2xl font-semibold text-gray-800 self-center" th:text="${title}">페이지 제목</h1>
+    </div>
+    <div class="ml-4 flex items-center md:ml-6">
+      <!-- 관리자 정보 (선택사항) -->
+      <div class="ml-3 relative">
+        <div>
+          <button type="button" class="max-w-xs bg-white flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500" id="user-menu-button">
+            <span class="sr-only">사용자 메뉴</span>
+            <div class="h-8 w-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </button>
+        </div>
+        <!-- 드롭다운 메뉴 (기본적으로 숨겨짐) -->
+        <div class="hidden origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" id="user-dropdown-menu">
+          <a href="/member/mypage" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">내 프로필</a>
+          <a href="/admin" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">관리자 대시보드</a>
+          <form th:action="@{/auth/logout}" method="post">
+            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">로그아웃</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
