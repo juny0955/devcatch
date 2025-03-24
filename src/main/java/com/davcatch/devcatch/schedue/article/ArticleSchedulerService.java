@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.repository.source.SourceRepository;
+import com.davcatch.devcatch.service.source.SourceService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,11 +17,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ArticleSchedulerService {
 
-	private final SourceRepository sourceRepository;
+	private final SourceService sourceService;
 	private final ArticleSchedulerTask articleSchedulerTask;
 
 	public void createNewArticle() {
-		List<Source> sources = sourceRepository.findAllByIsActiveTrue();
+		List<Source> sources = sourceService.getActiveSources();
 
 		List<CompletableFuture<Void>> futures = sources.stream()
 			.map(source -> CompletableFuture.runAsync(() -> {

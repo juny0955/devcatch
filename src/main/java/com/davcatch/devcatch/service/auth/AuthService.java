@@ -1,5 +1,7 @@
 package com.davcatch.devcatch.service.auth;
 
+import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.UUID;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,7 @@ public class AuthService {
 	private final MailService mailService;
 	private final VerifyCodeCacheService verifyCodeCacheService;
 	private final PasswordEncoder passwordEncoder;
+	private final SecureRandom secureRandom = new SecureRandom();
 
 	/**
 	 * 가입전 인증 진행
@@ -44,7 +47,7 @@ public class AuthService {
 			throw new CustomException(ErrorCode.EXISTS_EMAIL);
 
 		VerificationInfo verificationInfo = VerificationInfo.create(request);
-		String verifyCode = UUID.randomUUID().toString().substring(0, 7);
+		String verifyCode = generateVerificationCode();
 		verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
 
 		Context context = new Context();
@@ -79,5 +82,11 @@ public class AuthService {
 		log.info("회원 {} 구독 취소", email);
 
 		memberService.remove(email);
+	}
+
+	public String generateVerificationCode() {
+		byte[] randomBytes = new byte[6];
+		secureRandom.nextBytes(randomBytes);
+		return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes).substring(0, 8);
 	}
 }
