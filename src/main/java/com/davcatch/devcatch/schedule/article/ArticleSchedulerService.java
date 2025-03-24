@@ -25,16 +25,24 @@ public class ArticleSchedulerService {
 		List<Source> sources = sourceService.getActiveSources();
 		log.info("총 {}개 소스 처리 시작", sources.size());
 
-		List<CompletableFuture<Void>> futures = sources.stream()
-			.map(source -> CompletableFuture.runAsync(() -> {
-				try {
-					articleSchedulerTask.processSource(source);
-				} catch (Exception e) {
-					log.error("[{}] 소스 처리 중 오류 발생: {}", source.getName(), e.getMessage(), e);
-				}
-			}, schedulerTaskExecutor))
-			.toList();
+		int batchSize = 5;
 
-		CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+		for (int i=0; i<sources.size(); i+=batchSize) {
+			int endIndex = Math.min(i + batchSize, sources.size());
+			List<Source> batchSources = sources.subList(i, endIndex);
+
+			List<CompletableFuture<Void>> futures = batchSources.stream()
+				.map(source -> CompletableFuture.runAsync(() -> {
+					try {
+						articleSchedulerTask.processSource(source);
+					} catch (Exception e) {
+						log.error("[{}] 소스 처리 중 오류 발생: {}", source.getName(), e.getMessage(), e);
+					}
+				}, schedulerTaskExecutor))
+				.toList();
+
+			CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+
+		}
 	}
 }
