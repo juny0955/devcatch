@@ -97,29 +97,15 @@ public class AuthController {
 	public String doFindPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
 		try {
 			authService.findPassword(email);
-
-			redirectAttributes.addFlashAttribute("message", "입력하신 이메일로 인증코드가 발송되었습니다. 이메일을 확인해 주세요");
-
 		} catch (CustomException e) {
-			if (e.getErrorCode() == ErrorCode.MEMBER_NOT_FOUND) {
+			if (e.getErrorCode() == ErrorCode.MEMBER_NOT_FOUND)
 				redirectAttributes.addFlashAttribute("error", "입력하신 이메일로 가입된 계정을 찾을 수 없습니다.");
-			} else {
+			else
 				redirectAttributes.addFlashAttribute("error", "비밀번호 재설정 요청 중 오류가 발생했습니다.");
-			}
 
 			return "redirect:/auth/find/password";
 		}
 
-		return "redirect:/auth/find/password/verify";
-	}
-
-	@GetMapping("/find/password/verify")
-	public String findPasswordVerify() {
-		return "web/auth/findPasswordVerify";
-	}
-
-	@PostMapping("/find/password/new")
-	public String doFindPasswordVerify(@RequestParam String verifyCode) {
-		return "";
+		return "redirect:/auth/login";
 	}
 }
