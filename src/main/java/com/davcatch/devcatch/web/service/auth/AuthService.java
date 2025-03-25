@@ -83,6 +83,26 @@ public class AuthService {
 		memberService.remove(email);
 	}
 
+	public void findPassword(String email) throws CustomException {
+		log.info("비밀번호 재설정 요청: {}", email);
+		try {
+			Member member = memberService.getMemberByEmail(email);
+			VerificationInfo verificationInfo = VerificationInfo.create(member);
+
+			String verifyCode = generateVerificationCode();
+			verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
+
+			Context context = new Context();
+			context.setVariable("subject", MailTemplate.VERIFY_TITLE.getTitle());
+			context.setVariable("verifyCode", verifyCode);
+
+			mailService.sendMail(email, MailTemplate.VERIFY_TITLE, context);
+		} catch (CustomException e) {
+			log.warn("비밀번호 재설정 요청: {} - 회원 찾지 못함", email);
+			throw e;
+		}
+	}
+
 	public String generateVerificationCode() {
 		byte[] randomBytes = new byte[6];
 		secureRandom.nextBytes(randomBytes);
