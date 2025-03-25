@@ -1,0 +1,114 @@
+<!-- templates/web/content/verify_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 이메일 인증 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            <!-- 로고 영역 -->
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-primary-600">DevCatch</h2>
+            </div>
+
+            <!-- 인증 카드 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- 카드 헤더 -->
+                <div class="bg-gradient-to-r from-primary-500 to-primary-700 py-6 px-6">
+                    <h1 class="text-white text-xl font-bold text-center">이메일 인증</h1>
+                </div>
+
+                <!-- 카드 본문 -->
+                <div class="p-6">
+                    <!-- 에러 메시지 영역 -->
+                    <div th:if="${error}" class="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm" role="alert" th:text="${error}"></div>
+
+                    <!-- 인증 안내 메시지 -->
+                    <div class="mb-6 text-center">
+                        <div class="w-16 h-16 mx-auto bg-primary-100 rounded-full flex items-center justify-center">
+                            <svg class="w-8 h-8 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <p class="mt-3 text-gray-600">
+                            이메일로 전송된 인증코드를 입력해주세요
+                        </p>
+                    </div>
+
+                    <form th:action="@{/auth/email/verify}" method="post" class="space-y-5">
+                        <!-- 인증코드 입력 필드 -->
+                        <div>
+                            <label for="verifyCode" class="block text-sm font-medium text-gray-700 mb-1">인증코드 입력</label>
+                            <div class="relative">
+                                <input type="text" id="verifyCode" name="verifyCode"
+                                       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500 text-center tracking-widest text-lg font-medium"
+                                       placeholder="인증코드 입력"  required>
+                            </div>
+                        </div>
+
+                        <!-- 인증 타이머 (선택사항) -->
+                        <div class="text-center">
+                            <p class="text-sm text-gray-500">남은 시간: <span class="font-medium text-red-500">5:00</span></p>
+                        </div>
+
+                        <!-- 인증 확인 버튼 -->
+                        <div class="pt-2">
+                            <button type="submit"
+                                    class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-200 ease-in-out">
+                                인증 확인
+                            </button>
+                        </div>
+                    </form>
+
+                    <!-- 안내 텍스트 -->
+                    <div class="mt-6 text-center">
+                        <p class="text-sm text-gray-600 mb-2">
+                            5분 내로 인증을 완료해주세요
+                        </p>
+                        <p class="text-sm">
+                            이메일이 오지 않았습니까?
+                            <a th:href="@{/devcatch/reg}" class="text-primary-600 hover:text-primary-700 font-medium">
+                                처음부터 다시 시도
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 타이머 스크립트 -->
+<script th:fragment="timerScript">
+    document.addEventListener('DOMContentLoaded', function() {
+        let timeLeft = 5 * 60; // 5분을 초 단위로
+        const timerElement = document.querySelector('span.text-red-500');
+
+        const updateTimer = () => {
+            const minutes = Math.floor(timeLeft / 60);
+            const seconds = timeLeft % 60;
+
+            // 형식 지정 (MM:SS)
+            timerElement.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+
+            if (timeLeft <= 0) {
+                clearInterval(timer);
+                timerElement.textContent = '0:00';
+                alert('인증 시간이 만료되었습니다. 다시 시도해주세요.');
+            }
+
+            timeLeft -= 1;
+        };
+
+        // 초기 타이머 표시
+        updateTimer();
+
+        // 1초마다 타이머 업데이트
+        const timer = setInterval(updateTimer, 1000);
+    });
+</script>
+</body>
+</html>

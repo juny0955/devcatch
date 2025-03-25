@@ -1,0 +1,48 @@
+<!-- templates/layout/web_layout.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title th:text="${pageTitle} + ' - 데브캐치'">페이지 제목 - 데브캐치</title>
+    <!-- Pretendard 폰트 CDN -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind 설정 -->
+    <script th:src="@{/js/tailwind-config.js}"></script>
+    <!-- 추가 스타일 및 리소스 -->
+    <th:block th:replace="${additionalResources}" />
+</head>
+<body class="bg-gray-50 font-sans min-h-screen flex flex-col">
+    <!-- 네비게이션 바 -->
+    <div th:replace="~{web/fragments/nav :: navigation(${activeMenu})}"></div>
+
+    <!-- 메인 콘텐츠 -->
+    <main class="flex-grow">
+        <!-- 페이지별 콘텐츠 -->
+        <th:block th:if="${content != null}">
+            <div th:replace="${content}"></div>
+        </th:block>
+        <th:block th:unless="${content != null}">
+            <div class="py-10">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+                    <h1 class="text-3xl font-bold text-gray-900">페이지를 찾을 수 없습니다</h1>
+                    <p class="mt-4 text-lg text-gray-500">요청한 페이지의 콘텐츠가 존재하지 않습니다.</p>
+                </div>
+            </div>
+        </th:block>
+    </main>
+
+    <!-- 푸터 -->
+    <div th:replace="~{web/fragments/footer :: footer}"></div>
+
+    <!-- 네비게이션 JS -->
+    <div th:replace="~{web/fragments/nav :: navigationScript}"></div>
+
+    <!-- 추가 스크립트 -->
+    <th:block th:replace="${additionalScripts}" />
+</body>
+</html>

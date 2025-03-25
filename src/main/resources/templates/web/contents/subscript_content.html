@@ -1,0 +1,130 @@
+<!-- templates/web/content/subscribe_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 구독 설정 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+    <div class="min-h-screen flex items-center justify-center px-4 py-12">
+        <div class="w-full max-w-md">
+            <!-- 로고 영역 -->
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-primary-600">
+                    <a th:href="@{/}">DevCatch</a>
+                </h2>
+            </div>
+            <!-- 알림 메시지 -->
+            <div th:if="${error}" class="mb-4 p-4 bg-red-100 border border-red-200 text-red-700 rounded-lg" role="alert" th:text="${error}"></div>
+
+            <!-- 카드 -->
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- 헤더 -->
+                <div class="bg-gradient-to-r from-primary-500 to-primary-700 py-6 px-6">
+                    <h1 class="text-white text-xl font-bold text-center">구독 설정</h1>
+                </div>
+
+                <!-- 본문 -->
+                <div class="p-6">
+                    <form th:action="@{/member/setting/subscribe}" method="post">
+                        <!-- 전체 구독 체크박스 -->
+                        <div class="mb-6">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                                       id="subscribeAll" name="subscribeAll" th:checked="${member.subscribeAll}">
+                                <span class="text-gray-700 font-medium">전체 구독</span>
+                            </label>
+                            <p class="text-sm text-gray-500 mt-1 ml-8">모든 태그의 컨텐츠를 구독합니다</p>
+                        </div>
+
+                        <!-- 구분선 -->
+                        <div class="border-t border-gray-200 my-6"></div>
+
+                        <!-- 개별 태그 구독 체크박스 -->
+                        <div id="tagCheckboxGroup">
+                            <label class="block text-gray-700 font-medium mb-3">구독할 태그 선택</label>
+                            <div class="space-y-3">
+                                <div class="flex items-center space-x-3 cursor-pointer" th:each="tag : ${availableTags}">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500 tag-checkbox"
+                                           th:id="${'tag_' + tag}" name="selectedTags" th:value="${tag}"
+                                           th:checked="${#lists.contains(member.memberTags.![tag.tagType], tag)}">
+                                    <label class="text-gray-700" th:for="${'tag_' + tag}" th:text="${tag}"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 저장 버튼 -->
+                        <div class="mt-8">
+                            <button type="submit" class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-200 ease-in-out">
+                                설정 저장
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- 뒤로가기 링크 -->
+            <div class="mt-4 text-center">
+                <a href="/member/mypage" class="text-primary-600 hover:text-primary-700 text-sm font-medium">
+                    마이페이지로 돌아가기
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 구독 설정 스크립트 -->
+<script th:fragment="subscribeScript">
+    document.addEventListener('DOMContentLoaded', function() {
+        const subscribeAllCheckbox = document.getElementById('subscribeAll');
+        const tagCheckboxes = document.querySelectorAll('.tag-checkbox');
+
+        // 전체 구독 체크박스 상태에 따라 개별 태그 체크박스 활성화/비활성화 처리
+        function toggleTagCheckboxes() {
+            const disable = subscribeAllCheckbox.checked;
+            tagCheckboxes.forEach(cb => {
+                cb.disabled = disable;
+                // 비활성화된 체크박스의 스타일 처리
+                if (disable) {
+                    cb.parentElement.classList.add('opacity-50');
+                } else {
+                    cb.parentElement.classList.remove('opacity-50');
+                }
+            });
+        }
+
+        // 모든 개별 태그가 선택되었을 경우 전체 구독 체크박스를 자동으로 체크
+        function checkIfAllTagsSelected() {
+            const allChecked = Array.from(tagCheckboxes).every(cb => cb.checked);
+            if (allChecked) {
+                // 전체 구독 체크박스 자동 체크
+                subscribeAllCheckbox.checked = true;
+                // 개별 태그 체크박스 해제 및 비활성화
+                tagCheckboxes.forEach(cb => {
+                    cb.checked = false;
+                    cb.disabled = true;
+                    cb.parentElement.classList.add('opacity-50');
+                });
+            } else {
+                subscribeAllCheckbox.checked = false;
+            }
+            toggleTagCheckboxes();
+        }
+
+        // 초기 상태 적용
+        toggleTagCheckboxes();
+
+        // 전체 구독 체크박스 상태 변경 시 처리
+        subscribeAllCheckbox.addEventListener('change', function() {
+            toggleTagCheckboxes();
+        });
+
+        // 각 개별 태그 체크박스에 변경 이벤트 추가
+        tagCheckboxes.forEach(cb => {
+            cb.addEventListener('change', checkIfAllTagsSelected);
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!-- templates/web/content/welcome_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        /* 배경 그라데이션 애니메이션 */
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animated-gradient {
+            background: linear-gradient(-45deg, #0ea5e9, #0284c7, #0369a1, #0284c7);
+            background-size: 400% 400%;
+            animation: gradientAnimation 15s ease infinite;
+        }
+
+        /* 캔버스 confetti 이펙트용 스타일 */
+        #confetti-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body>
+<!-- 환영 페이지 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+    <!-- 배경 레이어 -->
+    <div class="animated-gradient fixed inset-0 w-full h-full"></div>
+
+    <!-- 컨페티 캔버스 -->
+    <canvas id="confetti-canvas"></canvas>
+
+    <!-- 콘텐츠 영역 -->
+    <div class="relative min-h-screen flex items-center justify-center px-4 z-20">
+        <div class="text-center max-w-md">
+            <!-- 아이콘 -->
+            <div class="mb-8">
+                <svg class="w-24 h-24 mx-auto text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                </svg>
+            </div>
+
+            <!-- 환영 메시지 -->
+            <h1 class="text-4xl font-bold text-white mb-4">데브캐치 가입을 환영합니다!</h1>
+            <p class="text-xl text-white opacity-90 mb-10">새로운 아티클이 올라오면 오전 8시에 메일로 알려드릴게요.</p>
+
+            <!-- 액션 버튼 -->
+            <div class="space-y-4">
+                <a href="/devcatch" class="block w-full py-3 px-4 bg-white text-primary-600 font-medium rounded-lg transition duration-200 ease-in-out hover:bg-primary-50">
+                    메인 페이지로 이동
+                </a>
+                <a href="/member/setting/subscribe" class="block w-full py-3 px-4 bg-primary-700 text-white font-medium rounded-lg transition duration-200 ease-in-out hover:bg-primary-800">
+                    구독 설정하기
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 환영 페이지 스크립트 -->
+<script th:fragment="confettiScript" src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
+<script th:fragment="welcomeScript">
+    // 페이지 로드 시 confetti 이펙트 실행 (5초 동안)
+    window.onload = function() {
+        var duration = 5000;
+        var animationEnd = Date.now() + duration;
+        var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 1000 };
+
+        function randomInRange(min, max) {
+            return Math.random() * (max - min) + min;
+        }
+
+        var interval = setInterval(function() {
+            var timeLeft = animationEnd - Date.now();
+            if (timeLeft <= 0) {
+                clearInterval(interval);
+                return;
+            }
+            var particleCount = 50 * (timeLeft / duration);
+            // 좌측과 우측에서 동시에 발사
+            confetti(Object.assign({}, defaults, {
+                particleCount: particleCount,
+                origin: { x: randomInRange(0.1, 0.3), y: Math.random() - 0.2 }
+            }));
+            confetti(Object.assign({}, defaults, {
+                particleCount: particleCount,
+                origin: { x: randomInRange(0.7, 0.9), y: Math.random() - 0.2 }
+            }));
+        }, 250);
+    };
+</script>
+</body>
+</html>

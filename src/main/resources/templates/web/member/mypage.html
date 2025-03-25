@@ -1,74 +1,28 @@
+<!-- templates/web/member/mypage.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>마이페이지</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Pretendard 폰트 CDN -->
-  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css" />
-  <!-- Tailwind 설정 -->
-  <script th:src="@{/js/tailwind-config.js}"></script>
+    <meta charset="UTF-8">
 </head>
-<body class="bg-gray-50 font-sans">
-<div class="min-h-screen flex items-center justify-center px-4 py-12">
-  <div class="w-full max-w-md">
-    <!-- 로고 영역 -->
-    <div class="text-center mb-8">
-      <h2 class="text-3xl font-bold text-primary-600">
-        <a th:href="@{/}">DevCatch</a>
-      </h2>
-    </div>
+<body>
+<!-- 웹 레이아웃을 사용 -->
+<div th:replace="~{layout/web_layout :: html(
+    pageTitle='마이페이지',
+    activeMenu='none',
+    content=~{web/contents/mypage_content :: content},
+    additionalResources=~{::additionalResources},
+    additionalScripts=~{::additionalScripts}
+)}">
 
-    <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-      <!-- 상단 배경 디자인 -->
-      <div class="h-32 bg-gradient-to-r from-primary-500 to-primary-700"></div>
+    <!-- 추가 리소스 -->
+    <th:block th:fragment="additionalResources">
+        <!-- 필요한 경우 여기에 특별한 CSS나 리소스 추가 -->
+    </th:block>
 
-      <!-- 프로필 영역 -->
-      <div class="relative px-6 pb-8">
-        <!-- 프로필 아바타 -->
-        <div class="absolute -top-16 left-1/2 transform -translate-x-1/2">
-          <div class="w-32 h-32 rounded-full bg-primary-100 border-4 border-white flex items-center justify-center text-primary-700">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-            </svg>
-          </div>
-        </div>
-
-        <!-- 사용자 정보 -->
-        <div class="pt-20 text-center">
-          <h1 class="text-2xl font-bold text-gray-800" th:text="${member.name} + '님의 마이페이지'">홍길동님의 마이페이지</h1>
-          <p class="text-gray-500 mt-1" th:text="${member.email}">hong@example.com</p>
-
-          <!-- 액션 버튼 -->
-          <div class="mt-8 space-y-3">
-            <a th:href="@{/member/setting/subscribe}" class="block w-full py-3 px-4 bg-primary-500 hover:bg-primary-600 text-white font-medium rounded-lg text-center transition duration-200 ease-in-out">
-              구독 설정
-            </a>
-            <a th:href="@{/member/setting/password}" class="block w-full py-3 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg text-center transition duration-200 ease-in-out">
-              비밀번호 재설정
-            </a>
-            <form th:action="@{/auth/logout}" method="post">
-              <button type="submit" class="w-full py-3 px-4 bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium rounded-lg text-center transition duration-200 ease-in-out">
-                로그아웃
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- 추가 스크립트 -->
+    <th:block th:fragment="additionalScripts">
+        <script th:replace="~{web/contents/mypage_content :: alertScript}"></script>
+    </th:block>
 </div>
-
-<!-- JavaScript: redirectAttribute로 전달된 message가 있을 경우 alert 표시 -->
-<script th:inline="javascript">
-  /*<![CDATA[*/
-  var message = /*[[${message}]]*/ '';
-  if(message && message.trim().length > 0) {
-    alert(message);
-  }
-  /*]]>*/
-</script>
 </body>
 </html>
