@@ -141,4 +141,9 @@ public class MemberService {
 
 		log.info("회원 {} 비밀번호 재설정", memberId);
 	}
+
+	public Member getMemberByEamil(String email) throws CustomException {
+		return memberRepository.findByEmail(email)
+			.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+	}
 }

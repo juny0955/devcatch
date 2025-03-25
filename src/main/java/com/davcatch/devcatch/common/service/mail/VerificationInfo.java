@@ -2,6 +2,7 @@ package com.davcatch.devcatch.common.service.mail;
 
 import java.time.LocalDateTime;
 
+import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.web.controller.auth.request.RegRequest;
 
 import lombok.Builder;
@@ -21,6 +22,14 @@ public class VerificationInfo {
 			.email(request.getEmail())
 			.name(request.getName())
 			.password(request.getPassword())
+			.createdAt(LocalDateTime.now())
+			.build();
+	}
+
+	public static VerificationInfo create(Member member) {
+		return VerificationInfo.builder()
+			.email(member.getEmail())
+			.name(member.getName())
 			.createdAt(LocalDateTime.now())
 			.build();
 	}

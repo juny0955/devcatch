@@ -24,7 +24,6 @@ public class VerifyCodeCacheService {
 	@PostConstruct
 	public void init() {
 		emailVerificationCache = cacheManager.getCache(CacheConfig.EMAIL_VERIFICATION_CACHE);
-
 		if (emailVerificationCache == null) {
 			log.error("이메일 인증 캐시 '{}'를 찾을 수 없습니다", CacheConfig.EMAIL_VERIFICATION_CACHE);
 			throw new IllegalStateException("이메일 인증 캐시 찾을수 없음, CacheConfig 확인");
@@ -34,7 +33,7 @@ public class VerifyCodeCacheService {
 	}
 
 	/**
-	 * 캐시 저장
+	 * 이메일 인증 캐시 저장
 	 * @param verifyCode Key
 	 * @param verificationInfo Value
 	 */
@@ -69,6 +68,4 @@ public class VerifyCodeCacheService {
 		emailVerificationCache.evict(verifyCode);
 		log.debug("인증 코드 {} 캐시에서 제거", verifyCode);
 	}
-
-
 }
