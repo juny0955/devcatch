@@ -50,10 +50,10 @@ public class AuthService {
 		verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
 
 		Context context = new Context();
-		context.setVariable("subject", MailTemplate.VERIFY_TITLE.getTitle());
+		context.setVariable("subject", MailTemplate.VERIFY_EMAIL.getTitle());
 		context.setVariable("verifyCode", verifyCode);
 
-		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_TITLE, context);
+		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_EMAIL, context);
 	}
 
 	/** 신규 가입 진행
@@ -83,29 +83,33 @@ public class AuthService {
 		memberService.remove(email);
 	}
 
+	@Transactional
 	public void findPassword(String email) throws CustomException {
 		log.info("비밀번호 재설정 요청: {}", email);
-		try {
-			Member member = memberService.getMemberByEmail(email);
-			VerificationInfo verificationInfo = VerificationInfo.create(member);
+		Member member = memberService.getMemberByEamil(email);
 
-			String verifyCode = generateVerificationCode();
-			verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
+		String tempPassword = generateTempPassword();
+		String encodedPassword = passwordEncoder.encode(tempPassword);
+		member.changePassword(encodedPassword);
 
-			Context context = new Context();
-			context.setVariable("subject", MailTemplate.VERIFY_TITLE.getTitle());
-			context.setVariable("verifyCode", verifyCode);
+		Context context = new Context();
+		context.setVariable("subject", MailTemplate.FIND_PASSWORD.getTitle());
+		context.setVariable("name", member.getName());
+		context.setVariable("tempPassword", tempPassword);
 
-			mailService.sendMail(email, MailTemplate.VERIFY_TITLE, context);
-		} catch (CustomException e) {
-			log.warn("비밀번호 재설정 요청: {} - 회원 찾지 못함", email);
-			throw e;
-		}
+		mailService.sendMail(email, MailTemplate.FIND_PASSWORD, context);
+		log.info("회원 {} 임시 비밀번호 발급", member.getName());
 	}
 
 	public String generateVerificationCode() {
 		byte[] randomBytes = new byte[6];
 		secureRandom.nextBytes(randomBytes);
 		return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes).substring(0, 8);
+	}
+
+	private String generateTempPassword() {
+		byte[] randomBytes = new byte[12];
+		secureRandom.nextBytes(randomBytes);
+		return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes).substring(0, 12);
 	}
 }

@@ -112,4 +112,14 @@ public class AuthController {
 
 		return "redirect:/auth/find/password/verify";
 	}
+
+	@GetMapping("/find/password/verify")
+	public String findPasswordVerify() {
+		return "web/auth/findPasswordVerify";
+	}
+
+	@PostMapping("/find/password/new")
+	public String doFindPasswordVerify(@RequestParam String verifyCode) {
+		return "";
+	}
 }
