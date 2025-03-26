@@ -1,0 +1,28 @@
+<!-- templates/web/source/list.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 웹 레이아웃을 사용 -->
+<div th:replace="~{layout/web_layout :: html(
+    pageTitle='기술 블로그 목록',
+    activeMenu='sources',
+    content=~{web/contents/source_list_content :: content},
+    additionalResources=~{::additionalResources},
+    additionalScripts=~{::additionalScripts}
+)}">
+
+    <!-- 추가 리소스 -->
+    <th:block th:fragment="additionalResources">
+        <!-- 필요한 경우 여기에 특별한 CSS나 리소스 추가 -->
+    </th:block>
+
+    <!-- 추가 스크립트 -->
+    <th:block th:fragment="additionalScripts">
+        <!-- 필요한 경우 여기에 특별한 스크립트 추가 -->
+    </th:block>
+</div>
+</body>
+</html>
