@@ -36,7 +36,7 @@ public class ArticleParseStrategyFactory {
 		ArticleParseStrategy strategy = strategyMap.get(parseMethod);
 
 		if (strategy == null) {
-			log.error("파싱 메서드 {}에 대한 전략을 찾지 못함", parseMethod);
+			log.error("파싱 메서드 {}에 대한 ArticleParse 전략을 찾지 못함", parseMethod);
 			throw new CustomException(ErrorCode.NO_SUPPORTS_STRATEGY);
 		}
 

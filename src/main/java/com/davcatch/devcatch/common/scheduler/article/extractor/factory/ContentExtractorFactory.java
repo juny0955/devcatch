@@ -13,9 +13,11 @@ import com.davcatch.devcatch.common.exception.ErrorCode;
 
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class ContentExtractorFactory {
 
 	private final List<ContentExtractorStrategy> contentExtractorStrategies;
@@ -34,8 +36,10 @@ public class ContentExtractorFactory {
 	public ContentExtractorStrategy getExtractor(ParseMethod parseMethod) throws CustomException {
 		ContentExtractorStrategy contentExtractorStrategy = extractorMap.get(parseMethod);
 
-		if (contentExtractorStrategy == null)
+		if (contentExtractorStrategy == null) {
+			log.error("파싱 메서드 {}에 대한 ContentExtractor 전략을 찾지 못함", parseMethod);
 			throw new CustomException(ErrorCode.NO_SUPPORTS_STRATEGY);
+		}
 
 		return contentExtractorStrategy;
 	}
