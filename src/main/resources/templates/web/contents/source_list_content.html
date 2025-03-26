@@ -1,0 +1,114 @@
+<!-- templates/web/contents/source_list_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 소스 목록 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+    <div class="py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- 페이지 헤더 -->
+            <div class="flex flex-col md:flex-row md:items-center justify-between mb-6">
+                <div>
+                    <h1 class="text-3xl font-bold leading-tight text-gray-900">기술 블로그 목록</h1>
+                    <p class="mt-1 text-lg text-gray-500">
+                        DevCatch에서 수집 중인 기술 블로그 목록입니다
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-sm font-medium bg-primary-100 text-primary-800 ml-2">
+              총 <span class="font-bold ml-1" th:text="${#lists.size(sources)}">0</span>개
+            </span>
+                    </p>
+                </div>
+
+                <!-- 검색 입력 -->
+                <div class="mt-4 md:mt-0">
+                    <div class="relative">
+                        <input type="text" id="source-search" placeholder="블로그 이름으로 검색"
+                               class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 pl-10 pr-4">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 소스 목록 컴팩트 리스트 -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <ul class="divide-y divide-gray-200" id="source-list">
+                    <!-- 각 소스 항목 -->
+                    <li th:each="source : ${sources}" class="hover:bg-gray-50 source-item">
+                        <div class="px-6 py-4 flex items-center justify-between">
+                            <div class="min-w-0 flex-1">
+                                <p class="text-base font-medium text-gray-900 truncate source-name" th:text="${source.name}">블로그 이름</p>
+                            </div>
+                            <div class="ml-4 flex-shrink-0">
+                                <a th:href="${source.mainUrl}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700 transition-colors">
+                                    <svg class="mr-2 -ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                                        <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                                    </svg>
+                                    방문하기
+                                </a>
+                            </div>
+                        </div>
+                    </li>
+
+                    <!-- 소스가 없을 경우 -->
+                    <li th:if="${#lists.isEmpty(sources)}" class="py-8 text-center">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-900">등록된 소스가 없습니다</h3>
+                        <p class="mt-1 text-sm text-gray-500">현재 기술 블로그 소스가 없습니다.</p>
+                    </li>
+
+                    <!-- 검색 결과 없음 메시지 (기본적으로 숨김) -->
+                    <li id="no-results" class="py-8 text-center hidden">
+                        <svg class="mx-auto h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <h3 class="mt-2 text-lg font-medium text-gray-900">검색 결과가 없습니다</h3>
+                        <p class="mt-1 text-sm text-gray-500">다른 검색어로 시도해보세요.</p>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- 검색 기능 스크립트 -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInput = document.getElementById('source-search');
+            const sourceItems = document.querySelectorAll('.source-item');
+            const noResults = document.getElementById('no-results');
+
+            searchInput.addEventListener('keyup', function() {
+                const searchTerm = this.value.toLowerCase();
+                let resultsFound = false;
+
+                sourceItems.forEach(item => {
+                    const sourceName = item.querySelector('.source-name').textContent.toLowerCase();
+
+                    if (sourceName.includes(searchTerm)) {
+                        item.classList.remove('hidden');
+                        resultsFound = true;
+                    } else {
+                        item.classList.add('hidden');
+                    }
+                });
+
+                // 검색 결과가 없을 때 메시지 표시
+                if (!resultsFound && sourceItems.length > 0) {
+                    noResults.classList.remove('hidden');
+                } else {
+                    noResults.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</div>
+</body>
+</html>
