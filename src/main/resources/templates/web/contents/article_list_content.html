@@ -64,7 +64,7 @@
             </h3>
             <div class="text-sm text-gray-500">
               <span th:if="${selectedTag != null}" th:text="${'#' + selectedTag}"></span>
-              <span th:if="${param.keyword != null && param.keyword != ''}" th:text="${', 키워드: ' + param.keyword}"></span>
+              <span th:if="${param.keyword != null && !#strings.isEmpty(param.keyword[0])}" th:text="${' 키워드: ' + param.keyword}"></span>
             </div>
           </div>
         </div>
