@@ -21,10 +21,12 @@ import com.davcatch.devcatch.web.service.member.MemberService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
 
 	private final MemberService memberService;
@@ -47,6 +49,8 @@ public class MemberController {
 		} catch (CustomException e) {
 			if (e.getErrorCode() == ErrorCode.MEMBER_NOT_FOUND)
 				redirectAttributes.addFlashAttribute("error", "서버에서 회원정보를 찾지못하였습니다 문제가 지속된다면 관리자에게 문의하세요");
+			else
+				redirectAttributes.addFlashAttribute("error", "서버오류로 인해 다시 시도해주세요");
 			return "redirect:/member/mypage";
 		}
 
@@ -59,6 +63,7 @@ public class MemberController {
 		ChangeSubscribeReqeust reqeust,
 		RedirectAttributes redirectAttributes) {
 
+		log.info("{} -> 구독 설정 변경 요청", member.getEmail());
 		try {
 			memberService.changeSubscribe(member.getId(), reqeust.isSubscribeAll(), reqeust.getSelectedTags());
 			redirectAttributes.addFlashAttribute("message", "정상적으로 변경되었습니다");
@@ -86,6 +91,7 @@ public class MemberController {
 		BindingResult bindingResult,
 		RedirectAttributes redirectAttributes) {
 
+		log.info("{} -> 비밀번호 변경 요청", member.getEmail());
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
 			return "redirect:/member/setting/password";
