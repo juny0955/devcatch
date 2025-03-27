@@ -6,6 +6,7 @@ build/
 !**/src/test/**/build/
 .gitmessage.txt
 .env
+logs/
 
 ### STS ###
 .apt_generated

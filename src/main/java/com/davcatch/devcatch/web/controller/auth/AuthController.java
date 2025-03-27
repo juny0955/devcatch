@@ -15,10 +15,12 @@ import com.davcatch.devcatch.web.service.auth.AuthService;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/auth")
+@Slf4j
 public class AuthController {
 
 	private final AuthService authService;
@@ -30,8 +32,10 @@ public class AuthController {
 
 	@PostMapping(value = "/signup")
 	public String doReg(@Valid RegRequest request, BindingResult bindingResult, RedirectAttributes redirectAttributes) {
+		log.info("{} -> 회원가입 요청", request.getEmail());
 		if (bindingResult.hasErrors()) {
 			redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+			log.info("{} -> 회원가입 요청 중 에러: {}", request.getEmail(), bindingResult.getAllErrors());
 			return "redirect:/auth/signup";
 		}
 
@@ -43,6 +47,7 @@ public class AuthController {
 			else if (e.getErrorCode().equals(ErrorCode.SERVER_ERROR))
 				redirectAttributes.addFlashAttribute("error", "서버 오류로인해 잠시후 다시 시도해주세요.");
 
+			log.info("{} -> 회원 가입 요청 중 에러: {}", request.getEmail(), e.getErrorCode());
 			return "redirect:/auth/signup";
 		}
 
@@ -56,7 +61,6 @@ public class AuthController {
 
 	@PostMapping("/email/verify")
 	public String doVerify(@RequestParam String verifyCode, RedirectAttributes redirectAttributes) {
-
 		try {
 			authService.register(verifyCode);
 		} catch (CustomException e) {
@@ -74,6 +78,7 @@ public class AuthController {
 
 	@PostMapping("/leave")
 	public String doLeave(String email) {
+		log.info("{} -> 회원탈퇴 요청");
 		authService.leave(email);
 		return "redirect:/auth/goodbye";
 	}
@@ -95,6 +100,7 @@ public class AuthController {
 
 	@PostMapping("/find/password")
 	public String doFindPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
+		log.info("{} -> 비밀번호 찾기 요청");
 		try {
 			authService.findPassword(email);
 		} catch (CustomException e) {

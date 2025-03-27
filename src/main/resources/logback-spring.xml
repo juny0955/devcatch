@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 로그 파일 경로 설정 -->
+    <property name="LOG_PATH" value="./logs" />
+
+    <!-- 콘솔 appender 설정 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 애플리케이션 전체 로그 appender -->
+    <appender name="APPLICATION" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/application.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/application.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 스케줄러 로그 appender -->
+    <appender name="SCHEDULER" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/scheduler.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/scheduler.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 에러 로그 appender -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOG_PATH}/error.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${LOG_PATH}/error.%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <!-- 로거 설정 -->
+    <!-- 애플리케이션 전체 로그 (ERROR와 스케줄러 로그 제외) -->
+    <logger name="com.davcatch.devcatch" level="INFO" additivity="false">
+        <appender-ref ref="APPLICATION" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- 애플리케이션 로그에서 스케줄러 로그 제외 -->
+    <logger name="com.davcatch.devcatch.common.scheduler" level="INFO" additivity="false">
+        <appender-ref ref="SCHEDULER" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- 에러 로그를 수집할 패키지 -->
+    <logger name="com.davcatch.devcatch" level="ERROR" additivity="false">
+        <appender-ref ref="ERROR" />
+        <appender-ref ref="CONSOLE" />
+    </logger>
+
+    <!-- 루트 로거 설정 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+    </root>
+</configuration>
