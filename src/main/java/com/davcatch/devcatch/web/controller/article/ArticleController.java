@@ -38,7 +38,7 @@ public class ArticleController {
 		@PageableDefault(size = 10, sort = "publishedAt", direction = Sort.Direction.DESC) Pageable pageable,
 		Model model) {
 
-		Page<Article> articles = articleService.getArticlesList(pageable);
+		Page<Article> articles = articleService.getArticlesList(pageable, keyword, tag);
 		List<ArticleTag> articleTags = articleTagService.getArticleTagByArticlesWithTag(articles.stream().toList());
 
 		List<ArticleResponse> articleResponses = articles.stream()
@@ -53,6 +53,7 @@ public class ArticleController {
 
 		model.addAttribute("articles", articleResponsePage);
 		model.addAttribute("availableTags", Arrays.asList(TagType.values()));
+		model.addAttribute("selectedTag", tag);
 		model.addAttribute("activeMenu", "articles");
 		return "web/article/list";
 	}

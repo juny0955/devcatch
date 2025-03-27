@@ -1,5 +1,6 @@
 package com.davcatch.devcatch.web.service.article;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -19,6 +20,9 @@ public class ArticleTagService {
 	private final ArticleTagRepository articleTagRepository;
 
 	public List<ArticleTag> getArticleTagByArticlesWithTag(List<Article> articles) {
+		if (articles.isEmpty())
+			return Collections.emptyList();
+
 		return articleTagRepository.findByArticles(articles);
 	}
 }

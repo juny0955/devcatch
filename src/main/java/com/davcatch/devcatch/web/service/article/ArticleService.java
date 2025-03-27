@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.domain.article.Article;
+import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.repository.article.ArticleRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,10 @@ public class ArticleService {
 		return articleRepository.findNewArticlesTOP6(PageRequest.of(0, 6));
 	}
 
-	public Page<Article> getArticlesList(Pageable pageable) {
-		return articleRepository.findArticlesList(pageable);
+	public Page<Article> getArticlesList(Pageable pageable, String keyword, TagType tag) {
+		if (keyword != null && keyword.trim().isEmpty())
+			keyword = null;
+
+		return articleRepository.findArticlesList(pageable, keyword, tag);
 	}
 }

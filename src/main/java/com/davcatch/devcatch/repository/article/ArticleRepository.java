@@ -5,13 +5,13 @@ import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.davcatch.devcatch.domain.article.Article;
+import com.davcatch.devcatch.domain.tag.TagType;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
 
@@ -32,13 +32,17 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 	List<Article> findNewArticlesTOP6(Pageable pageable);
 
 	@EntityGraph(attributePaths = {"source"})
-	@Query("select a from Article a "
+	@Query("select distinct a from Article a "
+		+ "left join a.articleTags at "
+		+ "left join at.tag t "
+		+ "where (:keyword is null or lower(a.title) like lower(concat(:keyword, '%'))) "
+		+ "and (:tag is null or t.tagType = :tag) "
 		+ "order by a.publishedAt desc")
-	Page<Article> findArticlesList(Pageable pageable);
+	Page<Article> findArticlesList(Pageable pageable, String keyword, TagType tag);
 
 	@Query("select a from Article a "
 		+ "order by a.publishedAt desc")
-	List<Article> findDashboardList(PageRequest pageRequest);
+	List<Article> findDashboardList(Pageable pageable);
 
 	@Query("select a.link from Article a where a.link in :links")
 	Set<String> findExistsLinks(Set<String> links);
