@@ -32,9 +32,10 @@ public class RssReaderService {
 
 		try {
 			URL url = new URL(feedUrl);
-			connection = (HttpURLConnection)url.openConnection();
+			connection = (HttpURLConnection) url.openConnection();
+
 			connection.setRequestMethod("GET");
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0");
+			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
 
 			try (InputStream inputStream = connection.getInputStream();
 				 Reader reader = new InputStreamReader(inputStream, StandardCharsets.UTF_8)) {
@@ -42,6 +43,7 @@ public class RssReaderService {
 				SyndFeedInput syndFeedInput = new SyndFeedInput();
 				syndFeedInput.setAllowDoctypes(true);
 				syndFeedInput.setPreserveWireFeed(true);
+				syndFeedInput.setXmlHealerOn(true); // XML 문법 오류 자동 복구 활성화
 
 				SyndFeed feed = syndFeedInput.build(reader);
 				log.debug("RSS FEED 정상 수집 URL : {}", feedUrl);
