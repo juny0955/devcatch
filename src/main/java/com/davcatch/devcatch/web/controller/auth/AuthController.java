@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.web.controller.auth;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,6 +14,7 @@ import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.web.service.auth.AuthService;
 
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -89,7 +91,12 @@ public class AuthController {
 	}
 
 	@GetMapping("/login")
-	public String login() {
+	public String login(HttpSession session, Model model) {
+		String errorMessage = (String) session.getAttribute("error");
+		if (errorMessage != null) {
+			model.addAttribute("error", errorMessage);
+			session.removeAttribute("error");
+		}
 		return "web/auth/login";
 	}
 
