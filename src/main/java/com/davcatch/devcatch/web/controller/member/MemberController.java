@@ -65,7 +65,7 @@ public class MemberController {
 
 		log.info("{} -> 구독 설정 변경 요청", member.getEmail());
 		try {
-			memberService.changeSubscribe(member.getId(), reqeust.isSubscribeAll(), reqeust.getSelectedTags());
+			memberService.changeSubscribe(member.getId(), reqeust);
 			redirectAttributes.addFlashAttribute("message", "정상적으로 변경되었습니다");
 		} catch (CustomException e) {
 			if (e.getErrorCode() == ErrorCode.BAD_REQUEST)

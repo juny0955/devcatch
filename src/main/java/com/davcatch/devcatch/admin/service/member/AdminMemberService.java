@@ -21,4 +21,8 @@ public class AdminMemberService {
 	public List<Member> getDashBoardMemberList() {
 		return memberRepository.findDashBoardList(PageRequest.of(0, 5));
 	}
+
+	public int getTotalMemberSize() {
+		return memberRepository.findTotalMemberSize();
+	}
 }

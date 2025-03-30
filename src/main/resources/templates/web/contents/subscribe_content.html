@@ -37,6 +37,14 @@
                             </label>
                             <p class="text-sm text-gray-500 mt-1 ml-8">모든 태그의 컨텐츠를 구독합니다</p>
                         </div>
+                        <div class="mb-6">
+                            <label class="flex items-center space-x-3 cursor-pointer">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                                       id="subscribeForeign" name="subscribeForeign" th:checked="${member.subscribeForeign}">
+                                <span class="text-gray-700 font-medium">해외 블로그 구독</span>
+                            </label>
+                            <p class="text-sm text-gray-500 mt-1 ml-8">해외 기술 블로그 컨텐츠도 함께 받아보세요</p>
+                        </div>
 
                         <!-- 구분선 -->
                         <div class="border-t border-gray-200 my-6"></div>

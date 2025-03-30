@@ -45,11 +45,15 @@ public class Member extends BaseTime implements UserDetails {
     @Column(name = "subscribe_all", nullable = false)
     private boolean subscribeAll;
 
+    @Column(name = "subscribe_foreign", nullable = false)
+    private boolean subscribeForeign;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false)
     private MemberRole role;
 
     @OneToMany(mappedBy = "member", orphanRemoval = true, cascade = CascadeType.ALL)
+    @Builder.Default
     private List<MemberTag> memberTags = new ArrayList<>();
 
     public static Member from(VerificationInfo verificationInfo, String encodedPassword) {
@@ -58,13 +62,16 @@ public class Member extends BaseTime implements UserDetails {
             .email(verificationInfo.getEmail())
             .password(encodedPassword)
             .subscribeAll(true)
-            .memberTags(new ArrayList<>())
             .role(MemberRole.USER)
             .build();
     }
 
     public void changeSubscription(boolean subscribeAll) {
         this.subscribeAll = subscribeAll;
+    }
+
+    public void changeSubscribeForeign(boolean subscribeForeign) {
+        this.subscribeForeign = subscribeForeign;
     }
 
     public void clearMemberTags() {

@@ -10,6 +10,6 @@ import lombok.Data;
 public class ChangeSubscribeReqeust {
 
 	private boolean subscribeAll;
-
+	private boolean subscribeForeign;
 	private List<TagType> selectedTags;
 }

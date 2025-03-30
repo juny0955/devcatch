@@ -22,6 +22,8 @@ public class DashBoardController {
 	public String dashBoard(Model model) {
 		model.addAttribute("members", memberService.getDashBoardMemberList());
 		model.addAttribute("articles", articleService.getDashBoardArticleList());
+		model.addAttribute("totalMemberSize", memberService.getTotalMemberSize());
+		model.addAttribute("totalArticleSize", articleService.getTotalArticleSize());
 		return "admin/dashboard";
 	}
 }

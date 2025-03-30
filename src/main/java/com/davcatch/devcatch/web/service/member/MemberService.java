@@ -14,6 +14,7 @@ import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.repository.member.MemberRepository;
+import com.davcatch.devcatch.web.controller.member.request.ChangeSubscribeReqeust;
 import com.davcatch.devcatch.web.service.tag.TagService;
 
 import lombok.RequiredArgsConstructor;
@@ -95,25 +96,22 @@ public class MemberService {
 	/**
 	 * 회원 구독 태그 변경
 	 * @param memberId 변경할 회원 ID
-	 * @param subscribeAll 전체 구독 여부
-	 * @param selectedTags 선택 구독 목록
+	 * @param reqeust 구독 설정 Request
 	 */
 	@Transactional
-	public void changeSubscribe(Long memberId, boolean subscribeAll, List<TagType> selectedTags) throws CustomException {
+	public void changeSubscribe(Long memberId, ChangeSubscribeReqeust reqeust) throws CustomException {
 		Member member = memberRepository.findMemberWithTag(memberId)
 			.orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-		if (subscribeAll && member.isSubscribeAll())
-			return;
-
-		member.changeSubscription(subscribeAll);
+		member.changeSubscription(reqeust.isSubscribeAll());
+		member.changeSubscribeForeign(reqeust.isSubscribeForeign());
 		member.clearMemberTags();
 
-		if (!subscribeAll) {
-			if (selectedTags == null || selectedTags.isEmpty())
+		if (!reqeust.isSubscribeAll()) {
+			if (reqeust.getSelectedTags() == null || reqeust.getSelectedTags().isEmpty())
 				throw new CustomException(ErrorCode.BAD_REQUEST);
 
-			List<Tag> tags = tagService.getInTagTypes(selectedTags);
+			List<Tag> tags = tagService.getInTagTypes(reqeust.getSelectedTags());
 
 			List<MemberTag> memberTags = tags.stream()
 				.map(tag -> MemberTag.of(tag, member))

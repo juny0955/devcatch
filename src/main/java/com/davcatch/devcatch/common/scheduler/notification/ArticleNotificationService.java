@@ -58,14 +58,15 @@ public class ArticleNotificationService {
 			futures.add(future);
 		}
 
-		processSendMailResults(futures, articles, members.size());
+		if (!futures.isEmpty())
+			processSendMailResults(futures, articles, members.size());
+		else
+			log.info("전송할 메일이 없습니다");
+
+		updateArticlesStatus(articles);
 	}
 
 	private void processSendMailResults(List<CompletableFuture<Void>> futures, List<Article> articles, int memberSize) {
-		if (futures.isEmpty()) {
-			log.info("전송할 메일이 없습니다");
-			return;
-		}
 
 		CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
 
@@ -81,13 +82,14 @@ public class ArticleNotificationService {
 			.count();
 
 		log.info("새로운 Article {}개, 회원 {}명 중 {}명에게 전송 완료, 실패 {}명", articles.size(), memberSize, successCount, futures.size() - successCount);
-
-		updateArticlesStatus(articles);
 	}
 
 	private List<Article> filterArticlesForMember(Member member, List<Article> articles) {
-		if (member.isSubscribeAll())
-			return articles;
+		if (member.isSubscribeAll()) {
+			return articles.stream()
+				.filter(article -> !article.getSource().isForeign() || member.isSubscribeForeign())
+				.toList();
+		}
 
 		Set<TagType> subscribeTag = member.getMemberTags().stream()
 			.map(memberTag -> memberTag.getTag().getTagType())
@@ -95,6 +97,9 @@ public class ArticleNotificationService {
 
 		return articles.stream()
 			.filter(article -> {
+				if (article.getSource().isForeign() && !member.isSubscribeForeign())
+					return false;
+
 				Set<TagType> articleTags = article.getArticleTags().stream()
 					.map(articleTag -> articleTag.getTag().getTagType())
 					.collect(Collectors.toSet());

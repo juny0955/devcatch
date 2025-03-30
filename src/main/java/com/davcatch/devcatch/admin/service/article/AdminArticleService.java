@@ -21,4 +21,8 @@ public class AdminArticleService {
 	public List<Article> getDashBoardArticleList() {
 		return articleRepository.findDashboardList(PageRequest.of(0, 5));
 	}
+
+	public int getTotalArticleSize() {
+		return articleRepository.findTotalArticleSize();
+	}
 }

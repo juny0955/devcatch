@@ -46,4 +46,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
 	@Query("select a.link from Article a where a.link in :links")
 	Set<String> findExistsLinks(Set<String> links);
+
+	@Query("select count(a.id) from Article a ")
+	int findTotalArticleSize();
 }

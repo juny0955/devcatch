@@ -37,6 +37,9 @@ public class Source extends BaseTime {
     @Column(name = "use_link", nullable = false)
     private boolean useLink;
 
+    @Column(name = "is_foreign", nullable = false)
+    private boolean isForeign;
+
     @Column(name = "parse_method", nullable = false)
     @Enumerated(EnumType.STRING)
     private ParseMethod parseMethod;

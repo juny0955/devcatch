@@ -28,4 +28,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
 	@Query("select m from Member m order by m.createdAt desc")
 	List<Member> findDashBoardList(Pageable pageable);
+
+	@Query("select count(m.id) from Member m ")
+	int findTotalMemberSize();
 }
