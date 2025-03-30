@@ -12,11 +12,13 @@ import lombok.Data;
 public class ListResponse {
 
 	private String name;
+	private boolean isForeign;
 	private String mainUrl;
 
 	public static ListResponse from(Source source) {
 		return ListResponse.builder()
 			.name(source.getName())
+			.isForeign(source.isForeign())
 			.mainUrl(source.getMainUrl())
 			.build();
 	}

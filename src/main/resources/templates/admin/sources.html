@@ -1,0 +1,72 @@
+<!-- templates/admin/sources.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>소스 관리 - DevCatch 관리자</title>
+</head>
+<body>
+<!-- 관리자 레이아웃을 사용 -->
+<div th:replace="~{layout/admin_layout :: html(
+    pageTitle='소스 관리',
+    headerTitle='소스 관리',
+    activeMenu='sources',
+    content=~{::content},
+    additionalResources=~{::additionalResources},
+    additionalScripts=~{::additionalScripts}
+)}">
+
+  <!-- 추가 리소스 -->
+  <th:block th:fragment="additionalResources">
+    <!-- 필요한 경우 여기에 특별한 CSS나 리소스 추가 -->
+  </th:block>
+
+  <!-- 메인 콘텐츠 -->
+  <th:block th:fragment="content">
+    <div th:replace="~{admin/contents/sources_content :: content}"></div>
+  </th:block>
+
+  <!-- 추가 스크립트 -->
+  <th:block th:fragment="additionalScripts">
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // 소스 검색 기능
+        const searchInput = document.getElementById('source-search');
+        const sourceItems = document.querySelectorAll('.source-item');
+
+        if (searchInput) {
+          searchInput.addEventListener('keyup', function() {
+            const searchTerm = this.value.toLowerCase();
+
+            sourceItems.forEach(item => {
+              const sourceName = item.querySelector('.source-name').textContent.toLowerCase();
+
+              if (sourceName.includes(searchTerm)) {
+                item.style.display = '';
+              } else {
+                item.style.display = 'none';
+              }
+            });
+          });
+        }
+
+        // 삭제 확인 대화상자
+        const deleteButtons = document.querySelectorAll('.delete-button');
+
+        deleteButtons.forEach(button => {
+          button.addEventListener('click', function() {
+            const form = this.closest('.delete-form');
+            const sourceName = this.closest('tr').querySelector('.source-name').textContent;
+
+            if (confirm(`정말로 "${sourceName}" 소스를 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.`)) {
+              form.submit();
+            }
+          });
+        });
+      });
+    </script>
+  </th:block>
+</div>
+</body>
+</html>

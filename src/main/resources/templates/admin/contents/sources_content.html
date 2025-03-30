@@ -1,0 +1,163 @@
+<!-- templates/admin/contents/sources_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 소스 목록 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+    <!-- 결과 메시지 표시 영역 -->
+    <div th:if="${resultMessage}" class="mb-6">
+        <div th:class="${error} ? 'bg-red-50 border-l-4 border-red-400 p-4 rounded-md' : 'bg-green-50 border-l-4 border-green-400 p-4 rounded-md'">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <svg th:if="${!error}" class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    </svg>
+                    <svg th:if="${error}" class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p th:class="${error} ? 'text-sm text-red-700' : 'text-sm text-green-700'" th:text="${resultMessage}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 헤더 및 검색 영역 -->
+    <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6">
+        <h1 class="text-2xl font-semibold text-gray-900">소스 관리</h1>
+        <div class="mt-4 md:mt-0">
+            <a href="/admin/sources/add" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
+                <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                    <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                </svg>
+                새 소스 추가
+            </a>
+        </div>
+    </div>
+
+    <!-- 상태 및 필터 -->
+    <div class="bg-white shadow rounded-lg p-4 mb-6">
+        <div class="flex flex-wrap gap-4 items-center">
+            <!-- 소스 총 개수 -->
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-500">총 소스:</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
+          <span th:text="${sources.size()}">0</span>개
+        </span>
+            </div>
+
+            <!-- 활성화 개수 - 컨트롤러에서 계산하도록 변경 필요 -->
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-500">활성화:</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+          <span th:with="activeCount=0" th:text="${activeCount}">0</span>개
+        </span>
+            </div>
+
+            <!-- 비활성화 개수 - 컨트롤러에서 계산하도록 변경 필요 -->
+            <div class="flex items-center gap-2">
+                <span class="text-sm font-medium text-gray-500">비활성화:</span>
+                <span class="px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800">
+          <span th:with="inactiveCount=0" th:text="${inactiveCount}">0</span>개
+        </span>
+            </div>
+
+            <!-- 검색 -->
+            <div class="ml-auto">
+                <div class="relative rounded-md shadow-sm">
+                    <input type="text" id="source-search"
+                           class="focus:ring-primary-500 focus:border-primary-500 block w-full pr-10 sm:text-sm border-gray-300 rounded-md"
+                           placeholder="소스 이름 검색...">
+                    <div class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 소스 목록 테이블 -->
+    <div class="bg-white shadow rounded-lg overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">이름</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">URL</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">파싱 방법</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">상태</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">타입</th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">작업</th>
+            </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+            <!-- 소스가 없을 경우 -->
+            <tr th:if="${sources.isEmpty()}">
+                <td colspan="6" class="px-6 py-10 text-center text-gray-500">
+                    등록된 소스가 없습니다. 새 소스를 추가해주세요.
+                </td>
+            </tr>
+
+            <!-- 소스 목록 -->
+            <tr th:each="source : ${sources}" class="source-item">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="font-medium text-gray-900 source-name" th:text="${source.name}">소스 이름</div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-500">
+                        <a th:href="${source.mainUrl}" target="_blank" class="hover:text-primary-600" th:text="${source.mainUrl}">메인 URL</a>
+                    </div>
+                    <div class="text-xs text-gray-400 mt-1">
+                        <span>피드: </span>
+                        <a th:href="${source.feedUrl}" target="_blank" class="hover:text-primary-600" th:text="${source.feedUrl}">피드 URL</a>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-blue-100 text-blue-800" th:text="${source.parseMethod}">파싱 방법</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span th:if="${source.isActive()}" class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-green-100 text-green-800">활성화</span>
+                    <span th:unless="${source.isActive()}" class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-gray-100 text-gray-800">비활성화</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <span th:if="${source.isForeign()}" class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-indigo-100 text-indigo-800">해외</span>
+                    <span th:unless="${source.isForeign()}" class="px-2 inline-flex text-xs leading-5 font-medium rounded-full bg-yellow-100 text-yellow-800">국내</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                    <div class="flex space-x-2">
+                        <!-- 활성화/비활성화 토글 폼 -->
+                        <form th:action="@{/admin/sources/{id}/toggle-active(id=${source.id})}" method="post" class="inline-block">
+                            <input type="hidden" name="isActive" th:value="${!source.isActive()}" />
+                            <button type="submit" th:class="${source.isActive() ? 'text-gray-600 hover:text-gray-900' : 'text-green-600 hover:text-green-900'}" title="활성화 상태 변경">
+                                <svg th:if="${source.isActive()}" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <svg th:unless="${source.isActive()}" class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </button>
+                        </form>
+
+                        <!-- 삭제 폼 -->
+                        <form th:action="@{/admin/sources/{id}/delete(id=${source.id})}" method="post" class="inline-block delete-form">
+                            <button type="button" class="text-red-600 hover:text-red-900 delete-button" title="소스 삭제">
+                                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>

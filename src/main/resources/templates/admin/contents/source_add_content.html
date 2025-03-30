@@ -1,0 +1,163 @@
+<!-- templates/admin/contents/source_add_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 소스 추가 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+  <!-- 결과 메시지 표시 영역 -->
+  <div th:if="${resultMessage}" class="mb-6">
+    <div th:class="${error} ? 'bg-red-50 border-l-4 border-red-400 p-4 rounded-md' : 'bg-green-50 border-l-4 border-green-400 p-4 rounded-md'">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg th:if="${!error}" class="h-5 w-5 text-green-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+          </svg>
+          <svg th:if="${error}" class="h-5 w-5 text-red-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <p th:class="${error} ? 'text-sm text-red-700' : 'text-sm text-green-700'" th:text="${resultMessage}"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 소스 추가 카드 -->
+  <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+    <!-- 카드 헤더 -->
+    <div class="bg-gradient-to-r from-primary-500 to-primary-700 py-6 px-6">
+      <h2 class="text-xl font-bold text-white text-center">새 소스 추가</h2>
+    </div>
+
+    <!-- 카드 본문 -->
+    <div class="p-6">
+      <form th:action="@{/admin/sources/add}" method="post" class="space-y-6">
+        <!-- 소스 이름 필드 -->
+        <div>
+          <label for="name" class="block text-sm font-medium text-gray-700 mb-1">소스 이름 <span class="text-red-500">*</span></label>
+          <input type="text" id="name" name="name"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                 placeholder="예: 토스 기술 블로그" required>
+          <p class="mt-1 text-xs text-gray-500">기술 블로그나 소스의 이름을 입력하세요.</p>
+        </div>
+
+        <!-- 메인 URL 필드 -->
+        <div>
+          <label for="mainUrl" class="block text-sm font-medium text-gray-700 mb-1">메인 URL <span class="text-red-500">*</span></label>
+          <input type="url" id="mainUrl" name="mainUrl"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                 placeholder="예: https://toss.tech" required>
+          <p class="mt-1 text-xs text-gray-500">기술 블로그의 메인 웹사이트 URL을 입력하세요.</p>
+        </div>
+
+        <!-- RSS 피드 URL 필드 -->
+        <div>
+          <label for="feedUrl" class="block text-sm font-medium text-gray-700 mb-1">RSS 피드 URL <span class="text-red-500">*</span></label>
+          <input type="url" id="feedUrl" name="feedUrl"
+                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-primary-500 focus:border-primary-500"
+                 placeholder="예: https://toss.tech/rss" required>
+          <p class="mt-1 text-xs text-gray-500">RSS 피드의 URL을 입력하세요.</p>
+        </div>
+
+        <!-- 파싱 방법 선택 -->
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2">파싱 방법 <span class="text-red-500">*</span></label>
+          <div class="space-y-2">
+            <div class="flex items-center">
+              <input id="parse_rss_content" name="parseMethod" type="radio" value="RSS_CONTENT" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300" checked>
+              <label for="parse_rss_content" class="ml-2 block text-sm text-gray-700">
+                RSS Content (콘텐츠 태그 내용 파싱)
+              </label>
+            </div>
+            <div class="flex items-center">
+              <input id="parse_rss_description" name="parseMethod" type="radio" value="RSS_DESCRIPTION" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300">
+              <label for="parse_rss_description" class="ml-2 block text-sm text-gray-700">
+                RSS Description (설명 태그 내용 파싱)
+              </label>
+            </div>
+            <div class="flex items-center">
+              <input id="parse_crawling" name="parseMethod" type="radio" value="CRAWLING" class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300">
+              <label for="parse_crawling" class="ml-2 block text-sm text-gray-700">
+                크롤링 (페이지 직접 방문하여 크롤링)
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 링크 사용 여부 & 해외 블로그 여부 -->
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <label class="flex items-center space-x-3 cursor-pointer">
+              <input type="checkbox" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                     id="useLink" name="useLink" checked>
+              <span class="text-gray-700 font-medium">링크 사용</span>
+            </label>
+            <p class="text-xs text-gray-500 mt-1 ml-8">RSS에서 제공하는 링크를 사용합니다.</p>
+          </div>
+          <div>
+            <label class="flex items-center space-x-3 cursor-pointer">
+              <input type="checkbox" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                     id="isForeign" name="isForeign">
+              <span class="text-gray-700 font-medium">해외 블로그</span>
+            </label>
+            <p class="text-xs text-gray-500 mt-1 ml-8">해외 기술 블로그인 경우 체크하세요.</p>
+          </div>
+        </div>
+
+        <!-- 활성화 여부 -->
+        <div>
+          <label class="flex items-center space-x-3 cursor-pointer">
+            <input type="checkbox" class="form-checkbox h-5 w-5 text-primary-600 rounded border-gray-300 focus:ring-primary-500"
+                   id="isActive" name="isActive" checked>
+            <span class="text-gray-700 font-medium">활성화</span>
+          </label>
+          <p class="text-xs text-gray-500 mt-1 ml-8">이 소스를 활성화하여 RSS 피드를 수집합니다.</p>
+        </div>
+
+        <!-- 피드 테스트 버튼 -->
+        <div>
+          <button type="button" id="testButton"
+                  class="w-full py-2 px-4 border border-gray-300 bg-gray-50 hover:bg-gray-100 text-gray-700 font-medium rounded-lg transition duration-200 ease-in-out">
+            RSS 피드 테스트 (개발 중)
+          </button>
+        </div>
+
+        <!-- 저장 버튼 -->
+        <div class="pt-2">
+          <button type="submit"
+                  class="w-full py-3 px-4 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg transition duration-200 ease-in-out">
+            소스 추가
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- 주의 사항 -->
+  <div class="mt-6">
+    <div class="rounded-md bg-yellow-50 p-4">
+      <div class="flex">
+        <div class="flex-shrink-0">
+          <svg class="h-5 w-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+          </svg>
+        </div>
+        <div class="ml-3">
+          <h3 class="text-sm font-medium text-yellow-800">주의 사항</h3>
+          <div class="mt-2 text-sm text-yellow-700">
+            <p>
+              새 소스 추가 시 올바른 RSS 피드 URL을 확인하세요. 파싱 방법은 블로그 특성에 맞게 선택해야 합니다.
+              크롤링 방법은 서버 자원을 많이 소모할 수 있으니 필요한 경우에만 사용하세요.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

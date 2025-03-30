@@ -1,0 +1,79 @@
+<!-- templates/admin/source_add.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>새 소스 추가 - DevCatch 관리자</title>
+</head>
+<body>
+<!-- 관리자 레이아웃을 사용 -->
+<div th:replace="~{layout/admin_layout :: html(
+    pageTitle='새 소스 추가',
+    headerTitle='새 소스 추가',
+    activeMenu='sources',
+    content=~{::content},
+    additionalResources=~{::additionalResources},
+    additionalScripts=~{::additionalScripts}
+)}">
+
+    <!-- 추가 리소스 -->
+    <th:block th:fragment="additionalResources">
+        <!-- 필요한 경우 여기에 특별한 CSS나 리소스 추가 -->
+    </th:block>
+
+    <!-- 메인 콘텐츠 -->
+    <th:block th:fragment="content">
+        <div th:replace="~{admin/contents/source_add_content :: content}"></div>
+    </th:block>
+
+    <!-- 추가 스크립트 -->
+    <th:block th:fragment="additionalScripts">
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                // RSS 피드 테스트 버튼 이벤트 리스너
+                const testButton = document.getElementById('testButton');
+
+                if (testButton) {
+                    testButton.addEventListener('click', function() {
+                        const feedUrl = document.getElementById('feedUrl').value;
+
+                        if (!feedUrl) {
+                            alert('RSS 피드 URL을 입력해주세요.');
+                            return;
+                        }
+
+                        // 테스트 중임을 표시
+                        testButton.textContent = '테스트 중...';
+                        testButton.disabled = true;
+
+                        // 여기에 테스트 로직을 추가할 수 있습니다
+                        // 현재는 단순히 알림만 표시합니다
+                        setTimeout(() => {
+                            alert('RSS 피드 테스트 기능은 현재 개발 중입니다.');
+                            testButton.textContent = 'RSS 피드 테스트 (개발 중)';
+                            testButton.disabled = false;
+                        }, 1000);
+                    });
+                }
+
+                // 폼 제출 전 검증
+                const form = document.querySelector('form');
+                if (form) {
+                    form.addEventListener('submit', function(e) {
+                        const name = document.getElementById('name').value;
+                        const mainUrl = document.getElementById('mainUrl').value;
+                        const feedUrl = document.getElementById('feedUrl').value;
+
+                        if (!name || !mainUrl || !feedUrl) {
+                            e.preventDefault();
+                            alert('필수 입력 필드를 모두 채워주세요.');
+                        }
+                    });
+                }
+            });
+        </script>
+    </th:block>
+</div>
+</body>
+</html>
