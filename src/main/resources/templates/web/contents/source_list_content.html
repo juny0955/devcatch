@@ -22,7 +22,7 @@
                 </div>
 
                 <!-- 검색 입력 -->
-                <div class="mt-4 md:mt-0">
+                <div class="mt-4 md:mt-0 flex items-center gap-2">
                     <div class="relative">
                         <input type="text" id="source-search" placeholder="블로그 이름으로 검색"
                                class="shadow-sm focus:ring-primary-500 focus:border-primary-500 block w-full sm:text-sm border-gray-300 rounded-md py-2 pl-10 pr-4">
@@ -31,6 +31,19 @@
                                 <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                             </svg>
                         </div>
+                    </div>
+
+                    <!-- 필터 버튼 그룹 -->
+                    <div class="flex rounded-md shadow-sm">
+                        <button type="button" id="filter-all" class="filter-btn relative inline-flex items-center px-4 py-2 rounded-l-md border border-gray-300 bg-primary-500 text-white text-sm font-medium hover:bg-primary-600 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                            전체
+                        </button>
+                        <button type="button" id="filter-domestic" class="filter-btn relative inline-flex items-center px-4 py-2 border-t border-b border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                            국내
+                        </button>
+                        <button type="button" id="filter-foreign" class="filter-btn relative inline-flex items-center px-4 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:z-10 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500">
+                            해외
+                        </button>
                     </div>
                 </div>
             </div>
@@ -89,15 +102,66 @@
             const searchInput = document.getElementById('source-search');
             const sourceItems = document.querySelectorAll('.source-item');
             const noResults = document.getElementById('no-results');
+            const filterButtons = document.querySelectorAll('.filter-btn');
 
+            // 현재 필터 상태
+            let currentFilter = 'all'; // 'all', 'domestic', 'foreign'
+            let currentSearch = '';
+
+            // 필터 버튼 클릭 이벤트
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // 이전 활성 버튼에서 강조 스타일 제거
+                    filterButtons.forEach(btn => {
+                        btn.classList.remove('bg-primary-500', 'text-white');
+                        btn.classList.add('bg-white', 'text-gray-700');
+                    });
+
+                    // 현재 버튼에 강조 스타일 적용
+                    this.classList.remove('bg-white', 'text-gray-700');
+                    this.classList.add('bg-primary-500', 'text-white');
+
+                    // 필터 설정
+                    if (this.id === 'filter-all') {
+                        currentFilter = 'all';
+                    } else if (this.id === 'filter-domestic') {
+                        currentFilter = 'domestic';
+                    } else if (this.id === 'filter-foreign') {
+                        currentFilter = 'foreign';
+                    }
+
+                    // 필터 적용
+                    applyFilters();
+                });
+            });
+
+            // 검색 이벤트
             searchInput.addEventListener('keyup', function() {
-                const searchTerm = this.value.toLowerCase();
+                currentSearch = this.value.toLowerCase();
+                applyFilters();
+            });
+
+            // 필터와 검색을 모두 적용하는 함수
+            function applyFilters() {
                 let resultsFound = false;
 
                 sourceItems.forEach(item => {
                     const sourceName = item.querySelector('.source-name').textContent.toLowerCase();
+                    const isForeign = item.querySelector('.ml-2') !== null; // 해외 태그가 있는지 확인
 
-                    if (sourceName.includes(searchTerm)) {
+                    // 검색어 필터링
+                    const matchesSearch = sourceName.includes(currentSearch);
+
+                    // 지역 필터링
+                    let matchesRegion = true;
+                    if (currentFilter === 'foreign') {
+                        matchesRegion = isForeign;
+                    } else if (currentFilter === 'domestic') {
+                        matchesRegion = !isForeign;
+                    }
+
+                    // 두 조건 모두 만족하면 표시
+                    if (matchesSearch && matchesRegion) {
                         item.classList.remove('hidden');
                         resultsFound = true;
                     } else {
@@ -111,7 +175,7 @@
                 } else {
                     noResults.classList.add('hidden');
                 }
-            });
+            }
         });
     </script>
 </div>
