@@ -49,7 +49,8 @@ public class AdminSourceController {
 	 * 소스 추가 페이지
 	 */
 	@GetMapping("/add")
-	public String sourceAddForm() {
+	public String sourceAddForm(Model model) {
+		model.addAttribute("sourceAddRequest", new SourceAddRequest());
 		return "admin/source_add";
 	}
 
@@ -66,7 +67,6 @@ public class AdminSourceController {
 		}
 
 		try {
-			// DTO를 엔티티로 변환하여 저장
 			Source source = request.toEntity();
 			adminSourceService.addSource(source);
 

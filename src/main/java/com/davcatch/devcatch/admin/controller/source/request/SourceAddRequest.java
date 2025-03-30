@@ -22,9 +22,9 @@ public class SourceAddRequest {
 	@NotNull(message = "파싱 방법은 필수 선택값입니다.")
 	private ParseMethod parseMethod;
 
-	private boolean useLink = true;
-	private boolean isForeign = false;
-	private boolean isActive = true;
+	private boolean useLink;
+	private boolean isForeign;
+	private boolean isActive;
 
 	public Source toEntity() {
 		return Source.builder()
