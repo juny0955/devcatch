@@ -49,8 +49,7 @@ public class AdminSourceController {
 	 * 소스 추가 페이지
 	 */
 	@GetMapping("/add")
-	public String sourceAddForm(Model model) {
-		model.addAttribute("sourceAddRequest", new SourceAddRequest());
+	public String sourceAddForm() {
 		return "admin/source_add";
 	}
 
