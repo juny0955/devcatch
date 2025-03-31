@@ -53,8 +53,7 @@
                                         <p style="font-size: 13px; color: #94a3b8; margin: 10px 0;" th:text="${#dates.format(article.publishedAt, 'yyyy-MM-dd HH:mm')}">2025-03-18 14:30</p>
 
                                         <!-- 버튼 영역 -->
-                                        <a th:href="${article.link}" target="_blank" style="display: inline-block; background-color: #0ea5e9; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 6px; margin-top: 12px;">자세히 보기</a>
-                                    </td>
+                                        <a th:href="@{'https://devcatch.site/article/detail/' + ${article.id}}" target="_blank" style="display: inline-block; background-color: #0ea5e9; color: #ffffff; text-decoration: none; font-size: 14px; font-weight: 500; padding: 8px 16px; border-radius: 6px; margin-top: 12px;">자세히 보기</a>                                    </td>
                                 </tr>
                             </table>
                         </div>
