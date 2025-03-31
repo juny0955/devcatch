@@ -1,27 +1,25 @@
 package com.davcatch.devcatch.common.integration.rss;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.io.StringReader;
 import java.util.Optional;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class RssReaderService {
+
+	private final RestTemplate rssRestTemplate;
 
 	/**
 	 * RSS FEED 파싱
@@ -30,39 +28,26 @@ public class RssReaderService {
 	 */
 	public Optional<SyndFeed> reader(String feedUrl) {
 		log.debug("RSS FEED 수집 시작 : {}", feedUrl);
-		HttpURLConnection connection = null;
 
 		try {
-			URL url = new URL(feedUrl);
-			connection = (HttpURLConnection) url.openConnection();
+			ResponseEntity<String> response = rssRestTemplate.getForEntity(feedUrl, String.class);
+			String xml = response.getBody();
 
-			connection.setRequestMethod("GET");
-			connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
-			connection.setRequestProperty("Accept", "application/rss+xml, application/xml, text/xml, */*");
-
-			connection.setConnectTimeout(10000);
-			connection.setReadTimeout(10000);
-
-			try (InputStream inputStream = connection.getInputStream();
-				 BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream, 8192);
-				 Reader reader = new InputStreamReader(bufferedInputStream, StandardCharsets.UTF_8);
-				 BufferedReader bufferedReader = new BufferedReader(reader, 8192)) {
-
+			if (xml != null) {
 				SyndFeedInput syndFeedInput = new SyndFeedInput();
 				syndFeedInput.setAllowDoctypes(true);
 				syndFeedInput.setPreserveWireFeed(true);
 				syndFeedInput.setXmlHealerOn(true); // XML 문법 오류 자동 복구 활성화
 
-				SyndFeed feed = syndFeedInput.build(bufferedReader);
+				SyndFeed feed = syndFeedInput.build(new StringReader(xml));
 				log.debug("RSS FEED 정상 수집 URL : {}", feedUrl);
 				return Optional.of(feed);
 			}
-		} catch (FeedException | IOException e) {
+
+		} catch (FeedException e) {
 			log.error("[{}] RSS FEED 수집중 오류 발생 : {}", feedUrl, e.getMessage());
-			return Optional.empty();
-		} finally {
-			if (connection != null)
-				connection.disconnect();
 		}
+
+		return Optional.empty();
 	}
 }

@@ -40,14 +40,15 @@ public class CrawlingParseStrategy extends AbstractArticleStrategy {
 		for (int i = 0; i < Math.min(MAX_PARSE_PAGE, entries.size()) ; i++) {
 			SyndEntry entry = entries.get(i);
 
-			Document document = webCrawler.getDocument(entry.getLink()).orElse(null);
+			String link = source.isUseLink() ? entry.getLink() : entry.getUri();
+			Document document = webCrawler.getDocument(link).orElse(null);
 			if (document == null)
 				continue;
 
 			String content = extractor.extractContent(null, document);
 			ParsedArticle parsedArticle = ParsedArticle.builder()
 					.title(entry.getTitle())
-					.link(source.isUseLink() ? entry.getLink() : entry.getUri())
+					.link(link)
 					.content(content)
 					.publishedAt(entry.getPublishedDate() != null ? entry.getPublishedDate() : entry.getUpdatedDate())
 					.build();

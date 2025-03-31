@@ -5,13 +5,19 @@ import java.util.Optional;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class WebCrawler {
+
+	private final RestTemplate crawlingRestTemplate;
 
 	/**
 	 * 크롤링
@@ -20,14 +26,21 @@ public class WebCrawler {
 	 */
 	public Optional<Document> getDocument(String link) {
 		log.debug("크롤링 시작 : {}", link);
+
 		try {
-			Document document = Jsoup.connect(link).get();
-			log.debug("크롤링 정상 수집 : {}", link);
-			
-			return Optional.of(document);
-		} catch (IOException e) {
-			log.error("크롤링 중 에러 발생 : {}", e.getMessage());
-			return Optional.empty();
+			ResponseEntity<String> response = crawlingRestTemplate.getForEntity(link, String.class);
+			String html = response.getBody();
+
+			if (html != null) {
+				Document document = Jsoup.parse(html);
+				log.debug("크롤링 정상 수집 : {}", link);
+
+				return Optional.of(document);
+			}
+		} catch (Exception e) {
+			log.error("({}) 크롤링 중 에러 발생 : {}", link, e.getMessage());
 		}
+
+		return Optional.empty();
 	}
 }

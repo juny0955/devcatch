@@ -19,7 +19,7 @@ public class GptSummaryService {
 
 	private static final String URL = "https://api.openai.com/v1/chat/completions";
 
-	private final RestTemplate restTemplate;
+	private final RestTemplate gptApiRestTemplate;
 
 	@Value("${gpt.model}")
 	private String model;
@@ -39,7 +39,7 @@ public class GptSummaryService {
 
 		try {
 			GptRequest request = GptRequest.create(content, model, sysPrompt);
-			response = restTemplate.postForObject(URL, request, GptResponse.class);
+			response = gptApiRestTemplate.postForObject(URL, request, GptResponse.class);
 		} catch (Exception e) {
 			log.error("GPT API 요청중 에러 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.GPT_REQUEST_ERROR);
