@@ -14,6 +14,7 @@ import lombok.Data;
 @Builder
 public class ArticleResponse {
 
+	private Long id;
 	private String title;
 	private String summary;
 	private String link;
@@ -28,6 +29,7 @@ public class ArticleResponse {
 			.toList();
 
 		return ArticleResponse.builder()
+			.id(article.getId())
 			.title(article.getTitle())
 			.summary(article.getSummary())
 			.link(article.getLink())

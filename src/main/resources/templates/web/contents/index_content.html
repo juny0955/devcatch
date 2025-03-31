@@ -63,8 +63,7 @@
                                       class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800 mr-2"
                                       th:text="'#' + ${tag}">#태그</span>
                                 </p>
-                                <!-- 제목 및 요약 -->
-                                <a th:href="@{${article.link}}" class="block">
+                                <a th:href="@{/article/detail/{id}(id=${article.id})}" class="block">
                                     <p class="text-xl font-semibold text-gray-900" th:text="${article.title}">아티클 제목</p>
                                     <p class="mt-3 text-base text-gray-500" th:text="${article.summary}">아티클 요약 내용</p>
                                 </a>

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.repository.article.ArticleRepository;
@@ -45,5 +47,13 @@ public class ArticleService {
 			keyword = null;
 
 		return articleRepository.findArticlesList(pageable, keyword, tag);
+	}
+
+	public Article getArticle(Long articleId) throws CustomException {
+		return articleRepository.findArticleDetail(articleId).orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
+	}
+
+	public List<Article> getRelatedArticles(Long articleId, List<TagType> tagTypes) {
+		return articleRepository.findRelatedArticles(articleId, tagTypes, PageRequest.of(0, 4));
 	}
 }

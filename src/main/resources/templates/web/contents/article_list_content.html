@@ -91,13 +91,20 @@
 
               <!-- 제목 -->
               <h4 class="text-lg font-semibold text-gray-900 leading-6">
-                <a th:href="${article.link}" target="_blank" class="hover:text-primary-600" th:text="${article.title}">아티클 제목</a>
+                <a th:href="@{/article/detail/{id}(id=${article.id})}" class="hover:text-primary-600" th:text="${article.title}">아티클 제목</a>
               </h4>
 
               <!-- 요약 -->
               <p class="mt-1 text-sm text-gray-500 leading-5 line-clamp-2" th:text="${article.summary}">
                 아티클 요약 내용이 표시됩니다. 아티클의 주요 내용을 간략하게 소개하는 문장입니다.
               </p>
+
+              <div class="mt-2">
+                <a th:href="@{/article/detail/{id}(id=${article.id})}" class="text-sm text-primary-600 hover:text-primary-800 font-medium">
+                  자세히 보기
+                  <span aria-hidden="true">→</span>
+                </a>
+              </div>
 
               <!-- 메타 정보 -->
               <div class="mt-2 flex items-center text-xs text-gray-500">

@@ -11,9 +11,11 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
@@ -22,10 +24,12 @@ import com.davcatch.devcatch.web.service.article.ArticleService;
 import com.davcatch.devcatch.web.service.article.ArticleTagService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/article")
+@Slf4j
 public class ArticleController {
 
 	private final ArticleService articleService;
@@ -56,5 +60,35 @@ public class ArticleController {
 		model.addAttribute("selectedTag", tag);
 		model.addAttribute("activeMenu", "articles");
 		return "web/article/list";
+	}
+
+	@GetMapping("/detail/{articleId}")
+	public String detail(@PathVariable Long articleId, Model model) {
+		try {
+			Article article = articleService.getArticle(articleId);
+			List<ArticleTag> articleTags = articleTagService.getArticleTagByArticlesWithTag(List.of(article));
+
+			List<TagType> tagTypes = articleTags.stream()
+				.map(articleTag -> articleTag.getTag().getTagType())
+				.toList();
+
+			List<Article> relatedArticles = articleService.getRelatedArticles(articleId, tagTypes);
+			List<ArticleTag> relatedArticleTags = articleTagService.getArticleTagByArticlesWithTag(relatedArticles);
+
+			ArticleResponse articleResponse = ArticleResponse.of(article, articleTags);
+
+			List<ArticleResponse> relatedArticleResponses = relatedArticles.stream()
+				.map(relatedArticle -> ArticleResponse.of(relatedArticle, relatedArticleTags))
+				.toList();
+
+			model.addAttribute("article", articleResponse);
+			model.addAttribute("relatedArticles", relatedArticleResponses);
+			model.addAttribute("activeMenu", "articles");
+		} catch (CustomException e) {
+			log.error("아티클 상세 페이지 에러: {}", e.getMessage());
+			return "redirect:/article/list";
+		}
+
+		return "web/article/detail";
 	}
 }

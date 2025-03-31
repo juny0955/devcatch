@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import com.davcatch.devcatch.domain.article.Article;
+import com.davcatch.devcatch.domain.tag.Tag;
 import com.davcatch.devcatch.domain.tag.TagType;
 
 public interface ArticleRepository extends JpaRepository<Article, Long> {
@@ -49,4 +50,17 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 
 	@Query("select count(a.id) from Article a ")
 	int findTotalArticleSize();
+
+	@EntityGraph(attributePaths = {"source"})
+	@Query("select a from Article a where a.id = :articleId")
+	Optional<Article> findArticleDetail(Long articleId);
+
+	@EntityGraph(attributePaths = {"source"})
+	@Query("select distinct a from Article a "
+		+ "join a.articleTags at "
+		+ "join at.tag t "
+		+ "where a.id != :articleId "
+		+ "and t.tagType in :tagTypes "
+		+ "order by a.publishedAt desc ")
+	List<Article> findRelatedArticles(Long articleId, List<TagType> tagTypes, Pageable pageable);
 }

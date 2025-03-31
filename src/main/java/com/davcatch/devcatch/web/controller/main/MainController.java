@@ -6,9 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
-import com.davcatch.devcatch.web.controller.main.response.MainArticleResponse;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
+import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 import com.davcatch.devcatch.web.service.article.ArticleService;
 import com.davcatch.devcatch.web.service.article.ArticleTagService;
 
@@ -28,8 +28,8 @@ public class MainController {
 		List<Article> articles = articleService.getNewArticles();
 		List<ArticleTag> articleTags = articleTagService.getArticleTagByArticlesWithTag(articles);
 
-		List<MainArticleResponse> articleResponses = articles.stream()
-			.map(article -> MainArticleResponse.of(article, articleTags))
+		List<ArticleResponse> articleResponses = articles.stream()
+			.map(article -> ArticleResponse.of(article, articleTags))
 			.toList();
 
 		model.addAttribute("articles", articleResponses);

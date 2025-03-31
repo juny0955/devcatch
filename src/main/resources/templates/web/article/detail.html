@@ -1,0 +1,35 @@
+<!-- templates/web/article/detail.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+  <meta charset="UTF-8">
+</head>
+<body>
+<!-- 웹 레이아웃을 사용 -->
+<div th:replace="~{layout/web_layout :: html(
+    pageTitle=${article.title} + ' - 데브캐치',
+    activeMenu='articles',
+    content=~{web/contents/article_detail_content :: content},
+    additionalResources=~{::additionalResources},
+    additionalScripts=~{::additionalScripts}
+)}">
+
+  <!-- 추가 리소스 -->
+  <th:block th:fragment="additionalResources">
+    <!-- 소셜 미디어 공유 아이콘용 Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <meta name="description" th:content="${article.summary}">
+    <!-- 오픈 그래프 태그 -->
+    <meta property="og:title" th:content="${article.title}">
+    <meta property="og:description" th:content="${article.summary}">
+    <meta property="og:url" th:content="${article.link}">
+    <meta property="og:type" content="article">
+  </th:block>
+
+  <!-- 추가 스크립트 -->
+  <th:block th:fragment="additionalScripts">
+    <script th:replace="~{web/contents/article_detail_content :: shareScript}"></script>
+  </th:block>
+</div>
+</body>
+</html>

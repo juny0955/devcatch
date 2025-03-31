@@ -1,0 +1,155 @@
+<!-- templates/web/contents/article_detail_content.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 아티클 상세 콘텐츠 프래그먼트 -->
+<div th:fragment="content">
+    <div class="py-10">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- 아티클 헤더 -->
+            <div class="mb-8">
+                <!-- 태그 -->
+                <div class="flex flex-wrap gap-2 mb-2">
+                    <span th:each="tag : ${article.tags}"
+                          class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium bg-primary-100 text-primary-800">
+                        <span th:text="${'#' + tag}">#태그</span>
+                    </span>
+                </div>
+
+                <!-- 제목 -->
+                <h1 class="text-3xl font-bold text-gray-900 leading-tight mb-2" th:text="${article.title}">아티클 제목</h1>
+
+                <!-- 메타 정보 -->
+                <div class="flex items-center text-sm text-gray-500 mb-4">
+                    <span th:text="${article.name}" class="font-medium">소스 이름</span>
+                    <span class="mx-2">•</span>
+                    <time th:datetime="${#dates.format(article.publishedAt, 'yyyy-MM-dd')}"
+                          th:text="${#dates.format(article.publishedAt, 'yyyy년 MM월 dd일')}">
+                        2025년 03월 31일
+                    </time>
+                </div>
+            </div>
+
+            <!-- 요약 및 공유 섹션 -->
+            <div class="bg-white shadow rounded-xl overflow-hidden mb-6">
+                <!-- 요약 섹션 -->
+                <div class="p-6 border-b border-gray-200">
+                    <div class="flex items-start mb-4">
+                        <div class="flex-shrink-0 h-10 w-10 rounded-full bg-primary-100 flex items-center justify-center">
+                            <svg class="h-6 w-6 text-primary-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                            </svg>
+                        </div>
+                        <div class="ml-4">
+                            <h2 class="text-lg font-medium text-gray-900">AI 요약</h2>
+                            <p class="text-sm text-gray-500">GPT로 자동 생성된 요약입니다</p>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-50 p-4 rounded-lg">
+                        <p class="text-gray-700 whitespace-pre-line" th:text="${article.summary}">
+                            아티클 요약 내용이 표시됩니다. 이 부분은 AI를 통해 자동 생성되었으며, 원문의 핵심 내용을 짧게 정리해서 보여줍니다.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- 공유 및 링크 섹션 -->
+                <div class="px-6 py-4 bg-gray-50 flex flex-col sm:flex-row sm:items-center sm:justify-between">
+                    <div class="flex space-x-4 mb-4 sm:mb-0">
+                        <!-- 공유 버튼 -->
+                        <button type="button" class="text-gray-400 hover:text-gray-500" id="copyLink">
+                            <span class="sr-only">링크 복사</span>
+                            <i class="fas fa-link text-xl"></i>
+                        </button>
+                    </div>
+                    <a th:href="${article.link}" target="_blank" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-primary-600 hover:bg-primary-700">
+                        <svg class="mr-2 -ml-1 h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                        원문 보기
+                    </a>
+                </div>
+            </div>
+
+            <!-- 관련 아티클 섹션 -->
+            <div class="mt-10" th:if="${!#lists.isEmpty(relatedArticles)}">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">관련 아티클</h2>
+                <div class="grid gap-6 grid-cols-1 sm:grid-cols-2">
+                    <!-- 관련 아티클 항목 -->
+                    <div th:each="relatedArticle : ${relatedArticles}" class="bg-white shadow rounded-lg overflow-hidden">
+                        <div class="p-4">
+                            <!-- 관련 아티클 태그 -->
+                            <div class="flex flex-wrap gap-1 mb-2">
+                                <span th:each="tag : ${relatedArticle.tags}" class="text-xs font-medium text-primary-600" th:text="${'#' + tag}">
+                                    #태그
+                                </span>
+                            </div>
+
+                            <!-- 관련 아티클 제목 및 요약 -->
+                            <a th:href="@{/article/detail/{id}(id=${relatedArticle.id})}" class="block mt-1">
+                                <p class="text-lg font-semibold text-gray-900" th:text="${relatedArticle.title}">관련 아티클 제목</p>
+                                <p class="mt-1 text-sm text-gray-500 line-clamp-2" th:text="${relatedArticle.summary}">
+                                    관련 아티클 요약 내용의 일부가 여기에 표시됩니다.
+                                </p>
+                            </a>
+
+                            <!-- 메타 정보 -->
+                            <div class="mt-2 flex items-center text-xs text-gray-500">
+                                <span th:text="${relatedArticle.name}" class="font-medium">소스 이름</span>
+                                <span class="mx-2">•</span>
+                                <time th:datetime="${#dates.format(relatedArticle.publishedAt, 'yyyy-MM-dd')}"
+                                      th:text="${#dates.format(relatedArticle.publishedAt, 'yyyy-MM-dd')}">
+                                    2025-03-31
+                                </time>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 관련 아티클이 없는 경우 -->
+            <div class="mt-10" th:if="${#lists.isEmpty(relatedArticles)}">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">관련 아티클</h2>
+                <div class="bg-gray-50 p-6 rounded-lg text-center">
+                    <p class="text-gray-500">이 아티클과 관련된 아티클이 없습니다.</p>
+                </div>
+            </div>
+
+
+            <!-- 목록으로 돌아가기 -->
+            <div class="mt-6 text-center">
+                <a href="/article/list" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50">
+                    <svg class="mr-2 -ml-1 h-5 w-5 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    목록으로 돌아가기
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 공유 기능 스크립트 -->
+<script th:fragment="shareScript">
+    document.addEventListener('DOMContentLoaded', function() {
+        // 링크 복사 기능
+        const copyLinkButton = document.getElementById('copyLink');
+        if (copyLinkButton) {
+            copyLinkButton.addEventListener('click', function() {
+                const url = window.location.href;
+                navigator.clipboard.writeText(url).then(function() {
+                    // 복사 성공 알림
+                    alert('링크가 클립보드에 복사되었습니다!');
+                }, function() {
+                    // 복사 실패 알림
+                    alert('링크 복사에 실패했습니다. 직접 URL을 복사해주세요.');
+                });
+            });
+        }
+    });
+</script>
+</body>
+</html>
