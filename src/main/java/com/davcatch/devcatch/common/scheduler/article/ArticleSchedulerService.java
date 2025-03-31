@@ -42,7 +42,6 @@ public class ArticleSchedulerService {
 				.toList();
 
 			CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-
 		}
 	}
 }

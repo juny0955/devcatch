@@ -27,7 +27,7 @@ public class SchedulerRunner {
 		try {
 			articleSchedulerServices.createNewArticle();
 		} catch (Exception e) {
-			log.error("스케줄러 실행 중 에러 발생: {}", e.getMessage());
+			log.error("아티클 생성 스케줄러 실행 중 에러 발생: {}", e.getMessage());
 		}
 
 		log.info("==========새로운 Article 생성 스케줄러 종료==========");
@@ -38,10 +38,14 @@ public class SchedulerRunner {
 	 */
 	@Scheduled(cron = "0 0 8 * * ?")
 	public void runSendNewArticlesScheduler() {
-		log.info("새로운 Article 전송 스케줄러 시작");
+		log.info("==========새로운 Article 알림 스케줄러 시작==========");
 
-		articleNotificationService.sendNewArticle();
+		try {
+			articleNotificationService.sendNewArticle();
+		} catch (Exception e) {
+			log.error("아티클 알림 스케줄러 실행 중 에러 발생: {}", e.getMessage());
+		}
 
-		log.info("새로운 Article 전송 스케줄러 종료");
+		log.info("==========새로운 Article 알림 스케줄러 종료==========");
 	}
 }
