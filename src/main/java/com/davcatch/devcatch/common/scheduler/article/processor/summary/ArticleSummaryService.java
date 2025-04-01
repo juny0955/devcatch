@@ -24,13 +24,10 @@ public class ArticleSummaryService {
 		log.debug("아티클 요약 서비스 시작");
 
 		GptResponse gptResponse = gptSummaryService.getSummary(content);
-
 		Content parseContent = contentParser.parseContent(gptResponse);
-
 		ArticleSummary summary = ArticleSummary.of(parseContent.getSummary(), parseContent.getTag());
 
 		log.debug("아티클 요약 완료");
-
 		return summary;
 	}
 }

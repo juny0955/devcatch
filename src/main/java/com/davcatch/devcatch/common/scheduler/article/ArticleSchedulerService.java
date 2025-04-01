@@ -33,11 +33,7 @@ public class ArticleSchedulerService {
 
 			List<CompletableFuture<Void>> futures = batchSources.stream()
 				.map(source -> CompletableFuture.runAsync(() -> {
-					try {
 						articleSchedulerTask.processSource(source);
-					} catch (Exception e) {
-						log.error("[{}] 소스 처리 중 오류 발생: {}", source.getName(), e.getMessage(), e);
-					}
 				}, schedulerTaskExecutor))
 				.toList();
 

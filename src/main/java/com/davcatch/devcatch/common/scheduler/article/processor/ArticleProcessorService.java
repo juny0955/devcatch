@@ -4,15 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.scheduler.article.dto.ArticleSummary;
+import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
+import com.davcatch.devcatch.common.scheduler.article.processor.summary.ArticleSummaryService;
+import com.davcatch.devcatch.common.scheduler.article.util.ArticleUtil;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.article.ArticleTag;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.domain.tag.Tag;
-import com.davcatch.devcatch.common.scheduler.article.dto.ArticleSummary;
-import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
-import com.davcatch.devcatch.common.scheduler.article.processor.summary.ArticleSummaryService;
 import com.davcatch.devcatch.web.service.article.ArticleService;
 import com.davcatch.devcatch.web.service.tag.TagService;
 
@@ -35,9 +38,13 @@ public class ArticleProcessorService {
 
 		for (ParsedArticle parsedArticle : parsedArticles) {
 			try {
-				Article article = processArticle(source, parsedArticle);
-				if (article != null)
-					processedArticles.add(article);
+				ArticleSummary summary = articleSummaryService.summarizeArticle(parsedArticle.getContent());
+				List<Tag> tags = tagService.getInTagTypes(summary.getTags());
+
+				Article newArticle = ArticleUtil.createNewArticle(source, parsedArticle, summary, tags);
+
+				articleService.save(newArticle);
+				processedArticles.add(newArticle);
 			} catch (Exception e) {
 				log.error("[{}] 아티클 처리 중 오류 발생: {}", source.getName(), e.getMessage(), e);
 			}
@@ -45,17 +52,5 @@ public class ArticleProcessorService {
 
 		log.debug("[{}] {}개 아티클 처리 완료", source.getName(), processedArticles.size());
 		return processedArticles;
-	}
-
-	private Article processArticle(Source source, ParsedArticle parsedArticle) throws CustomException {
-		ArticleSummary summary = articleSummaryService.summarizeArticle(parsedArticle.getContent());
-
-		Article article = Article.of(source, parsedArticle, summary.getSummary());
-
-		List<Tag> tags = tagService.getInTagTypes(summary.getTags());
-		tags.forEach(tag -> article.addArticleTag(ArticleTag.of(article, tag)));
-
-		articleService.save(article);
-		return article;
 	}
 }

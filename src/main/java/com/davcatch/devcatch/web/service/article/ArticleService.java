@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.common.exception.CustomException;
@@ -25,12 +26,13 @@ public class ArticleService {
 
 	private final ArticleRepository articleRepository;
 
-	@Transactional
-	public void save(Article article) {
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
+	public void save(Article article) throws CustomException {
 		try {
 			articleRepository.save(article);
 		} catch (Exception e) {
 			log.info("Article {} 저장중 오류발생", article.getTitle());
+			throw new CustomException(ErrorCode.SERVER_ERROR);
 		}
 	}
 

@@ -3,6 +3,8 @@ package com.davcatch.devcatch.common.scheduler.article;
 import java.util.List;
 
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
 import com.davcatch.devcatch.common.scheduler.article.parser.ArticleParseService;
@@ -21,6 +23,7 @@ public class ArticleSchedulerTask {
 	private final ArticleParseService articleParseService;
 	private final ArticleProcessorService articleProcessorService;
 
+	@Transactional(propagation = Propagation.REQUIRES_NEW)
 	public void processSource(Source source) {
 		try {
 			List<ParsedArticle> collectedArticles = articleParseService.parseArticles(source);
@@ -37,7 +40,6 @@ public class ArticleSchedulerTask {
 			log.info("[{}] {}개 아티클 처리 완료", source.getName(), processedArticles.size());
 		} catch (Exception e) {
 			log.error("[{}] 소스 처리 중 오류 발생: {}", source.getName(), e.getMessage(), e);
-			throw new RuntimeException(e);
 		}
 	}
 }

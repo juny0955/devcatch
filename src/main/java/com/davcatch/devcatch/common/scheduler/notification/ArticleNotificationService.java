@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
+import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.tag.TagType;
@@ -120,7 +121,11 @@ public class ArticleNotificationService {
 	private void updateArticlesStatus(List<Article> articles) {
 		articles.forEach(article -> {
 			article.sendArticle();
-			articleService.save(article);
+			try {
+				articleService.save(article);
+			} catch (CustomException e) {
+				throw new RuntimeException(e);
+			}
 		});
 		log.info("총 {}개 아티클 상태 업데이트 완료", articles.size());
 	}
