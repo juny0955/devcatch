@@ -22,7 +22,7 @@ public interface ArticleRepository extends JpaRepository<Article, Long> {
 		+ "limit 1 ", nativeQuery = true)
 	Optional<Article> findLastPublishedArticle(Long sourceId);
 
-	@EntityGraph(attributePaths = {"articleTags", "articleTags.tag"})
+	@EntityGraph(attributePaths = {"source", "articleTags", "articleTags.tag"})
 	@Query("select a from Article a "
 		+ "where a.isSent = false ")
 	List<Article> findSendArticles();
