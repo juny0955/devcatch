@@ -2,10 +2,14 @@ package com.davcatch.devcatch.common.config;
 
 import java.time.Duration;
 
+import org.apache.hc.client5.http.cookie.BasicCookieStore;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 @Configuration
@@ -14,6 +18,23 @@ public class RestTemplateConfig {
 	@Bean
 	public RestTemplate rssRestTemplate(RestTemplateBuilder restTemplateBuilder) {
 		return restTemplateBuilder
+			.connectTimeout(Duration.ofSeconds(10))
+			.readTimeout(Duration.ofSeconds(10))
+			.defaultHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")
+			.defaultHeader("Accept", "application/rss+xml, application/xml, text/xml, */*")
+			.build();
+	}
+
+	@Bean
+	public RestTemplate cloudflareRssRestTemplate(RestTemplateBuilder restTemplateBuilder) {
+		HttpClientBuilder httpClientBuilder = HttpClients.custom()
+			.setDefaultCookieStore(new BasicCookieStore())
+			.setUserAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36");
+
+		HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory(httpClientBuilder.build());
+
+		return restTemplateBuilder
+			.requestFactory(() -> factory)
 			.connectTimeout(Duration.ofSeconds(10))
 			.readTimeout(Duration.ofSeconds(10))
 			.defaultHeader("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36")

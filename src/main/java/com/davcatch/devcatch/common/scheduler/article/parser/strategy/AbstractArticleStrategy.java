@@ -23,7 +23,7 @@ public abstract class AbstractArticleStrategy implements ArticleParseStrategy {
 	private final ContentExtractorFactory contentExtractorFactory;
 
 	protected List<SyndEntry> getEntries(Source source) {
-		return rssReaderService.reader(source.getFeedUrl())
+		return rssReaderService.reader(source)
 			.map(SyndFeed::getEntries)
 			.orElseGet(() -> {
 				log.warn("[{}] RSS 피드가 존재하지 않습니다.", source.getName());
