@@ -1,5 +1,6 @@
 package com.davcatch.devcatch.admin.service.schduler;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,22 +31,24 @@ public class SchedulerService {
 			articleSchedulerService.createNewArticle();
 
 			// 성공 이력 저장
-			SchedulerExecution execution = new SchedulerExecution();
-			execution.setSchedulerName("아티클 수집 및 생성");
-			execution.setExecutionTime(startTime);
-			execution.setStatus("성공");
-			execution.setDetails("수동 실행으로 신규 아티클 수집 완료");
+			SchedulerExecution execution = SchedulerExecution.builder()
+				.schedulerName("아티클 수집 및 생성")
+				.executionTime(startTime)
+				.status("성공")
+				.details("수동 실행으로 신규 아티클 수집 완료")
+				.build();
 
 			return "아티클 수집 및 생성 스케줄러가 성공적으로 실행되었습니다.";
 		} catch (Exception e) {
 			log.error("아티클 생성 스케줄러 실행 중 오류: {}", e.getMessage(), e);
 
 			// 실패 이력 저장
-			SchedulerExecution execution = new SchedulerExecution();
-			execution.setSchedulerName("아티클 수집 및 생성");
-			execution.setExecutionTime(startTime);
-			execution.setStatus("실패");
-			execution.setDetails("오류: " + e.getMessage());
+			SchedulerExecution execution = SchedulerExecution.builder()
+				.schedulerName("아티클 수집 및 생성")
+				.executionTime(startTime)
+				.status("실패")
+				.details("오류: " + e.getMessage())
+				.build();
 
 			return "아티클 수집 중 오류가 발생했습니다: " + e.getMessage();
 		}
@@ -63,22 +66,24 @@ public class SchedulerService {
 			articleNotificationService.sendNewArticle();
 
 			// 성공 이력 저장
-			SchedulerExecution execution = new SchedulerExecution();
-			execution.setSchedulerName("아티클 이메일 발송");
-			execution.setExecutionTime(startTime);
-			execution.setStatus("성공");
-			execution.setDetails("수동 실행으로 이메일 발송 완료");
+			SchedulerExecution execution = SchedulerExecution.builder()
+				.schedulerName("아티클 이메일 발송")
+				.executionTime(startTime)
+				.status("성공")
+				.details("수동 실행으로 이메일 발송 완료")
+				.build();
 
 			return "아티클 이메일 발송 스케줄러가 성공적으로 실행되었습니다.";
 		} catch (Exception e) {
 			log.error("아티클 발송 스케줄러 실행 중 오류: {}", e.getMessage(), e);
 
 			// 실패 이력 저장
-			SchedulerExecution execution = new SchedulerExecution();
-			execution.setSchedulerName("아티클 이메일 발송");
-			execution.setExecutionTime(startTime);
-			execution.setStatus("실패");
-			execution.setDetails("오류: " + e.getMessage());
+			SchedulerExecution execution = SchedulerExecution.builder()
+				.schedulerName("아티클 이메일 발송")
+				.executionTime(startTime)
+				.status("실패")
+				.details("오류: " + e.getMessage())
+				.build();
 
 			return "아티클 이메일 발송 중 오류가 발생했습니다: " + e.getMessage();
 		}
@@ -88,6 +93,7 @@ public class SchedulerService {
 	 * 스케줄러 실행 이력 DTO
 	 */
 	@Data
+	@Builder
 	public static class SchedulerExecution {
 		private String schedulerName;
 		private LocalDateTime executionTime;

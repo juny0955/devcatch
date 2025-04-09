@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.integration.selenium.SeleniumBrowserService;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.common.integration.crawling.WebCrawler;
@@ -26,8 +27,8 @@ public class CrawlingParseStrategy extends AbstractArticleStrategy {
 	private final static int MAX_PARSE_PAGE = 3;
 	private final WebCrawler webCrawler;
 
-	public CrawlingParseStrategy(RssReaderService rssReaderService, WebCrawler webCrawler, ContentExtractorFactory contentExtractorFactory) {
-		super(rssReaderService, contentExtractorFactory);
+	public CrawlingParseStrategy(RssReaderService rssReaderService, SeleniumBrowserService seleniumBrowserService, ContentExtractorFactory contentExtractorFactory, WebCrawler webCrawler) {
+		super(rssReaderService, seleniumBrowserService, contentExtractorFactory);
 		this.webCrawler = webCrawler;
 	}
 
@@ -46,14 +47,7 @@ public class CrawlingParseStrategy extends AbstractArticleStrategy {
 				continue;
 
 			String content = extractor.extractContent(null, document);
-			ParsedArticle parsedArticle = ParsedArticle.builder()
-					.title(entry.getTitle())
-					.link(link)
-					.content(content)
-					.publishedAt(entry.getPublishedDate() != null ? entry.getPublishedDate() : entry.getUpdatedDate())
-					.build();
-
-			parsedArticles.add(parsedArticle);
+			parsedArticles.add(ParsedArticle.of(entry, source, content));
 		}
 
 		return parsedArticles;

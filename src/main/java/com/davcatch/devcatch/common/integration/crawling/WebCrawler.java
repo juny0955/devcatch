@@ -31,16 +31,19 @@ public class WebCrawler {
 			ResponseEntity<String> response = crawlingRestTemplate.getForEntity(link, String.class);
 			String html = response.getBody();
 
-			if (html != null) {
-				Document document = Jsoup.parse(html);
-				log.debug("크롤링 정상 수집 : {}", link);
-
-				return Optional.of(document);
+			if (html == null || html.isBlank()) {
+				log.warn("[{}] 해당 페이지를 가져올 수 없습니다", link);
+				return Optional.empty();
 			}
+
+			Document document = Jsoup.parse(html);
+			log.debug("크롤링 정상 수집 : {}", link);
+
+			return Optional.of(document);
+
 		} catch (Exception e) {
 			log.error("({}) 크롤링 중 에러 발생 : {}", link, e.getMessage());
+			return Optional.empty();
 		}
-
-		return Optional.empty();
 	}
 }

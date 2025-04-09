@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class GptSummaryService {
 
-	private static final String URL = "https://api.openai.com/v1/chat/completions";
+	private static final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
 
 	private final RestTemplate gptApiRestTemplate;
 
@@ -35,11 +35,13 @@ public class GptSummaryService {
 	public GptResponse getSummary(String content) throws CustomException {
 		log.debug("GPT API 요청 시작");
 
-		GptResponse response;
+		GptResponse response = null;
 
 		try {
 			GptRequest request = GptRequest.create(content, model, sysPrompt);
-			response = gptApiRestTemplate.postForObject(URL, request, GptResponse.class);
+			System.out.println("gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class) = "
+				+ gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class));
+			response = gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class);
 		} catch (Exception e) {
 			log.error("GPT API 요청중 에러 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.GPT_REQUEST_ERROR);

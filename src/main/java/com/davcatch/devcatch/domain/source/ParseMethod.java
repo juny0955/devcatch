@@ -4,6 +4,7 @@ public enum ParseMethod {
 
 	RSS_CONTENT,
 	RSS_DESCRIPTION,
-	CRAWLING
+	CRAWLING,
+	CLOUDFLARE_RSS_CONTENT
 	;
 }

@@ -6,6 +6,7 @@ import java.util.concurrent.Executor;
 
 import org.springframework.stereotype.Service;
 
+import com.davcatch.devcatch.common.integration.selenium.SeleniumBrowserService;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.web.service.source.SourceService;
 
@@ -20,6 +21,7 @@ public class ArticleSchedulerService {
 	private final SourceService sourceService;
 	private final ArticleSchedulerTask articleSchedulerTask;
 	private final Executor schedulerTaskExecutor;
+	private final SeleniumBrowserService seleniumBrowserService;
 
 	public void createNewArticle() {
 		List<Source> sources = sourceService.getActiveSources();
@@ -27,17 +29,18 @@ public class ArticleSchedulerService {
 
 		int batchSize = 5;
 
-		for (int i=0; i<sources.size(); i+=batchSize) {
+		for (int i = 0; i < sources.size(); i += batchSize) {
 			int endIndex = Math.min(i + batchSize, sources.size());
 			List<Source> batchSources = sources.subList(i, endIndex);
 
 			List<CompletableFuture<Void>> futures = batchSources.stream()
 				.map(source -> CompletableFuture.runAsync(() -> {
-						articleSchedulerTask.processSource(source);
+					articleSchedulerTask.processSource(source);
 				}, schedulerTaskExecutor))
 				.toList();
 
 			CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
 		}
+
 	}
 }

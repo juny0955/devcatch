@@ -20,6 +20,6 @@ public class RssContentExtractorStrategy implements ContentExtractorStrategy {
 
 	@Override
 	public Set<ParseMethod> getSupportedParseMethod() {
-		return Set.of(ParseMethod.RSS_CONTENT);
+		return Set.of(ParseMethod.RSS_CONTENT, ParseMethod.CLOUDFLARE_RSS_CONTENT);
 	}
 }
