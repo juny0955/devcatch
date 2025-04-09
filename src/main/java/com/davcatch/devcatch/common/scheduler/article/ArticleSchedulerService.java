@@ -21,7 +21,6 @@ public class ArticleSchedulerService {
 	private final SourceService sourceService;
 	private final ArticleSchedulerTask articleSchedulerTask;
 	private final Executor schedulerTaskExecutor;
-	private final SeleniumBrowserService seleniumBrowserService;
 
 	public void createNewArticle() {
 		List<Source> sources = sourceService.getActiveSources();

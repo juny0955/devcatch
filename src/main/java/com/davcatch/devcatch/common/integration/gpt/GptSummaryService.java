@@ -39,8 +39,6 @@ public class GptSummaryService {
 
 		try {
 			GptRequest request = GptRequest.create(content, model, sysPrompt);
-			System.out.println("gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class) = "
-				+ gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class));
 			response = gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class);
 		} catch (Exception e) {
 			log.error("GPT API 요청중 에러 발생 : {}", e.getMessage());
