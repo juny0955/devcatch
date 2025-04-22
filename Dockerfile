@@ -8,8 +8,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 RUN wget -qO /tmp/chrome-shell.zip \
       https://storage.googleapis.com/chrome-for-testing-public/135.0.7049.95/linux64/chrome-headless-shell-linux64.zip \
     && unzip /tmp/chrome-shell.zip -d /opt \
-    && mv /opt/headless-shell-linux64 /opt/headless-shell \
-    && ln -s /opt/headless-shell/headless-shell /usr/bin/headless-shell \
+    && mv /opt/chrome-headless-shell-linux64 /opt/headless-shell \
+    && ln -s /opt/headless-shell/chrome-headless-shell /usr/bin/headless-shell \
     && rm /tmp/chrome-shell.zip
 
 # Chromedriver 설치
