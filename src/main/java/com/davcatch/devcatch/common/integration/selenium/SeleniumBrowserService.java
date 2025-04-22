@@ -27,6 +27,8 @@ public class SeleniumBrowserService {
 	private WebDriver createWebDriver() throws CustomException {
 		try {
 			ChromeOptions options = new ChromeOptions();
+			options.setBinary("/usr/bin/headless-shell");
+
 			options.addArguments("--headless=new");
 			options.addArguments("--disable-gpu");
 			options.addArguments("--no-sandbox");

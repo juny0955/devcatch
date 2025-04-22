@@ -1,31 +1,23 @@
 FROM openjdk:17-jdk-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-        wget gnupg unzip \
-        libnss3 libatk-bridge2.0-0 libgbm1 libgtk-3-0 \
-        libx11-xcb1 libxrandr2 libxdamage1 libxcomposite1 libxss1 libasound2 \
+      wget unzip libnss3 libatk-bridge2.0-0 libgbm1 \
     && rm -rf /var/lib/apt/lists/*
 
 # Chrome 설치
-RUN wget -qO- https://dl.google.com/linux/linux_signing_key.pub \
-        | gpg --dearmor -o /usr/share/keyrings/google.gpg \
-    && echo "deb [signed-by=/usr/share/keyrings/google.gpg] \
-        https://dl.google.com/linux/chrome/deb/ stable main" \
-        > /etc/apt/sources.list.d/google.list \
-    && apt-get update \
-    && apt-get install -y --no-install-recommends \
-        google-chrome-stable=135.0.7049.84-1 \
-    && rm -rf /var/lib/apt/lists/*
+RUN wget -qO /tmp/chrome-shell.zip \
+      https://storage.googleapis.com/chrome-for-testing-public/135.0.7049.95/linux64/chrome-headless-shell-linux64.zip \
+    && unzip /tmp/chrome-shell.zip -d /opt \
+    && mv /opt/headless-shell-linux64 /opt/headless-shell \
+    && ln -s /opt/headless-shell/headless-shell /usr/bin/headless-shell \
+    && rm /tmp/chrome-shell.zip
 
 # Chromedriver 설치
 RUN wget -qO /tmp/chromedriver.zip \
-        https://chromedriver.storage.googleapis.com/135.0.7049.84/chromedriver_linux64.zip \
+      https://storage.googleapis.com/chrome-for-testing-public/135.0.7049.95/linux64/chromedriver-linux64.zip \
     && unzip /tmp/chromedriver.zip -d /usr/local/bin \
     && chmod +x /usr/local/bin/chromedriver \
     && rm /tmp/chromedriver.zip
-
-# 환경 변수 설정
-ENV CHROME_OPTIONS="--headless --no-sandbox --disable-dev-shm-usage"
 
 # 애플리케이션 설정
 ARG JAR_FILE_PATH=/build/libs/*.jar
