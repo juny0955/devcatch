@@ -15,9 +15,10 @@ RUN wget -qO /tmp/chrome-shell.zip \
 # Chromedriver 설치
 RUN wget -qO /tmp/chromedriver.zip \
       https://storage.googleapis.com/chrome-for-testing-public/135.0.7049.95/linux64/chromedriver-linux64.zip \
-    && unzip /tmp/chromedriver.zip -d /usr/local/bin \
+    && unzip /tmp/chromedriver.zip -d /tmp \
+    && mv /tmp/chromedriver-linux64/chromedriver /usr/local/bin/ \
     && chmod +x /usr/local/bin/chromedriver \
-    && rm /tmp/chromedriver.zip
+    && rm -rf /tmp/chromedriver.zip /tmp/chromedriver-linux64
 
 # 애플리케이션 설정
 ARG JAR_FILE_PATH=/build/libs/*.jar
