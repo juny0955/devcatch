@@ -11,8 +11,6 @@ import com.davcatch.devcatch.domain.tag.TagType;
 
 public interface TagRepository extends JpaRepository<Tag, Long> {
 
-	Optional<Tag> findByTagType(TagType tagType);
-
 	@Query("select t from Tag t where t.tagType in :tagTypes")
 	List<Tag> findInTagType(List<TagType> tagTypes);
 }

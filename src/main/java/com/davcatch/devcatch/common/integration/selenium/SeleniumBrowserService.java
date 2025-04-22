@@ -65,6 +65,7 @@ public class SeleniumBrowserService {
 		log.debug("[{}] 셀레니움 헤드리스 RSS FEED 수집 시작", source.getName());
 
 		WebDriver webDriver = null;
+		SyndFeed feed = null;
 		try {
 			webDriver = createWebDriver();
 
@@ -93,13 +94,14 @@ public class SeleniumBrowserService {
 			syndFeedInput.setXmlHealerOn(true); // XML 문법 오류 자동 복구 활성화
 
 			String parse = Jsoup.parse(pageSource).body().text();
-			SyndFeed feed = syndFeedInput.build(new StringReader(parse));
-			return Optional.of(feed);
+
+			feed = syndFeedInput.build(new StringReader(parse));
 		} catch (Exception e) {
 			log.error("[{}] RSS FEED 수집중 오류 발생 : {}", source.getName(), e.getMessage());
-			return Optional.empty();
 		} finally {
 			destroyWebDriver(webDriver);
 		}
+
+		return Optional.ofNullable(feed);
 	}
 }
