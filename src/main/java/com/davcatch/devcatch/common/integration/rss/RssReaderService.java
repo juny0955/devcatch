@@ -30,6 +30,7 @@ public class RssReaderService {
 	public Optional<SyndFeed> reader(Source source) {
 		log.debug("[{}] RSS FEED 수집 시작", source.getName());
 
+		SyndFeed feed = null;
 		try {
 			ResponseEntity<String> response = rssRestTemplate.getForEntity(source.getFeedUrl(), String.class);
 
@@ -45,13 +46,12 @@ public class RssReaderService {
 			syndFeedInput.setPreserveWireFeed(true);
 			syndFeedInput.setXmlHealerOn(true); // XML 문법 오류 자동 복구 활성화
 
-			SyndFeed feed = syndFeedInput.build(new StringReader(rssFeedXml));
+			feed = syndFeedInput.build(new StringReader(rssFeedXml));
 			log.debug("RSS FEED 정상 수집 : {}", source.getName());
-			return Optional.of(feed);
-
 		} catch (FeedException e) {
 			log.error("[{}] RSS FEED 수집중 오류 발생 : {}", source.getName(), e.getMessage());
-			return Optional.empty();
 		}
+
+		return Optional.ofNullable(feed);
 	}
 }

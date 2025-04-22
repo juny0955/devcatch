@@ -1,6 +1,5 @@
 package com.davcatch.devcatch.common.scheduler.article.parser.strategy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -8,14 +7,15 @@ import org.jsoup.nodes.Document;
 import org.springframework.stereotype.Component;
 
 import com.davcatch.devcatch.common.exception.CustomException;
-import com.davcatch.devcatch.common.integration.selenium.SeleniumBrowserService;
-import com.davcatch.devcatch.domain.source.ParseMethod;
-import com.davcatch.devcatch.domain.source.Source;
+import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.common.integration.crawling.WebCrawler;
 import com.davcatch.devcatch.common.integration.rss.RssReaderService;
+import com.davcatch.devcatch.common.integration.selenium.SeleniumBrowserService;
 import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
 import com.davcatch.devcatch.common.scheduler.article.extractor.factory.ContentExtractorFactory;
 import com.davcatch.devcatch.common.scheduler.article.extractor.strategy.ContentExtractorStrategy;
+import com.davcatch.devcatch.domain.source.ParseMethod;
+import com.davcatch.devcatch.domain.source.Source;
 import com.rometools.rome.feed.synd.SyndEntry;
 
 import lombok.extern.slf4j.Slf4j;
@@ -33,24 +33,19 @@ public class CrawlingParseStrategy extends AbstractArticleStrategy {
 	}
 
 	@Override
-	public List<ParsedArticle> process(Source source) throws CustomException {
-		ContentExtractorStrategy extractor = getContentExtractor(source.getParseMethod());
-		List<SyndEntry> entries = getEntries(source);
+	protected List<SyndEntry> fetchEntries(Source source) {
+		List<SyndEntry> entries = getEntriesFromRss(source);
+		return entries.subList(0, Math.min(MAX_PARSE_PAGE, entries.size()));
+	}
 
-		List<ParsedArticle> parsedArticles = new ArrayList<>();
-		for (int i = 0; i < Math.min(MAX_PARSE_PAGE, entries.size()) ; i++) {
-			SyndEntry entry = entries.get(i);
+	@Override
+	protected ParsedArticle processEntry(SyndEntry entry, Source source, ContentExtractorStrategy contentExtractor) throws CustomException {
+		String link = source.isUseLink() ? entry.getLink() : entry.getUri();
+		Document document = webCrawler.getDocument(link)
+			.orElseThrow(() -> new CustomException(ErrorCode.CONTENT_PARSE_ERROR));
 
-			String link = source.isUseLink() ? entry.getLink() : entry.getUri();
-			Document document = webCrawler.getDocument(link).orElse(null);
-			if (document == null)
-				continue;
-
-			String content = extractor.extractContent(null, document);
-			parsedArticles.add(ParsedArticle.of(entry, source, content));
-		}
-
-		return parsedArticles;
+		String content = contentExtractor.extractContent(null, document);
+		return ParsedArticle.of(entry, source, content);
 	}
 
 	@Override

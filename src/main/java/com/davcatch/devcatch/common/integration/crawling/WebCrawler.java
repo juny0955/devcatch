@@ -27,6 +27,7 @@ public class WebCrawler {
 	public Optional<Document> getDocument(String link) {
 		log.debug("크롤링 시작 : {}", link);
 
+		Document document = null;
 		try {
 			ResponseEntity<String> response = crawlingRestTemplate.getForEntity(link, String.class);
 			String html = response.getBody();
@@ -36,14 +37,12 @@ public class WebCrawler {
 				return Optional.empty();
 			}
 
-			Document document = Jsoup.parse(html);
+			document = Jsoup.parse(html);
 			log.debug("크롤링 정상 수집 : {}", link);
-
-			return Optional.of(document);
-
 		} catch (Exception e) {
 			log.error("({}) 크롤링 중 에러 발생 : {}", link, e.getMessage());
-			return Optional.empty();
 		}
+
+		return Optional.ofNullable(document);
 	}
 }

@@ -1,6 +1,5 @@
 package com.davcatch.devcatch.common.scheduler.article.parser.strategy;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -27,17 +26,14 @@ public class CloudFlareParseStrategy extends AbstractArticleStrategy {
 	}
 
 	@Override
-	public List<ParsedArticle> process(Source source) throws CustomException {
-		ContentExtractorStrategy extractor = getContentExtractor(source.getParseMethod());
-		List<SyndEntry> entries = getEntriesFromHeadless(source);
+	protected List<SyndEntry> fetchEntries(Source source) {
+		return getEntriesFromHeadless(source);
+	}
 
-		List<ParsedArticle> parsedArticles = new ArrayList<>();
-		for (SyndEntry entry : entries) {
-			String content = extractor.extractContent(entry, null);
-			parsedArticles.add(ParsedArticle.of(entry, source, content));
-		}
-
-		return parsedArticles;
+	@Override
+	protected ParsedArticle processEntry(SyndEntry entry, Source source, ContentExtractorStrategy contentExtractor) {
+		String content = contentExtractor.extractContent(entry, null);
+		return ParsedArticle.of(entry, source, content);
 	}
 
 	@Override
