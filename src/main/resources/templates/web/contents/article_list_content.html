@@ -95,7 +95,7 @@
               </h4>
 
               <!-- 요약 -->
-              <p class="mt-1 text-sm text-gray-500 leading-5 line-clamp-2" th:text="${article.summary}">
+              <p class="mt-1 text-sm text-gray-500 leading-5 line-clamp-2" th:text="${#strings.abbreviate(article.summary, 100)}">
                 아티클 요약 내용이 표시됩니다. 아티클의 주요 내용을 간략하게 소개하는 문장입니다.
               </p>
 

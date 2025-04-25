@@ -80,7 +80,7 @@ public class AuthController {
 
 	@PostMapping("/leave")
 	public String doLeave(String email) {
-		log.info("{} -> 회원탈퇴 요청");
+		log.info("{} -> 회원탈퇴 요청", email);
 		authService.leave(email);
 		return "redirect:/auth/goodbye";
 	}
@@ -107,7 +107,7 @@ public class AuthController {
 
 	@PostMapping("/find/password")
 	public String doFindPassword(@RequestParam String email, RedirectAttributes redirectAttributes) {
-		log.info("{} -> 비밀번호 찾기 요청");
+		log.info("{} -> 비밀번호 찾기 요청", email);
 		try {
 			authService.findPassword(email);
 		} catch (CustomException e) {
