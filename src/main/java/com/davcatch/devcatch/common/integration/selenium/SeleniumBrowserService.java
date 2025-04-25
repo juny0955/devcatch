@@ -34,6 +34,10 @@ public class SeleniumBrowserService {
 			options.addArguments("--no-sandbox");
 			options.addArguments("--disable-dev-shm-usage");
 
+			options.addArguments("--user-data-dir=/tmp/chrome-user-data-" + System.currentTimeMillis());
+
+			options.addArguments("--disable-extensions");
+			options.addArguments("--disable-popup-blocking");
 			options.addArguments("--disable-blink-features=AutomationControlled");
 			options.setExperimentalOption("excludeSwitches", new String[]{"enable-automation"});
 			options.setExperimentalOption("useAutomationExtension", false);
