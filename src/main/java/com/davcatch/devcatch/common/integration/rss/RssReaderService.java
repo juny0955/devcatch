@@ -3,9 +3,8 @@ package com.davcatch.devcatch.common.integration.rss;
 import java.io.StringReader;
 import java.util.Optional;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.davcatch.devcatch.domain.source.Source;
 import com.rometools.rome.feed.synd.SyndFeed;
@@ -20,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class RssReaderService {
 
-	private final RestTemplate rssRestTemplate;
+	private final RestClient rssRestClient;
 
 	/**
 	 * RSS FEED 파싱
@@ -32,9 +31,10 @@ public class RssReaderService {
 
 		SyndFeed feed = null;
 		try {
-			ResponseEntity<String> response = rssRestTemplate.getForEntity(source.getFeedUrl(), String.class);
-
-			String rssFeedXml = response.getBody();
+			String rssFeedXml = rssRestClient.get()
+				.uri(source.getFeedUrl())
+				.retrieve()
+				.body(String.class);
 
 			if (rssFeedXml == null || rssFeedXml.isBlank()) {
 				log.warn("[{}] RSS FEED를 가져올 수 없습니다", source.getName());

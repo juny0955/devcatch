@@ -7,6 +7,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class WebCrawler {
 
-	private final RestTemplate crawlingRestTemplate;
+	private final RestClient crawlingRestClient;
 
 	/**
 	 * 크롤링
@@ -29,8 +30,10 @@ public class WebCrawler {
 
 		Document document = null;
 		try {
-			ResponseEntity<String> response = crawlingRestTemplate.getForEntity(link, String.class);
-			String html = response.getBody();
+			String html = crawlingRestClient.get()
+				.uri(link)
+				.retrieve()
+				.body(String.class);
 
 			if (html == null || html.isBlank()) {
 				log.warn("[{}] 해당 페이지를 가져올 수 없습니다", link);

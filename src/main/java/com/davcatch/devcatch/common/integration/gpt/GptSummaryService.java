@@ -2,7 +2,7 @@ package com.davcatch.devcatch.common.integration.gpt;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
@@ -19,7 +19,7 @@ public class GptSummaryService {
 
 	private static final String GPT_API_URL = "https://api.openai.com/v1/chat/completions";
 
-	private final RestTemplate gptApiRestTemplate;
+	private final RestClient gptApiRestClient;
 
 	@Value("${gpt.model}")
 	private String model;
@@ -39,7 +39,12 @@ public class GptSummaryService {
 
 		try {
 			GptRequest request = GptRequest.create(content, model, sysPrompt);
-			response = gptApiRestTemplate.postForObject(GPT_API_URL, request, GptResponse.class);
+			response = gptApiRestClient.post()
+				.uri(GPT_API_URL)
+				.body(request)
+				.retrieve()
+				.body(GptResponse.class);
+
 		} catch (Exception e) {
 			log.error("GPT API 요청중 에러 발생 : {}", e.getMessage());
 			throw new CustomException(ErrorCode.GPT_REQUEST_ERROR);
