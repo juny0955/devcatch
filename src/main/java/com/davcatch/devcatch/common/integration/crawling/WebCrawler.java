@@ -1,14 +1,13 @@
 package com.davcatch.devcatch.common.integration.crawling;
 
-import java.io.IOException;
+import java.io.ByteArrayInputStream;
 import java.util.Optional;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.springframework.http.ResponseEntity;
+import org.jsoup.parser.Parser;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,24 +27,25 @@ public class WebCrawler {
 	public Optional<Document> getDocument(String link) {
 		log.debug("크롤링 시작 : {}", link);
 
-		Document document = null;
 		try {
-			String html = crawlingRestClient.get()
-				.uri(link)
-				.retrieve()
-				.body(String.class);
+			byte[] bytes = crawlingRestClient.get()
+					.uri(link)
+					.retrieve()
+					.body(byte[].class);
 
-			if (html == null || html.isBlank()) {
+			if (bytes == null || bytes.length == 0) {
 				log.warn("[{}] 해당 페이지를 가져올 수 없습니다", link);
 				return Optional.empty();
 			}
 
-			document = Jsoup.parse(html);
-			log.debug("크롤링 정상 수집 : {}", link);
+			try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes)) {
+				Document doc = Jsoup.parse(bais, null, link, Parser.htmlParser());
+				log.debug("크롤링 정상 수집 : {}", link);
+				return Optional.of(doc);
+			}
 		} catch (Exception e) {
 			log.error("({}) 크롤링 중 에러 발생 : {}", link, e.getMessage());
+			return Optional.empty();
 		}
-
-		return Optional.ofNullable(document);
 	}
 }

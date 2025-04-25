@@ -4,6 +4,7 @@ import java.io.StringReader;
 import java.util.Optional;
 
 import org.jsoup.Jsoup;
+import org.jsoup.parser.Parser;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -17,7 +18,6 @@ import com.davcatch.devcatch.domain.source.Source;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 
-import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -99,7 +99,7 @@ public class SeleniumBrowserService {
 			syndFeedInput.setPreserveWireFeed(true);
 			syndFeedInput.setXmlHealerOn(true); // XML 문법 오류 자동 복구 활성화
 
-			String parse = Jsoup.parse(pageSource).body().text();
+			String parse = Jsoup.parse(pageSource, "", Parser.xmlParser()).outerHtml();
 
 			feed = syndFeedInput.build(new StringReader(parse));
 		} catch (Exception e) {

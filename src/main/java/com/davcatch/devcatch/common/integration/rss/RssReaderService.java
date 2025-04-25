@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.common.integration.rss;
 
-import java.io.StringReader;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
@@ -10,6 +11,7 @@ import com.davcatch.devcatch.domain.source.Source;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
+import com.rometools.rome.io.XmlReader;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,29 +31,30 @@ public class RssReaderService {
 	public Optional<SyndFeed> reader(Source source) {
 		log.debug("[{}] RSS FEED 수집 시작", source.getName());
 
-		SyndFeed feed = null;
 		try {
-			String rssFeedXml = rssRestClient.get()
+			byte[] bytes = rssRestClient.get()
 				.uri(source.getFeedUrl())
 				.retrieve()
-				.body(String.class);
+				.body(byte[].class);
 
-			if (rssFeedXml == null || rssFeedXml.isBlank()) {
-				log.warn("[{}] RSS FEED를 가져올 수 없습니다", source.getName());
+			if (bytes == null || bytes.length == 0) {
+				log.warn("[{}] 피드를 가져오지 못했습니다", source.getName());
 				return Optional.empty();
 			}
 
-			SyndFeedInput syndFeedInput = new SyndFeedInput();
-			syndFeedInput.setAllowDoctypes(true);
-			syndFeedInput.setPreserveWireFeed(true);
-			syndFeedInput.setXmlHealerOn(true); // XML 문법 오류 자동 복구 활성화
+			try (ByteArrayInputStream bais = new ByteArrayInputStream(bytes);
+				 XmlReader xmlReader = new XmlReader(bais)) {
 
-			feed = syndFeedInput.build(new StringReader(rssFeedXml));
-			log.debug("RSS FEED 정상 수집 : {}", source.getName());
-		} catch (FeedException e) {
+				SyndFeedInput input = new SyndFeedInput();
+				input.setPreserveWireFeed(true);
+				input.setAllowDoctypes(true);
+				input.setXmlHealerOn(true); // XML 문법 오류 자동 복구
+				SyndFeed feed = input.build(xmlReader);
+				return Optional.of(feed);
+			}
+		} catch (FeedException | IOException e) {
 			log.error("[{}] RSS FEED 수집중 오류 발생 : {}", source.getName(), e.getMessage());
+			return Optional.empty();
 		}
-
-		return Optional.ofNullable(feed);
 	}
 }
