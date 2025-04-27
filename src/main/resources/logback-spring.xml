@@ -45,7 +45,7 @@
     </appender>
 
     <!-- scheduler만 별도 처리 -->
-    <logger name="com.davcatch.devcatch.common.scheduler" level="INFO" additivity="false">
+    <logger name="com.davcatch.devcatch.common.scheduler" level="DEBUG" additivity="false">
         <appender-ref ref="SCHEDULER" />
         <appender-ref ref="CONSOLE" />
     </logger>

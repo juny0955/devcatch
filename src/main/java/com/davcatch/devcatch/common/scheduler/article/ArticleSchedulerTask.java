@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.common.scheduler.article;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,6 +12,8 @@ import com.davcatch.devcatch.common.scheduler.article.parser.ArticleParseService
 import com.davcatch.devcatch.common.scheduler.article.processor.ArticleProcessorService;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.Source;
+import com.davcatch.devcatch.domain.tag.Tag;
+import com.davcatch.devcatch.domain.tag.TagType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +27,7 @@ public class ArticleSchedulerTask {
 	private final ArticleProcessorService articleProcessorService;
 
 	@Transactional(propagation = Propagation.REQUIRES_NEW)
-	public void processSource(Source source) {
+	public void processSource(Source source, Map<TagType, Tag> tagMap) {
 		try {
 			List<ParsedArticle> collectedArticles = articleParseService.parseArticles(source);
 
@@ -35,7 +38,7 @@ public class ArticleSchedulerTask {
 
 			log.info("[{}] {}개 아티클 수집 완료", source.getName(), collectedArticles.size());
 
-			List<Article> processedArticles = articleProcessorService.processParsedArticles(source, collectedArticles);
+			List<Article> processedArticles = articleProcessorService.processParsedArticles(source, tagMap, collectedArticles);
 
 			log.info("[{}] {}개 아티클 처리 완료", source.getName(), processedArticles.size());
 		} catch (Exception e) {
