@@ -21,7 +21,7 @@ public class ArticleSummaryService {
 	private final ContentParser contentParser;
 
 	public ArticleSummary summarizeArticle(String content) throws CustomException {
-		log.debug("아티클 요약 서비스 시작");
+		log.debug("아티클 요약 시작");
 
 		GptResponse gptResponse = gptSummaryService.getSummary(content);
 		Content parseContent = contentParser.parseContent(gptResponse);

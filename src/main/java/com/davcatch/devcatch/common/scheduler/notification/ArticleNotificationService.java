@@ -68,7 +68,6 @@ public class ArticleNotificationService {
 	}
 
 	private void processSendMailResults(List<CompletableFuture<Void>> futures, List<Article> articles, int memberSize) {
-
 		CompletableFuture<Void> allFutures = CompletableFuture.allOf(futures.toArray(new CompletableFuture[0]));
 
 		try {

@@ -21,6 +21,11 @@ public class AsyncConfig {
 		executor.setMaxPoolSize(4);
 		executor.setQueueCapacity(100);
 		executor.setThreadNamePrefix("MailExecutor-");
+		executor.setRejectedExecutionHandler((r, e) -> {
+			Thread.currentThread().getThreadGroup().uncaughtException(
+				Thread.currentThread(), new RuntimeException("Mail 발송 스레드풀이 포화상태입니다")
+			);
+		});
 		executor.initialize();
 		return executor;
 	}
@@ -42,6 +47,26 @@ public class AsyncConfig {
 			Thread.currentThread().getThreadGroup().uncaughtException(
 				Thread.currentThread(),
 				new RuntimeException("ArticleScheduler 스레드풀이 포화상태입니다.")
+			);
+		});
+		executor.initialize();
+		return executor;
+	}
+
+	/**
+	 * gpt 요약 스레드풀 설정
+	 * @return executor
+	 */
+	@Bean(name = "gptSummaryTaskExecutor")
+	public Executor gptSummaryTaskExecutor() {
+		ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+		executor.setCorePoolSize(1);
+		executor.setMaxPoolSize(2);
+		executor.setQueueCapacity(10);
+		executor.setThreadNamePrefix("GptSummary-");
+		executor.setRejectedExecutionHandler((r, e) -> {
+			Thread.currentThread().getThreadGroup().uncaughtException(
+				Thread.currentThread(), new RuntimeException("GPT 요약 스레드풀이 포화상태입니다")
 			);
 		});
 		executor.initialize();
