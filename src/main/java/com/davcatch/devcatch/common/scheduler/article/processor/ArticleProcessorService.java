@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.davcatch.devcatch.common.scheduler.article.dto.ArticleSummary;
 import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
 import com.davcatch.devcatch.common.scheduler.article.processor.summary.ArticleSummaryService;
-import com.davcatch.devcatch.common.scheduler.article.util.ArticleUtil;
+import com.davcatch.devcatch.common.util.ArticleUtil;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.domain.tag.Tag;

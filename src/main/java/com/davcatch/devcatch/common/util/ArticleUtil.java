@@ -1,4 +1,4 @@
-package com.davcatch.devcatch.common.scheduler.article.util;
+package com.davcatch.devcatch.common.util;
 
 import java.util.List;
 
@@ -9,6 +9,10 @@ import com.davcatch.devcatch.domain.article.ArticleTag;
 import com.davcatch.devcatch.domain.source.Source;
 import com.davcatch.devcatch.domain.tag.Tag;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ArticleUtil {
 
 	public static Article createNewArticle(Source source, ParsedArticle parsedArticle, ArticleSummary summary, List<Tag> tags) {

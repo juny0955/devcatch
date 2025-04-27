@@ -11,12 +11,13 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 
 import com.davcatch.devcatch.common.exception.CustomException;
+import com.davcatch.devcatch.common.service.mail.MailService;
+import com.davcatch.devcatch.common.service.mail.MailTemplate;
+import com.davcatch.devcatch.common.util.MailUtil;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.web.service.article.ArticleService;
-import com.davcatch.devcatch.common.service.mail.MailService;
-import com.davcatch.devcatch.common.service.mail.MailTemplate;
 import com.davcatch.devcatch.web.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -53,7 +54,7 @@ public class ArticleNotificationService {
 
 			log.debug("회원 {}({})에게 {}개 아티클 전송", member.getName(), member.getEmail(), toSendArticles.size());
 
-			Context context = createContext(member, toSendArticles);
+			Context context = MailUtil.createNewArticleContext(member, toSendArticles);
 
 			CompletableFuture<Void> future = mailService.sendMail(member.getEmail(), MailTemplate.SEND_ARTICLE, context);
 			futures.add(future);
@@ -107,14 +108,6 @@ public class ArticleNotificationService {
 				return !Collections.disjoint(articleTags, subscribeTag);
 			})
 			.toList();
-	}
-
-	private Context createContext(Member member, List<Article> toSendArticles) {
-		Context context = new Context();
-		context.setVariable("subject", MailTemplate.SEND_ARTICLE.getTitle());
-		context.setVariable("email", member.getEmail());
-		context.setVariable("articles", toSendArticles);
-		return context;
 	}
 
 	private void updateArticlesStatus(List<Article> articles) {

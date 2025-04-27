@@ -8,14 +8,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
-import com.davcatch.devcatch.web.controller.auth.request.RegRequest;
-import com.davcatch.devcatch.domain.member.Member;
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.common.service.cache.VerifyCodeCacheService;
 import com.davcatch.devcatch.common.service.mail.MailService;
 import com.davcatch.devcatch.common.service.mail.MailTemplate;
 import com.davcatch.devcatch.common.service.mail.VerificationInfo;
+import com.davcatch.devcatch.common.util.MailUtil;
+import com.davcatch.devcatch.domain.member.Member;
+import com.davcatch.devcatch.web.controller.auth.request.RegRequest;
 import com.davcatch.devcatch.web.service.member.MemberService;
 
 import lombok.RequiredArgsConstructor;
@@ -49,9 +50,7 @@ public class AuthService {
 		String verifyCode = generateVerificationCode();
 		verifyCodeCacheService.putVerificationCode(verifyCode, verificationInfo);
 
-		Context context = new Context();
-		context.setVariable("subject", MailTemplate.VERIFY_EMAIL.getTitle());
-		context.setVariable("verifyCode", verifyCode);
+		Context context = MailUtil.createAuthContext(verifyCode);
 
 		mailService.sendMail(request.getEmail(), MailTemplate.VERIFY_EMAIL, context);
 	}
@@ -92,10 +91,7 @@ public class AuthService {
 		String encodedPassword = passwordEncoder.encode(tempPassword);
 		member.changePassword(encodedPassword);
 
-		Context context = new Context();
-		context.setVariable("subject", MailTemplate.FIND_PASSWORD.getTitle());
-		context.setVariable("name", member.getName());
-		context.setVariable("tempPassword", tempPassword);
+		Context context = MailUtil.createFindPasswordContext(member.getName(), tempPassword);
 
 		mailService.sendMail(email, MailTemplate.FIND_PASSWORD, context);
 		log.info("회원 {} 임시 비밀번호 발급", member.getName());

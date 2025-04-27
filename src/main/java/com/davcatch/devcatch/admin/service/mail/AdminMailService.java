@@ -7,10 +7,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.thymeleaf.context.Context;
 
 import com.davcatch.devcatch.admin.controller.mail.request.SendMailReqeust;
-import com.davcatch.devcatch.domain.member.Member;
-import com.davcatch.devcatch.repository.member.MemberRepository;
 import com.davcatch.devcatch.common.service.mail.MailService;
 import com.davcatch.devcatch.common.service.mail.MailTemplate;
+import com.davcatch.devcatch.common.util.MailUtil;
+import com.davcatch.devcatch.domain.member.Member;
+import com.davcatch.devcatch.repository.member.MemberRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -25,9 +26,8 @@ public class AdminMailService {
 	public void sendMailToAllMember(SendMailReqeust reqeust) {
 		List<Member> members = memberRepository.findAll();
 
-		Context context = new Context();
-		context.setVariable("subject", reqeust.getSubject());
-		context.setVariable("content", reqeust.getContent());
+		Context context = MailUtil.createAdminContext(reqeust.getSubject(), reqeust.getContent());
+
 		for (Member member : members) {
 			mailService.sendMail(member.getEmail(), MailTemplate.ADMIN_MAIL, context);
 		}
