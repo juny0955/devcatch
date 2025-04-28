@@ -15,6 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class ArticleUtil {
 
+	/**
+	 * 새로운 아티클 생성
+	 * @param source 해당 소스
+	 * @param parsedArticle 파싱된 아티클
+	 * @param summary GPT 요약문
+	 * @param tags 태그
+	 * @return 새로운 아티클
+	 */
 	public static Article createNewArticle(Source source, ParsedArticle parsedArticle, ArticleSummary summary, List<Tag> tags) {
 		Article article = Article.of(source, parsedArticle, summary.getSummary());
 		tags.forEach(tag -> article.addArticleTag(ArticleTag.of(article, tag)));

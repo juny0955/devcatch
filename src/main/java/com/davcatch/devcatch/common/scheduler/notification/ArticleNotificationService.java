@@ -54,7 +54,7 @@ public class ArticleNotificationService {
 
 			log.debug("회원 {}({})에게 {}개 아티클 전송", member.getName(), member.getEmail(), toSendArticles.size());
 
-			Context context = MailUtil.createNewArticleContext(member, toSendArticles);
+			Context context = MailUtil.createNewArticleContext(member.getEmail(), toSendArticles);
 
 			CompletableFuture<Void> future = mailService.sendMail(member.getEmail(), MailTemplate.SEND_ARTICLE, context);
 			futures.add(future);
