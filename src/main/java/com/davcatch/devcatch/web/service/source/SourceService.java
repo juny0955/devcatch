@@ -19,6 +19,10 @@ public class SourceService {
 
 	private final SourceRepository sourceRepository;
 
+	/**
+	 * 활성화된 소스 조회
+	 * @return 활성화 상태 소스 리스트
+	 */
 	public List<Source> getActiveSources() {
 		return sourceRepository.findAllByIsActiveTrue();
 	}

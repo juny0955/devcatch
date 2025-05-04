@@ -36,14 +36,30 @@ public class ArticleService {
 		}
 	}
 
+	/**
+	 * 사용자 알림 아티클 조회
+	 * @return 아티클 리스트
+	 */
 	public List<Article> getSendArticles() {
 		return articleRepository.findSendArticles();
 	}
 
+	/**
+	 * 새로운 아티클 조회 (메인 페이지용)
+	 * 최신 6개 항목
+	 * @return 아티클 리스트
+	 */
 	public List<Article> getNewArticles() {
 		return articleRepository.findNewArticlesTOP6(PageRequest.of(0, 6));
 	}
 
+	/**
+	 * 아티클 목록 조회
+	 * @param pageable 페이지
+	 * @param keyword 검색 키워드
+	 * @param tag 검색 태그
+	 * @return 아티클 리스트
+	 */
 	public Page<Article> getArticlesList(Pageable pageable, String keyword, TagType tag) {
 		if (keyword != null && keyword.trim().isEmpty())
 			keyword = null;
@@ -51,11 +67,33 @@ public class ArticleService {
 		return articleRepository.findArticlesList(pageable, keyword, tag);
 	}
 
+	/**
+	 * ID로 조회
+	 * @param articleId 조회할 ID
+	 * @return 조회된 아티클
+	 * @throws CustomException
+	 */
 	public Article getArticle(Long articleId) throws CustomException {
 		return articleRepository.findArticleDetail(articleId).orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
 	}
 
+	/**
+	 * 연관 아티클 조회
+	 * @param articleId 조회할 ID
+	 * @param tagTypes 아티클 태그
+	 * @return 아티클 리스트
+	 */
 	public List<Article> getRelatedArticles(Long articleId, List<TagType> tagTypes) {
 		return articleRepository.findRelatedArticles(articleId, tagTypes, PageRequest.of(0, 4));
+	}
+
+	/**
+	 * 해당 소스의 마지막 발행된 아티클 조회
+	 * @param sourceId 해당 소스 ID
+	 * @return 조회된 아티클
+	 * @throws CustomException
+	 */
+	public Article getLastPublishedArticle(Long sourceId) throws CustomException {
+		return articleRepository.findLastPublishedArticle(sourceId).orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
 	}
 }

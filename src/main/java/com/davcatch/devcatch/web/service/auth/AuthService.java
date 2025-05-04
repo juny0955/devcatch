@@ -71,6 +71,7 @@ public class AuthService {
 			throw new CustomException(ErrorCode.VERIFY_CODE_EXPIRED);
 		}
 
+		log.info("이메일 {} 인증코드 인증 성공", verificationInfo.getEmail());
 		String encodedPassword = passwordEncoder.encode(verificationInfo.getPassword());
 		memberService.save(Member.from(verificationInfo, encodedPassword));
 	}
@@ -97,7 +98,7 @@ public class AuthService {
 		log.info("회원 {} 임시 비밀번호 발급", member.getName());
 	}
 
-	public String generateVerificationCode() {
+	private String generateVerificationCode() {
 		byte[] randomBytes = new byte[6];
 		secureRandom.nextBytes(randomBytes);
 		return Base64.getUrlEncoder().withoutPadding().encodeToString(randomBytes).substring(0, 8);
