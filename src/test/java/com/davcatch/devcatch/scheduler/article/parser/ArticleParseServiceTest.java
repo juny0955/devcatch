@@ -23,6 +23,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.scheduler.article.parser.ArticleParseService;
+import com.davcatch.devcatch.common.service.cache.LastArticleCacheService;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.ParseMethod;
 import com.davcatch.devcatch.domain.source.Source;
@@ -38,7 +39,7 @@ class ArticleParseServiceTest {
 	private ArticleParseStrategyFactory strategyFactory;
 
 	@Mock
-	private ArticleRepository articleRepository;
+	private LastArticleCacheService lastArticleCacheService;
 
 	@Mock
 	private ArticleParseStrategy articleParseStrategy;
@@ -69,39 +70,18 @@ class ArticleParseServiceTest {
 	@Test
 	@DisplayName("아티클_파싱_성공")
 	void parseArticle_Success() throws CustomException {
+		Date yesterday = Date.from(LocalDate.now().minusDays(1).atStartOfDay(ZoneId.systemDefault()).toInstant());
 		when(strategyFactory.getStrategy(any(ParseMethod.class))).thenReturn(articleParseStrategy);
 		when(articleParseStrategy.process(source)).thenReturn(parsedArticles);
-		when(articleRepository.findLastPublishedArticle(source.getId())).thenReturn(Optional.empty());
-		when(articleRepository.findExistsLinks(anySet())).thenReturn(new HashSet<>());
+		when(lastArticleCacheService.getLastPublishedDate(source.getId())).thenReturn(yesterday);
 
 		List<ParsedArticle> result = articleParseService.parseArticles(source);
 
 		verify(strategyFactory).getStrategy(source.getParseMethod());
 		verify(articleParseStrategy).process(source);
-		verify(articleRepository).findLastPublishedArticle(source.getId());
-		verify(articleRepository).findExistsLinks(anySet());
+		verify(lastArticleCacheService).getLastPublishedDate(source.getId());
 
 		assertEquals(3, result.size());
-	}
-
-	@Test
-	@DisplayName("중복_링크_필터링")
-	void parseArticles_FilterExistingLinks() throws CustomException {
-		when(strategyFactory.getStrategy(any(ParseMethod.class))).thenReturn(articleParseStrategy);
-		when(articleParseStrategy.process(source)).thenReturn(parsedArticles);
-		when(articleRepository.findLastPublishedArticle(source.getId())).thenReturn(Optional.empty());
-
-		// 두 번째 아티클이 이미 존재한다고 가정
-		Set<String> existingLinks = new HashSet<>();
-		existingLinks.add("https://testblog.com/article2");
-		when(articleRepository.findExistsLinks(anySet())).thenReturn(existingLinks);
-
-		List<ParsedArticle> result = articleParseService.parseArticles(source);
-
-		verify(articleRepository).findExistsLinks(anySet());
-
-		assertEquals(2, result.size());
-		assertFalse(result.stream().anyMatch(article -> article.getLink().equals("https://testblog.com/article2")));
 	}
 
 	@Test
@@ -119,16 +99,12 @@ class ArticleParseServiceTest {
 
 		when(articleParseStrategy.process(source)).thenReturn(mixedDateArticles);
 
-		Article lastArticle = mock(Article.class);
 		Date today = Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant());
-		when(lastArticle.getPublishedAt()).thenReturn(today);
-		when(articleRepository.findLastPublishedArticle(source.getId())).thenReturn(Optional.of(lastArticle));
-
-		when(articleRepository.findExistsLinks(anySet())).thenReturn(new HashSet<>());
+		when(lastArticleCacheService.getLastPublishedDate(source.getId())).thenReturn(today);
 
 		List<ParsedArticle> result = articleParseService.parseArticles(source);
 
-		verify(articleRepository).findLastPublishedArticle(source.getId());
+		verify(lastArticleCacheService).getLastPublishedDate(source.getId());
 
 		assertEquals(1, result.size());
 	}
@@ -160,7 +136,7 @@ class ArticleParseServiceTest {
 		verify(articleParseStrategy).process(source);
 
 		assertTrue(result.isEmpty());
-		verifyNoInteractions(articleRepository);
+		verifyNoInteractions(lastArticleCacheService);
 	}
 
 
