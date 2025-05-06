@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.web.service.article;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -95,5 +96,9 @@ public class ArticleService {
 	 */
 	public Article getLastPublishedArticle(Long sourceId) throws CustomException {
 		return articleRepository.findLastPublishedArticle(sourceId).orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
+	}
+
+	public Set<String> getArticlesByLink(Set<String> links) {
+		return articleRepository.findExistsLinks(links);
 	}
 }
