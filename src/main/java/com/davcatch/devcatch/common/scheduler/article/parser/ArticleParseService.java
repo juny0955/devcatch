@@ -40,7 +40,7 @@ public class ArticleParseService {
 		}
 
 		List<ParsedArticle> filteredByDate = afterPublishedDateFilter(parsedArticles, source.getId());
-		List<ParsedArticle> filterdByLink = existLinkFilter(filteredByDate, source.getId());
+		List<ParsedArticle> filterdByLink = existLinkFilter(filteredByDate);
 
 		log.debug("[{}] 필터링 후 {}개 아티클 수집 완료", source.getName(), filterdByLink.size());
 		return filterdByLink;
@@ -64,10 +64,9 @@ public class ArticleParseService {
 	/**
 	 * 링크 중복 필터
 	 * @param articles 필터링할 아티클 리스트
-	 * @param sourceId 해당 소스 ID
 	 * @return 필터링된 아티클 리스트
 	 */
-	private List<ParsedArticle> existLinkFilter(List<ParsedArticle> articles, Long sourceId) {
+	private List<ParsedArticle> existLinkFilter(List<ParsedArticle> articles) {
 		Set<String> links = articles.stream()
 			.map(ParsedArticle::getLink)
 			.collect(Collectors.toSet());
