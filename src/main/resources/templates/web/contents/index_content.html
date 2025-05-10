@@ -71,7 +71,7 @@
                             <!-- 작성자 정보 영역 -->
                             <div class="mt-6 flex items-center">
                                 <div class="ml-0">
-                                    <p class="text-sm font-medium text-gray-900" th:text="${article.name}">작성자</p>
+                                    <p class="text-sm font-medium text-gray-900" th:text="${article.sourceName}">작성자</p>
                                     <div class="flex space-x-1 text-sm text-gray-500">
                                         <time th:datetime="${#dates.format(article.publishedAt, 'yyyy-MM-dd')}"
                                               th:text="${#dates.format(article.publishedAt, 'yyyy.MM.dd')}">발행일</time>

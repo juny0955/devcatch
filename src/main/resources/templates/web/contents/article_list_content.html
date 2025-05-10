@@ -108,7 +108,7 @@
 
               <!-- 메타 정보 -->
               <div class="mt-2 flex items-center text-xs text-gray-500">
-                <span th:text="${article.name}">작성자</span>
+                <span th:text="${article.sourceName}">작성자</span>
                 <span class="mx-1">&middot;</span>
                 <time th:datetime="${#dates.format(article.publishedAt, 'yyyy-MM-dd')}" th:text="${#dates.format(article.publishedAt, 'yyyy.MM.dd')}">2025.03.19</time>
               </div>

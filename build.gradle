@@ -19,6 +19,14 @@ configurations {
     }
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs += 'build/generated/sources/annotationProcessor/java/main'
+        }
+    }
+}
+
 repositories {
     mavenCentral()
 }
@@ -29,16 +37,32 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+
+    // AWS SES
     implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
     implementation 'com.amazonaws:aws-java-sdk-ses:1.12.472'
+
+    // Use Parse
     implementation 'org.apache.httpcomponents.client5:httpclient5:5.4.3'
     implementation 'org.seleniumhq.selenium:selenium-java:4.31.0'
     implementation 'org.jsoup:jsoup:1.18.3'
     implementation 'com.rometools:rome:2.1.0'
+
+    // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity6'
+
+    // 기본 내장 tomcat 제외
+    implementation('org.springframework.boot:spring-boot-starter-web') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
+    }
+    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+
+    // OpenFeign Fork QueryDsl
     implementation 'io.github.openfeign.querydsl:querydsl-jpa:6.11'
-    implementation 'io.github.openfeign.querydsl:querydsl-apt:6.11'
+    annotationProcessor "io.github.openfeign.querydsl:querydsl-apt:6.11:jpa"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 
     testImplementation 'org.springframework.security:spring-security-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -51,12 +75,6 @@ dependencies {
     runtimeOnly 'com.mysql:mysql-connector-j'
     runtimeOnly 'com.h2database:h2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    implementation('org.springframework.boot:spring-boot-starter-web') {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-tomcat'
-    }
-    implementation 'org.springframework.boot:spring-boot-starter-undertow'
-
 }
 
 tasks.named('test') {

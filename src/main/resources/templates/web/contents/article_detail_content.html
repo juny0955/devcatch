@@ -24,7 +24,7 @@
 
                 <!-- 메타 정보 -->
                 <div class="flex items-center text-sm text-gray-500 mb-4">
-                    <span th:text="${article.name}" class="font-medium">소스 이름</span>
+                    <span th:text="${article.sourceName}" class="font-medium">소스 이름</span>
                     <span class="mx-2">•</span>
                     <time th:datetime="${#dates.format(article.publishedAt, 'yyyy-MM-dd')}"
                           th:text="${#dates.format(article.publishedAt, 'yyyy년 MM월 dd일')}">
@@ -98,7 +98,7 @@
 
                             <!-- 메타 정보 -->
                             <div class="mt-2 flex items-center text-xs text-gray-500">
-                                <span th:text="${relatedArticle.name}" class="font-medium">소스 이름</span>
+                                <span th:text="${relatedArticle.sourceName}" class="font-medium">소스 이름</span>
                                 <span class="mx-2">•</span>
                                 <time th:datetime="${#dates.format(relatedArticle.publishedAt, 'yyyy-MM-dd')}"
                                       th:text="${#dates.format(relatedArticle.publishedAt, 'yyyy-MM-dd')}">

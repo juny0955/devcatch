@@ -8,7 +8,7 @@ import com.davcatch.devcatch.domain.tag.TagType;
 import lombok.Builder;
 
 @Builder
-public record ArticleResponse (
+public record ArticleDetailResponse(
 	Long id,
 	String title,
 	String summary,

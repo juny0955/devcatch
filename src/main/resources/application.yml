@@ -15,7 +15,7 @@ spring:
       password: ${REDIS_PASSWORD}
 
   jpa:
-    open-in-view: true
+    open-in-view: false
     hibernate:
       ddl-auto: none
 #    show-sql: true
