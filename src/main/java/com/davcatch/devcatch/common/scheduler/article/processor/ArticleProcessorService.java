@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.davcatch.devcatch.common.scheduler.article.dto.ArticleSummary;
 import com.davcatch.devcatch.common.scheduler.article.dto.ParsedArticle;
 import com.davcatch.devcatch.common.scheduler.article.processor.summary.ArticleSummaryService;
+import com.davcatch.devcatch.common.service.cache.LastArticleCacheService;
 import com.davcatch.devcatch.common.util.ArticleUtil;
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.source.Source;
@@ -28,6 +29,7 @@ public class ArticleProcessorService {
 
 	private final ArticleSummaryService articleSummaryService;
 	private final ArticleService articleService;
+	private final LastArticleCacheService lastArticleCacheService;
 	private final Executor gptSummaryTaskExecutor;
 
 	public List<Article> processParsedArticles(Source source, Map<TagType, Tag> tagMap, List<ParsedArticle> parsedArticles) {
@@ -46,6 +48,7 @@ public class ArticleProcessorService {
 					Article article = ArticleUtil.createNewArticle(source, parsedArticle, summary, tags);
 
 					articleService.save(article);
+					lastArticleCacheService.updateLastPublishedDate(source.getId(), article.getPublishedAt());
 					return article;
 				} catch (Exception e) {
 					log.error("[{}] 아티클 처리 중 오류 발생: {}", source.getName(), e.getMessage(), e);
