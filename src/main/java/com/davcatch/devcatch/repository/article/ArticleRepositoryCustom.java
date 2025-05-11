@@ -55,7 +55,7 @@ public interface ArticleRepositoryCustom {
 	 * @param articleId 아티클 ID
 	 * @return 아티클 상세
 	 */
-	Optional<ArticleDetailResponse> findArticleDetail(Long articleId);
+	Optional<ArticleResponse> findArticleDetail(Long articleId);
 
 	/**
 	 * 연관된 아티클 조회

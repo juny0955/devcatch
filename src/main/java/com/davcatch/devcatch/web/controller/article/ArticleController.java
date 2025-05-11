@@ -50,10 +50,10 @@ public class ArticleController {
 	@GetMapping("/detail/{articleId}")
 	public String detail(@PathVariable Long articleId, Model model) {
 		try {
-			ArticleDetailResponse articleDetailResponse = articleCommendService.getArticleDetail(articleId);
-			List<ArticleResponse> relatedArticleResponses = articleCommendService.getRelatedArticles(articleId, articleDetailResponse.tags());
+			ArticleResponse articleResponse = articleCommendService.getArticleDetail(articleId);
+			List<ArticleResponse> relatedArticleResponses = articleCommendService.getRelatedArticles(articleId, articleResponse.tags());
 
-			model.addAttribute("article", articleDetailResponse);
+			model.addAttribute("article", articleResponse);
 			model.addAttribute("relatedArticles", relatedArticleResponses);
 			model.addAttribute("activeMenu", "articles");
 		} catch (CustomException e) {

@@ -54,7 +54,7 @@ public class ArticleCommendService {
 	 * @return 조회된 아티클
 	 * @throws CustomException
 	 */
-	public ArticleDetailResponse getArticleDetail(Long articleId) throws CustomException {
+	public ArticleResponse getArticleDetail(Long articleId) throws CustomException {
 		return articleRepository.findArticleDetail(articleId).orElseThrow(() -> new CustomException(ErrorCode.ARTICLE_NOT_FOUND));
 	}
 

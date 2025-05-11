@@ -14,6 +14,4 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
 	@Query("select t from Tag t where t.tagType in :tagTypes")
 	List<Tag> findInTagType(List<TagType> tagTypes);
-
-	List<Tag> findAll();
 }

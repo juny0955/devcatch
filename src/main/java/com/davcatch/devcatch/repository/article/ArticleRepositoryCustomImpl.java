@@ -1,5 +1,10 @@
 package com.davcatch.devcatch.repository.article;
 
+import static com.davcatch.devcatch.domain.article.QArticle.*;
+import static com.davcatch.devcatch.domain.article.QArticleTag.*;
+import static com.davcatch.devcatch.domain.source.QSource.*;
+import static com.davcatch.devcatch.domain.tag.QTag.*;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -13,15 +18,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import com.davcatch.devcatch.domain.article.Article;
-import com.davcatch.devcatch.domain.article.QArticle;
-import com.davcatch.devcatch.domain.article.QArticleTag;
-import com.davcatch.devcatch.domain.source.QSource;
-import com.davcatch.devcatch.domain.tag.QTag;
 import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.web.controller.article.response.ArticleDetailResponse;
 import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.group.GroupBy;
+import com.querydsl.core.types.ConstructorExpression;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPQLQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -39,8 +40,6 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public Optional<Article> findLastPublishedArticle(Long sourceId) {
-		QArticle article = QArticle.article;
-
 		Article result = queryFactory
 			.selectFrom(article)
 			.where(article.source.id.eq(sourceId))
@@ -53,11 +52,6 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public List<ArticleResponse> findNewArticlesTOP6() {
-		QArticle article = QArticle.article;
-		QSource source = QSource.source;
-		QArticleTag articleTag = QArticleTag.articleTag;
-		QTag tag = QTag.tag;
-
 		List<Long> topIds = queryFactory
 			.select(article.id)
 			.from(article)
@@ -66,15 +60,6 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.fetch();
 
 		Map<Long, ArticleResponse> transform = queryFactory
-			.select(
-				article.id,
-				article.title,
-				article.summary,
-				article.link,
-				article.publishedAt,
-				source.name,
-				tag.tagType
-			)
 			.from(article)
 			.join(article.source, source)
 			.leftJoin(article.articleTags, articleTag)
@@ -82,16 +67,7 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.where(article.id.in(topIds.toArray(new Long[0])))
 			.transform(
 				GroupBy.groupBy(article.id).as(
-					Projections.constructor(
-						ArticleResponse.class,
-						article.id,
-						article.title,
-						article.summary,
-						article.link,
-						article.publishedAt,
-						source.name,
-						Projections.list(tag.tagType)
-					)
+					createArticleResponseProjection()
 				)
 			);
 
@@ -100,14 +76,9 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public List<Article> findSendArticles() {
-		QArticle article = QArticle.article;
-		QSource source = QSource.source;
-		QArticleTag articleTag = QArticleTag.articleTag;
-		QTag tag = QTag.tag;
-
 		return queryFactory
 			.selectFrom(article)
-			.leftJoin(article.source, source).fetchJoin()
+			.join(article.source, source).fetchJoin()
 			.leftJoin(article.articleTags, articleTag).fetchJoin()
 			.leftJoin(articleTag.tag, tag).fetchJoin()
 			.where(article.isSent.eq(false))
@@ -116,11 +87,6 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public Page<ArticleResponse> findArticlesList(Pageable pageable, String keyword, TagType tagType) {
-		QArticle article = QArticle.article;
-		QSource source = QSource.source;
-		QArticleTag articleTag = QArticleTag.articleTag;
-		QTag tag = QTag.tag;
-
 		BooleanBuilder builder = new BooleanBuilder();
 
 		JPQLQuery<Long> countQuery = queryFactory
@@ -147,15 +113,6 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 		long total = count != null ? count : 0;
 
 		Map<Long, ArticleResponse> transform = queryFactory
-			.select(
-				article.id,
-				article.title,
-				article.summary,
-				article.link,
-				article.publishedAt,
-				source.name,
-				tag.tagType
-			)
 			.from(article)
 			.join(article.source, source)
 			.leftJoin(article.articleTags, articleTag)
@@ -166,27 +123,15 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.limit(pageable.getPageSize())
 			.transform(
 				GroupBy.groupBy(article.id).as(
-					Projections.constructor(
-						ArticleResponse.class,
-						article.id,
-						article.title,
-						article.summary,
-						article.link,
-						article.publishedAt,
-						source.name,
-						Projections.list(tag.tagType)
+					createArticleResponseProjection()
 				)
-			));
+			);
 
-		List<ArticleResponse> result = resortTransform(transform);
-
-		return new PageImpl<>(result, pageable, total);
+		return new PageImpl<>(resortTransform(transform), pageable, total);
 	}
 
 	@Override
 	public List<Article> findDashboardList(Pageable pageable) {
-		QArticle article = QArticle.article;
-
 		return queryFactory
 			.selectFrom(article)
 			.orderBy(article.publishedAt.desc())
@@ -196,13 +141,8 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 	}
 
 	@Override
-	public Optional<ArticleDetailResponse> findArticleDetail(Long articleId) {
-		QArticle article = QArticle.article;
-		QSource source = QSource.source;
-		QArticleTag articleTag = QArticleTag.articleTag;
-		QTag tag = QTag.tag;
-
-		Map<Long, ArticleDetailResponse> transform = queryFactory
+	public Optional<ArticleResponse> findArticleDetail(Long articleId) {
+		Map<Long, ArticleResponse> transform = queryFactory
 			.from(article)
 			.join(article.source, source)
 			.leftJoin(article.articleTags, articleTag)
@@ -210,16 +150,7 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.where(article.id.eq(articleId))
 			.transform(
 				GroupBy.groupBy(article.id).as(
-					Projections.constructor(
-						ArticleDetailResponse.class,
-						article.id,
-						article.title,
-						article.summary,
-						article.link,
-						article.publishedAt,
-						source.name,
-						Projections.list(tag.tagType)
-					)
+					createArticleResponseProjection()
 				)
 			);
 
@@ -228,25 +159,10 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public List<ArticleResponse> findRelatedArticles(Long articleId, List<TagType> tagTypes) {
-		if (tagTypes == null || tagTypes.isEmpty()) {
+		if (tagTypes == null || tagTypes.isEmpty())
 			return Collections.emptyList();
-		}
-
-		QArticle article = QArticle.article;
-		QSource source = QSource.source;
-		QArticleTag articleTag = QArticleTag.articleTag;
-		QTag tag = QTag.tag;
 
 		Map<Long, ArticleResponse> transform = queryFactory
-			.select(
-				article.id,
-				article.title,
-				article.summary,
-				article.link,
-				article.publishedAt,
-				source.name,
-				tag.tagType
-			)
 			.from(article)
 			.join(article.source, source)
 			.join(article.articleTags, articleTag)
@@ -259,16 +175,7 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.limit(RELATED_ARTICLE_SIZE)
 			.transform(
 				GroupBy.groupBy(article.id).as(
-					Projections.constructor(
-						ArticleResponse.class,
-						article.id,
-						article.title,
-						article.summary,
-						article.link,
-						article.publishedAt,
-						source.name,
-						Projections.list(tag.tagType)
-					)
+					createArticleResponseProjection()
 				)
 			);
 
@@ -285,5 +192,21 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 		return transform.values().stream()
 			.sorted(Comparator.comparing(ArticleResponse::publishedAt).reversed())
 			.toList();
+	}
+
+	/**
+	 * ArticleResponse Projection 생성
+	 */
+	private ConstructorExpression<ArticleResponse> createArticleResponseProjection() {
+		return Projections.constructor(
+			ArticleResponse.class,
+			article.id,
+			article.title,
+			article.summary,
+			article.link,
+			article.publishedAt,
+			source.name,
+			Projections.list(tag.tagType)
+		);
 	}
 }
