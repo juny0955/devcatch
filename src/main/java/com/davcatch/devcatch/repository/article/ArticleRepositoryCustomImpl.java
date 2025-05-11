@@ -1,6 +1,7 @@
 package com.davcatch.devcatch.repository.article;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -227,6 +228,10 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public List<ArticleResponse> findRelatedArticles(Long articleId, List<TagType> tagTypes) {
+		if (tagTypes == null || tagTypes.isEmpty()) {
+			return Collections.emptyList();
+		}
+
 		QArticle article = QArticle.article;
 		QSource source = QSource.source;
 		QArticleTag articleTag = QArticleTag.articleTag;
