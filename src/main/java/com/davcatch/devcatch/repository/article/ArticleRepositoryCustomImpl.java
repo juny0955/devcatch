@@ -159,9 +159,6 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 
 	@Override
 	public List<ArticleResponse> findRelatedArticles(Long articleId, List<TagType> tagTypes) {
-		if (tagTypes == null || tagTypes.isEmpty())
-			return Collections.emptyList();
-
 		Map<Long, ArticleResponse> transform = queryFactory
 			.from(article)
 			.join(article.source, source)
@@ -169,7 +166,7 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.join(articleTag.tag, tag)
 			.where(
 				article.id.ne(articleId),
-				tag.tagType.in(tagTypes)
+				tag.tagType.in(tagTypes).isNull()
 			)
 			.orderBy(article.publishedAt.desc())
 			.limit(RELATED_ARTICLE_SIZE)

@@ -1,6 +1,8 @@
 package com.davcatch.devcatch.web.service.article;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,7 +67,16 @@ public class ArticleCommendService {
 	 * @return 아티클 리스트
 	 */
 	public List<ArticleResponse> getRelatedArticles(Long articleId, List<TagType> tagTypes) {
-		return articleRepository.findRelatedArticles(articleId, tagTypes);
+		List<TagType> filteredNullTagTypes = tagTypes == null ?
+			Collections.emptyList() :
+			tagTypes.stream()
+				.filter(Objects::nonNull)
+				.toList();
+
+		if (filteredNullTagTypes.isEmpty())
+			return Collections.emptyList();
+
+		return articleRepository.findRelatedArticles(articleId, filteredNullTagTypes);
 	}
 
 }
