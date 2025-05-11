@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.web.controller.article.response.ArticleDetailResponse;
 import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 import com.davcatch.devcatch.web.service.article.ArticleCommendService;
 

@@ -8,7 +8,6 @@ import org.springframework.data.domain.Pageable;
 
 import com.davcatch.devcatch.domain.article.Article;
 import com.davcatch.devcatch.domain.tag.TagType;
-import com.davcatch.devcatch.web.controller.article.response.ArticleDetailResponse;
 import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 
 public interface ArticleRepositoryCustom {

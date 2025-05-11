@@ -13,7 +13,6 @@ import com.davcatch.devcatch.common.exception.CustomException;
 import com.davcatch.devcatch.common.exception.ErrorCode;
 import com.davcatch.devcatch.domain.tag.TagType;
 import com.davcatch.devcatch.repository.article.ArticleRepository;
-import com.davcatch.devcatch.web.controller.article.response.ArticleDetailResponse;
 import com.davcatch.devcatch.web.controller.article.response.ArticleResponse;
 
 import lombok.RequiredArgsConstructor;
