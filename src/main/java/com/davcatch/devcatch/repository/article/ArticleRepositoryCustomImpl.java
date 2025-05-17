@@ -166,7 +166,7 @@ public class ArticleRepositoryCustomImpl implements ArticleRepositoryCustom{
 			.join(articleTag.tag, tag)
 			.where(
 				article.id.ne(articleId),
-				tag.tagType.in(tagTypes).isNull()
+				tag.tagType.in(tagTypes)
 			)
 			.orderBy(article.publishedAt.desc())
 			.limit(RELATED_ARTICLE_SIZE)
